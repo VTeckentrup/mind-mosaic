@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+ <title>Crowdsourcing the mosaic of the mind</title>
+ <link href="http://localhost:4000/atom.xml" rel="self"/>
+ <link href="http://localhost:4000/"/>
+ <updated>2017-11-23T15:48:43+01:00</updated>
+ <id>http://localhost:4000</id>
+ <author>
+   <name>Vanessa Teckentrup</name>
+   <email>vanessa.teckentrup@uni-tuebingen.de</email>
+ </author>
+
+ 
+ <entry>
+   <title>Assembling the mosaic</title>
+   <link href="http://localhost:4000/2017/11/23/assembling-the-mosaic/"/>
+   <updated>2017-11-23T00:00:00+01:00</updated>
+   <id>http://localhost:4000/2017/11/23/assembling-the-mosaic</id>
+   <content type="html">&lt;p align=&quot;center&quot;&gt;
+ &lt;a href=&quot;http://statistically-funny.blogspot.de/&quot; target=&quot;_blank&quot;&gt;
+  &lt;img src=&quot;/public/images/Cause-and-effect.jpg&quot; alt=&quot;source:http://statistically-funny.blogspot.de/&quot; width=&quot;400&quot; /&gt;
+ &lt;/a&gt;
+&lt;/p&gt;
+
+&lt;p&gt;What helps us to circumvent harm, is the ability to associate stimuli in our environment with a certain outcome. A pretty common thing for children is to find out that a red-colored hotplate is not the ideal location to put your fingers. In general, we all form predictions on what will happen and how something works all the time and we continuously refine these predictions by incorporating new experience. If you have ever moved to a different city, you also might have had the problem that some aspects of everyday life like public transport for example didn’t quite work the same way as before and the comforting certainty that the trains always run a few minutes late suddenly turned into a freezing cold feeling somewhere in your stomach that maybe your clock finally needs some adjustment.&lt;/p&gt;
+
+&lt;p&gt;This process of knowing that the occurrence of an event is associated with a specific outcome also applies to the search for &lt;a href=&quot;https://en.wikipedia.org/wiki/Biomarker&quot;&gt;biomarkers&lt;/a&gt;. If your doctor measures the quantitiy of a substance in your blood, then this is most likely the case, because we already know its level is associated with a disease that fits your symptoms. Even more valuable are markers that can tell us if somebody will develop a specific disease in the future, especially if we are talking about burdensome and debilitating diseases.&lt;/p&gt;
+
+&lt;p&gt;One of the areas where the hunt for these biomarkers elicited quite the enthusiasm is psychiatry. And this is not surprising: Mental illnesses rank among the most debilitating diseases, having detrimental consequences on the future life of the patient itself as well as their loved ones while also placing a significant economic burden on society [1]. So, switching from a psychiatric health care system that is centered around finding the best treatment options for patients that have been diagnosed with a specific disease to a prevention centered, individualized approach where biomarkers give you the time to employ tailor-made countermeasures even before the onset of the actual disease would be an immense improvement.&lt;/p&gt;
+
+&lt;p&gt;Unfortunately, many of the findings from psychiatric research regarding possible biomarkers for mental illnesses could not be replicated in independent studies. One &lt;a href=&quot;https://doi.org/10.1001/jamapsychiatry.2016.2783&quot;&gt;recent study&lt;/a&gt; [2] for example used a meta-analytic approach to compare the results of 57 neuroimaging studies on depression and did not find evidence for similarity within the results patterns which, given that the data stems from groups of individuals diagnosed with the same disease is a striking result. &lt;br /&gt;
+Replication therefore is a critical process to ensure that an effect is not due to chance, for example a small sample of subjects that share a specific characteristic. Just think about the association between the number of storks and the number of babies in a region that could lead you to believe in what your parents told you when they didn’t want to be bothered with the more in detail answer. The association however disappears if you not only take rural areas into account where storks are much more common [3].&lt;/p&gt;
+
+&lt;p&gt;So, what are the reasons for the widespread heterogeneity in the results? I already tapped into the problem of small samples of selected, non-representative subjects. Beyond that, in contrast to most of the questionnaires used in psychological research, the experimental paradigms employed to study cognitive or motivational deficits are not standardized across labs or validated which culminates in a variety of task versions with different parameters under the same paradigm name. Also if you take on the task of replicating a study you will more often than not face the problem that there is a lack of routine publication of analysis scripts or verified datasets while paradigm descriptions are often too short to give you the information needed to recreate the paradigm.&lt;/p&gt;
+
+&lt;p&gt;The key problems here are open documentation and accessibility, two dimensions in which an open science approach can shine: In order to ensure the widespread use of well documented and validated paradigms, the software used to run them has to be as system-independent as possible, easy to use and inviting to a broad variety of people in order to motivate them to take part.&lt;br /&gt;
+An initiative that demonstrated the great promise of software tools that capitalize on exactly this was &lt;a href=&quot;http://www.thegreatbrainexperiment.com/&quot;&gt;The Great Brain Experiment&lt;/a&gt; that has been supported by the Wellcome Trust and lead to a series of publications which among other topics also &lt;a href=&quot;https://doi.org/10.1001/jamapsychiatry.2017.1713&quot;&gt;challenged a key hypothesis about depression&lt;/a&gt; as a disorder of aberrant updating of reward expectations. While the hypothesis has been derived from several small sample studies, the result could not be replicated using the database comprising more than 1800 participants [4].&lt;/p&gt;
+
+&lt;p&gt;Therefore within the Open Science Fellowship I now want to transport these positive examples to the psychiatry setting. For this, I will develop a software package that implements tasks that tap into key facets of human cognition, which have been &lt;a href=&quot;https://doi.org/10.7554/eLife.11305&quot;&gt;demonstrated to be altered&lt;/a&gt; using tools from computational psychiatry [5]. In particular a slot machine task will be implemented first.&lt;br /&gt;
+The accessibility problem will be tackled by writing the code in &lt;a href=&quot;https://haxe.org/&quot;&gt;Haxe&lt;/a&gt;, a programming language intended for building cross-platform tools that can be directly exported to native apps for every major platform including for example Android and web-based HTML5. In this way not only practitioners in lab or clinical settings can easily use the tasks within a web browser on their computers, but also a variety of individuals outside can easily download an app for their smartphone and support psychiatric research by completing the game-like tasks within. In this way crowdsourcing and citizen science become important concepts for this project, because in order to be able to describe individual behavior in detail, sufficient data is crucial.&lt;br /&gt;
+As a second incentive for prospective players, a web interface will be implemented using &lt;a href=&quot;https://shiny.rstudio.com/&quot;&gt;R Shiny&lt;/a&gt; (an open web application framework for R) that displays an easily accessible summary of the individual results of the user relative to other individuals in the database such that you get an idea of where on the spectrum you rank regarding a certain character trait.&lt;/p&gt;
+
+&lt;p&gt;Lastly, to also get to the open documentation aspect, all applications built including the source code and documentations on the paradigm will be made publicly available in the associated project &lt;a href=&quot;https://github.com/VTeckentrup/mind-mosaic&quot;&gt;GitHub repository&lt;/a&gt; by release under an open-source license. Additionally the development process will be accompanied by this blog and every change made to the code will be traceable through the git file tracking system.&lt;/p&gt;
+
+&lt;p&gt;And of course, as open practices thankfully foster collaborative efforts on projects: Comments, ideas, commits, suggestions for improvement or questions on anything remotely related to what is laid out here are highly welcome!&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;Footnotes &amp;amp; Sources:&lt;br /&gt;
+[1] Trautmann, S., Rehm, J., Wittchen, H.-U. (2016). The economic costs of mental disorders. EMBO rep, 17, 1245–1249. &lt;a href=&quot;https://doi.org/10.15252/embr.201642951&quot;&gt;doi:10.15252/embr.201642951&lt;/a&gt;&lt;br /&gt;
+[2] Müller, V. I., Cieslik, E. C., Serbanescu, I., Laird, A. R., Fox, P. T., Eickhoff, S. B. (2017). Altered Brain Activity in Unipolar Depression Revisited: Meta-analyses of Neuroimaging Studies. JAMA Psychiatry, 74(1), 47–55. &lt;a href=&quot;https://doi.org/10.1001/jamapsychiatry.2016.2783&quot;&gt;doi:10.1001/jamapsychiatry.2016.2783&lt;/a&gt;&lt;br /&gt;
+[3] For more humorous insights into spurious correlations, you can visit Tyler Vigens site: [http://www.tylervigen.com/spurious-correlations]&lt;br /&gt;
+[4] Rutledge, R. B., Moutoussis, M., Smittenaar, P., Zeidman, P., Taylor, T., Hrynkiewicz, L., Lam, J., Skandali, N., Siegel, J. Z., Ousdal, O. T., Prabhu, G., Dayan, P., Fonagy, P., Dolan, R. J. (2017). Association of Neural and Emotional Impacts of Reward Prediction Errors With Major Depression. JAMA Psychiatry, 74(8), 790–797. &lt;a href=&quot;https://doi.org/10.1001/jamapsychiatry.2017.1713&quot;&gt;doi:10.1001/jamapsychiatry.2017.1713&lt;/a&gt;&lt;br /&gt;
+[5] Gillan, C. M., Kosinski, M., Whelan, R., Phelps, E. A., Daw, N. D. (2016). Characterizing a psychiatric symptom dimension related to deficits in goal-directed control. eLife, 5. &lt;a href=&quot;https://doi.org/10.7554/eLife.11305&quot;&gt;doi:10.7554/eLife.11305&lt;/a&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Hello World!</title>
+   <link href="http://localhost:4000/2017/11/22/hello-world/"/>
+   <updated>2017-11-22T00:00:00+01:00</updated>
+   <id>http://localhost:4000/2017/11/22/hello-world</id>
+   <content type="html">&lt;p&gt;This blog is part of the project &lt;a href=&quot;https://de.wikiversity.org/wiki/Wikiversity:Fellow-Programm_Freies_Wissen/Einreichungen/Towards_a_bigger_picture_-_Crowdsourcing_the_mosaic_of_the_mind&quot;&gt;Towards a bigger picture - Crowdsourcing the mosaic of the mind&lt;/a&gt; within the &lt;a href=&quot;https://de.wikiversity.org/wiki/Wikiversity:Fellow-Programm_Freies_Wissen&quot;&gt;Open Science Fellowship 2017/2018&lt;/a&gt; by Wikimedia, Stifterverband and Volkswagenstiftung.&lt;/p&gt;
+
+&lt;p&gt;In the following months you will find regular updates regarding the development process in the project that mostly focus on programming issues, theoretical background regarding mental health and the paradigms used as well as open science related practices and my experiences in incorporating them into my work.&lt;/p&gt;
+
+&lt;p&gt;I am always happy to receive comments, so in case you want to contact me, you can find me on &lt;a href=&quot;https://twitter.com/glassybrain&quot;&gt;Twitter&lt;/a&gt; or send a mail to the address detailed in the sidebar. I hope you have a pleasant stay and find some insightful posts on open science approaches applied to the psychiatric context!&lt;/p&gt;
+</content>
+ </entry>
+ 
+
+</feed>

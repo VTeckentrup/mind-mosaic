@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      About &middot; Crowdsourcing the mosaic of the mind
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body class="theme-base-08">
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox" >
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item" align="right">
+    <p><b>Detailing the development process of a platform independent software implementation of tasks that tap into key facets of human cognition.</b></p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/">Home</a>
+    <a class="sidebar-nav-item" href="">GitHub project</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item active" href="/about/">About</a>
+        
+      
+    
+      
+    
+
+  </nav>
+
+  <div class="sidebar-item">
+    <p>Made by <br> Vanessa Teckentrup <br> 
+    <a href="https://twitter.com/glassybrain" target="_blank">@glassybrain</a> <br>
+    <a href="mailto:vanessa.teckentrup@uni-tuebingen.de">Write a mail</a></p> 
+  </div>
+
+  <div class="sidebar-item">
+    <p>
+      All blog entries are licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>
+    </p>
+  </div>
+
+  <div class="sidebar-item">
+    <p>
+      Theme: <a href="https://github.com/poole/lanyon" target="_blank">Lanyon</a>
+    </p>
+  </div>
+
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Crowdsourcing the mosaic of the mind</a>
+            <small>Hunting for the bigger picture</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="page">
+  <h1 class="page-title">About</h1>
+  <p>A blog focused on a platform independent software implementation of tasks that tap into key facets of human cognition, which have been demonstrated to be altered using tools from computational psychiatry.</p>
+
+<p align="center">
+ <a href="https://de.wikiversity.org/wiki/Wikiversity:Fellow-Programm_Freies_Wissen" target="_blank">
+  <img src="/public/images/Fellow-Programm-Freies-Wissen-Logo.jpg" width="500" />
+ </a>
+</p>
+
+<p>This blog is part of a project within the <a href="https://de.wikiversity.org/wiki/Wikiversity:Fellow-Programm_Freies_Wissen">Open Science Fellowship</a>. While in the process of creating the code be sure to find regular updates on features that need to be incorporated and the challenges I face by being as open as possible in the development of the software.</p>
+
+<h2 id="a-fragmented-picture-of-mental-disorders">A fragmented picture of mental disorders</h2>
+
+<p>Let’s pretend you are interested in the neurobiological causes of a mental disorder to derive biomarkers or delineate mechanisms for targeted treatment. What you are most likely to find are marked differences across small studies culminating in low success rates in the replication of key results. Why, you ask? Reasons are manifold:</p>
+<ul>
+  <li>small samples of selected non-representative patients</li>
+  <li>lack of routine publication of validated paradigms, analysis scripts, and verified datasets</li>
+  <li>paradigms employed to study cognitive or motivational deficits are not standardized across labs or formally validated</li>
+</ul>
+
+<p>Open science enthusiasts may have already spotted it: Many reasons could be effectively addressed by facilitating the widespread use of open and well-maintained software running on different yet commonly available platforms.</p>
+
+<h2 id="how-to-merge-the-pieces">How to merge the pieces</h2>
+<p>Now how do I plan to overcome these problems letting open practices work their magic? 
+To facilitate the widespread use in future research, the paradigms will be implemented using <a href="https://haxe.org/">Haxe</a>, a programming language intended for building cross-platform tools that can be directly exported to native apps for every major platform including Android and web-based HTML5. Ease of access has been a major limiting factor in collecting sufficient data required to describe individual behavior in detail. Furthermore, large-scale online testing enables tests for the dimensionality of mental disorders, which could be employed to identify individuals at risk or at an early stage of the disorder in the future.</p>
+
+<p>Accompanying this, a web interface will be implemented which provides an easily accessible summary of the individual results of the user relative to other individuals in the database or, alternatively, a comprehensive summary for researchers, who are using the task. This web interface will be implemented using <a href="https://shiny.rstudio.com/">R Shiny</a>, an open web application framework for <a href="https://www.r-project.org/">R</a>.</p>
+
+<h2 id="puzzled">Puzzled?</h2>
+<p>So, given that this approach also worked its magic on you: Comments, ideas, commits, suggestions for improvement or questions on anything remotely related to what is laid out here are highly welcome!</p>
+
+</div>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script>
+      (function(document) {
+        var toggle = document.querySelector('.sidebar-toggle');
+        var sidebar = document.querySelector('#sidebar');
+        var checkbox = document.querySelector('#sidebar-checkbox');
+
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+
+          if(!checkbox.checked ||
+             sidebar.contains(target) ||
+             (target === checkbox || target === toggle)) return;
+
+          checkbox.checked = false;
+        }, false);
+      })(document);
+    </script>
+  </body>
+</html>
