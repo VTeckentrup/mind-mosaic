@@ -1,7 +1,5 @@
 # Dependencies
-markdown:         redcarpet
 theme:            lanyon
-pygments:         true
 plugins:          [jekyll-paginate]
 
 # Permalinks
