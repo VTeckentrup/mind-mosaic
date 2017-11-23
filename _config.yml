@@ -1,5 +1,4 @@
 # Dependencies
-theme:            lanyon
 plugins:          [jekyll-paginate]
 
 # Permalinks
