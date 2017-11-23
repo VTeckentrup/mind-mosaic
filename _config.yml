@@ -12,7 +12,7 @@ title:               'Crowdsourcing the mosaic of the mind'
 tagline:             'Hunting for the bigger picture'
 description:         'Detailing the development process of a platform independent software implementation of tasks that tap into key facets of human cognition.'
 url:                 ''
-baseurl:             'https://vteckentrup.github.io/mind-mosaic/'
+baseurl:             'https://vteckentrup.github.io/mind-mosaic'
 paginate:            5
 
 # About/contact
