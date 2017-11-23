@@ -1,5 +1,7 @@
 # Dependencies
-plugins:                [jekyll-paginate]
+markdown:         redcarpet
+pygments:         true
+plugins:          [jekyll-paginate]
 
 # Permalinks
 #
