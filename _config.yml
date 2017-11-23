@@ -1,0 +1,25 @@
+# Dependencies
+plugins:                [jekyll-paginate]
+
+# Permalinks
+#
+# Use of `relative_permalinks` ensures post links from the index work properly.
+permalink:           pretty
+#relative_permalinks: true
+
+# Setup
+title:               'Crowdsourcing the mosaic of the mind'
+tagline:             'Hunting for the bigger picture'
+description:         'Detailing the development process of a platform independent software implementation of tasks that tap into key facets of human cognition.'
+url:                 ''
+baseurl:             ''
+paginate:            5
+
+# About/contact
+author:
+  name:              Vanessa Teckentrup
+  url:               glassybrain
+  email:             vanessa.teckentrup@uni-tuebingen.de
+
+# Custom vars
+
