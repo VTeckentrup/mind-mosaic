@@ -6,12 +6,13 @@ title: About
 A blog focused on a platform independent software implementation of tasks that tap into key facets of human cognition, which have been demonstrated to be altered using tools from computational psychiatry.
 
 <p align="center">
- <a href="https://de.wikiversity.org/wiki/Wikiversity:Fellow-Programm_Freies_Wissen" target="_blank">
-  <img src="{{ site.baseurl }}/public/images/Fellow-Programm-Freies-Wissen-Logo.jpg" width="500">
+ <a href="www.wmde.org/opensciencefellows" target="_blank">
+  <img src="{{ site.baseurl }}/public/images/fp_logoleiste_en_02.jpg" width="800">
  </a>
 </p>
 
-This blog is part of a project within the [Open Science Fellowship](https://de.wikiversity.org/wiki/Wikiversity:Fellow-Programm_Freies_Wissen). While in the process of creating the code be sure to find regular updates on features that need to be incorporated and the challenges I face by being as open as possible in the development of the software.
+This blog is part of the project [Towards a bigger picture - Crowdsourcing the mosaic of the mind](https://de.wikiversity.org/wiki/Wikiversity:Fellow-Programm_Freies_Wissen/Einreichungen/Towards_a_bigger_picture_-_Crowdsourcing_the_mosaic_of_the_mind) that is being supported by Wikimedia Deutschland e. V., [Stifterverband](https://www.stifterverband.org/english) and the [Volkswagen Foundation](https://www.volkswagenstiftung.de/en.html) within the [Open Science Fellows Program](http://www.wmde.org/opensciencefellows).  
+While in the process of creating the code be sure to find regular updates on features that need to be incorporated and the challenges I face by being as open as possible in the development of the software.
 
 
 ## A fragmented picture of mental disorders
