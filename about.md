@@ -6,7 +6,7 @@ title: About
 A blog focused on a platform independent software implementation of tasks that tap into key facets of human cognition, which have been demonstrated to be altered using tools from computational psychiatry.
 
 <p align="center">
- <a href="www.wmde.org/opensciencefellows" target="_blank">
+ <a href="http://wmde.org/opensciencefellows" target="_blank">
   <img src="{{ site.baseurl }}/public/images/fp_logoleiste_en_02.jpg" width="800">
  </a>
 </p>
