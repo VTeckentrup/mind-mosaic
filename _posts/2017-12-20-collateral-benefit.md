@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Collateral benefit
+permalink: /collateralbenefit/
 ---
 
 As the preparation of a development roadmap for a software application takes a lot of organization that takes part behind the scenes and the forthcoming end of the year predisposes you to take a broader look around you, I thought this is a good time to take a step back and recognize the achievements in terms of open approaches and standards that became visible around me.
