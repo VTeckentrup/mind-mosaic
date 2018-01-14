@@ -1,6 +1,7 @@
 ---
 layout: post
 title: re:publica
+permalink: /republica2018/
 ---
 
 Originally the Roadmap for this project showed that I wanted to give an introduction into biomarkers, the problems surrounding their identification and in which way open science approaches and specifically citizen science can help us overcome some of these problems on the [Night of Science](https://www.nightofscience.de/), a science communication event organized by students in Frankfurt/Main. Unfortunately it will take place on the 8th June while I will be at the closing event for my open science fellowship within which this project is run.
