@@ -4,7 +4,10 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
 import flash.text.TextField;
+import openfl.text.TextFieldType;
 import flash.text.TextFormat;
+import flash.text.Font;
+import flash.text.FontStyle;
 import flash.text.TextFormatAlign;
 import flash.events.KeyboardEvent;
 import flash.ui.Keyboard;
@@ -18,8 +21,15 @@ enum GameState {
 
 class Main extends Sprite 
 {
+
+	
 	var inited:Bool;
 	
+	//set up Log in 
+	private var username:TextField;
+	private var passw:TextField;
+	private var logIn_selection:TextField;
+
 	// Set up game state variable
 	private var currentGameState:GameState;
 	
@@ -76,11 +86,63 @@ class Main extends Sprite
 		// else (resize or orientation change)
 	}
 	
-	function init() 
-	{
-		if (inited) return;
-		inited = true;
-		
+	//first SetUp Image with the Log-in data & PW
+	function getSetupImage(){
+		//22.01.: displays 2 textfield where you can enter the username & pw
+		//new Textfield for username insertion
+		var username:TextField = new TextField();
+		username.background = true;
+		username.width = 200;
+		username.height = 50;
+		username.x = 300;
+		username.y = 210;
+		var name:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
+		//Text is centered
+		name.align = TextFormatAlign.CENTER;
+		username.text = "Benutzername";
+		username.defaultTextFormat = name;
+		username.restrict = null;
+		//user can edit the textfield
+		username.type = TextFieldType.INPUT;
+		this.addChild(username);
+
+
+		//new Textfield for password insertion
+		var passw:TextField = new TextField();
+		//edited text is displayed as a password
+		passw.displayAsPassword = true;
+		passw.background = true;
+		passw.width = 200;
+		passw.height = 50;
+		passw.x = 300;
+		passw.y = 300;
+		passw.restrict = null;
+		//user can edit the textfield
+		passw.type = TextFieldType.INPUT;
+		var passw_format:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
+		passw_format.align = TextFormatAlign.CENTER;
+		passw.defaultTextFormat = passw_format;
+		this.addChild(passw);
+
+
+		//draw Log-In button
+		logIn_selection = new TextField();
+		logIn_selection.width = 100;
+		logIn_selection.height = 30;
+		logIn_selection.x = 350;
+		logIn_selection.y = 400;
+		logIn_selection.text = "Login";
+		var logIn_format:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
+		logIn_format.align = TextFormatAlign.CENTER;
+		logIn_selection.defaultTextFormat = logIn_format;
+		logIn_selection.selectable = true;
+		logIn_selection.type = TextFieldType.DYNAMIC;
+		this.addChild(logIn_selection);
+
+	}
+	//function that draws the Slotmachine
+	function drawSlotmachine(){
+
 		// Draw slot machines on screen
 		slot_machine_blue = new Machine_blue();
 		slot_machine_blue.x = 50;
@@ -140,6 +202,7 @@ class Main extends Sprite
 		scoreField_green.selectable = false;
 		
 		// Generate starting rewards
+		//Gaussian random walk - normal distribution
 		//blue_reward = 0 + Math.floor(((100 - 0 + 1) * Math.random()));
 		//green_reward = 100 - blue_reward;
 		blue_reward = Math.round(NormRandom.floatNormal(50,12));
@@ -172,7 +235,18 @@ class Main extends Sprite
 		// Set game state
 		currentGameState = Playing;		
 		
-		// Set up keys to select option
+
+	}
+
+	function init() 
+	{
+
+
+
+		if (inited) return;
+		inited = true;
+		
+		// Set up keys to select option: usually in init function 
 		keys = [];
 		stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 		stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
@@ -180,11 +254,15 @@ class Main extends Sprite
 		// Listen for input
 		this.addEventListener(Event.ENTER_FRAME, everyFrame);
 
+		//getSetupImage();
+		drawSlotmachine();
+
+		
 	}
 
 	
 	/* SETUP */
-
+	//Entry point of main function: treats it as an object
 	public function new() 
 	{
 		super();	
@@ -221,16 +299,16 @@ class Main extends Sprite
     } else {
         Lib.current.y = (stage.stageHeight - NOMINAL_HEIGHT * stageScale) / 2;
     }
-}
+	}
 
-// Set keyboard keys actived/deactivated on key press/release
+	// Set keyboard keys actived/deactivated on key press/release
 	private function onKeyDown(evt:KeyboardEvent):Void {
 	keys[evt.keyCode] = true;
-}
+	}
 
 	private function onKeyUp(evt:KeyboardEvent):Void {
 	keys[evt.keyCode] = false;
-}
+	}
 
 
 	private function everyFrame(event:Event):Void {
@@ -374,5 +452,6 @@ class Main extends Sprite
 		}
 		
 	}
+	
 	
 }
