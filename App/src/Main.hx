@@ -11,6 +11,8 @@ import flash.text.FontStyle;
 import flash.text.TextFormatAlign;
 import flash.events.KeyboardEvent;
 import flash.ui.Keyboard;
+import openfl.display.SimpleButton;
+import openfl.events.MouseEvent;
 import Math.random;
 
 enum GameState {
@@ -99,11 +101,12 @@ class Main extends Sprite
 		var name:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
 		//Text is centered
 		name.align = TextFormatAlign.CENTER;
-		username.text = "Benutzername";
+		//username.text = "Benutzername";
 		username.defaultTextFormat = name;
 		username.restrict = null;
 		//user can edit the textfield
 		username.type = TextFieldType.INPUT;
+		username.replaceSelectedText("Benutzername");
 		this.addChild(username);
 
 
@@ -139,7 +142,102 @@ class Main extends Sprite
 		logIn_selection.type = TextFieldType.DYNAMIC;
 		this.addChild(logIn_selection);
 
+
+
 	}
+
+	//29.01.
+	//creates the LogIn with login details
+	function createLogInPage(){
+		//Insertion of the full name
+		var fullname:TextField = new TextField();
+		fullname.background = true;
+		fullname.width = 200;
+		fullname.height = 50;
+		fullname.x = 300;
+		fullname.y = 50;
+
+		var name1:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
+		//Text is centered
+		name1.align = TextFormatAlign.CENTER;
+		fullname.text = "Name";
+		fullname.defaultTextFormat = name1;
+		fullname.restrict = null;
+		//user can edit the textfield
+		fullname.type = TextFieldType.INPUT;
+		this.addChild(fullname);
+
+		//birthdate
+		var birthdate:TextField = new TextField();
+		birthdate.background = true;
+		birthdate.width = 200;
+		birthdate.height = 50;
+		birthdate.x = 300;
+		birthdate.y = 100;
+
+		var name2:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
+		//Text is centered
+		name2.align = TextFormatAlign.CENTER;
+		//text is restricted to only enter the birthdate
+		birthdate.text = "TT.MM.JJJJ";
+		birthdate.defaultTextFormat = name2;
+		birthdate.restrict = "0-9.TJM";
+		//user can edit the textfield
+		birthdate.type = TextFieldType.INPUT;
+		this.addChild(birthdate);
+
+		//Select your username
+		var selecteduser:TextField = new TextField();
+		selecteduser.background = true;
+		selecteduser.width = 200;
+		selecteduser.height = 50;
+		selecteduser.x = 300;
+		selecteduser.y = 150;
+
+		var name2:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
+		//Text is centered
+		name2.align = TextFormatAlign.CENTER;
+		selecteduser.text = "Benutzername";
+		selecteduser.defaultTextFormat = name2;
+		selecteduser.restrict = "0-9 a-z";
+		selecteduser.type = TextFieldType.INPUT;
+		this.addChild(selecteduser);
+
+
+		//selection of password
+		var selectedpw:TextField = new TextField();
+		selectedpw.background = true;
+		selectedpw.width = 200;
+		selectedpw.height = 50;
+		selectedpw.x = 300;
+		selectedpw.y = 200;
+
+		var name2:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
+		//Text is centered
+		name2.align = TextFormatAlign.CENTER;
+		//text is restricted to only enter the birthdate
+		selectedpw.text = "Passwort";
+		selectedpw.defaultTextFormat = name2;
+		selectedpw.restrict = null;
+		selectedpw.type = TextFieldType.INPUT;
+		this.addChild(selectedpw);
+
+
+	}
+	//draws the Info page where you can choose from new game, About, Instructions, Score and Log-off
+	function drawInfopage(){
+
+		super ();
+ 
+        var button:Button = new Button();
+        button.x = button.y = 20;
+        button.addEventListener( MouseEvent.CLICK, onClick );
+ 
+        addChild(button);
+	
+	}
+
+	
 	//function that draws the Slotmachine
 	function drawSlotmachine(){
 
@@ -255,7 +353,10 @@ class Main extends Sprite
 		this.addEventListener(Event.ENTER_FRAME, everyFrame);
 
 		//getSetupImage();
-		drawSlotmachine();
+		//createLogInPage();
+		drawInfopage();
+		//drawSlotmachine();
+
 
 		
 	}
