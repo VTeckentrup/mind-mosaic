@@ -78,6 +78,9 @@ class Main extends Sprite
     //Insert base stage size values
 	private static inline var NOMINAL_WIDTH:Int = 800;
 	private static inline var NOMINAL_HEIGHT:Int = 600;
+	
+	//Define buttons
+	private var button:SimpleButton;
     
 
 	/* ENTRY POINT */
@@ -92,6 +95,7 @@ class Main extends Sprite
 	function getSetupImage(){
 		//22.01.: displays 2 textfield where you can enter the username & pw
 		//new Textfield for username insertion
+		
 		var username:TextField = new TextField();
 		username.background = true;
 		username.width = 200;
@@ -225,16 +229,26 @@ class Main extends Sprite
 
 	}
 	//draws the Info page where you can choose from new game, About, Instructions, Score and Log-off
-	function drawInfopage(){
-
-		super ();
+	public function drawInfopage(){
  
-        var button:Button = new Button();
+        var b1 = new Button(0x215ab7);
+		var b2 = new Button(0xb72025);
+		var b3 = new Button(0xfffb21);
+		var b4 = new Button(0x36b71f);
+		button = new SimpleButton(b1,b2,b3,b4);
+		
         button.x = button.y = 20;
         button.addEventListener( MouseEvent.CLICK, onClick );
  
-        addChild(button);
+        this.addChild(button);
 	
+	}
+	
+	public function onClick (event: MouseEvent):Void {
+		
+		this.removeChild(button);
+		getSetupImage();
+		
 	}
 
 	

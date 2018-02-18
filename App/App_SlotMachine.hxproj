@@ -23,7 +23,6 @@
     <class path="C:\HaxeToolkit\haxe\lib\openfl\6,5,3\externs\core\openfl" />
     <class path="C:\HaxeToolkit\haxe\lib\openfl\6,5,3\externs\extras" />
     <class path="bin\html5\haxe" />
-    <class path="project.xml" />
   </classpaths>
   <!-- Build options -->
   <build>

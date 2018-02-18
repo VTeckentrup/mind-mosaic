@@ -1,11 +1,11 @@
 -main ApplicationMain 
 --macro openfl._internal.utils.ExtraParams.include()
--cp /Users/jenniferthem/haxelib/openfl/6,5,3
+-cp C:/HaxeToolkit/haxe/lib/openfl/6,5,3
 -D openfl=6.5.3
 --macro lime.Lib.extraParams()
--cp /Users/jenniferthem/haxelib/lime/5,9,1
+-cp C:/HaxeToolkit/haxe/lib/lime/5,9,1
 -D lime=5.9.1
--cp /Users/jenniferthem/haxelib/actuate/1,8,7
+-cp C:/HaxeToolkit/haxe/lib/actuate/1,8,7
 -D actuate=1.8.7
 -cp src
 -D tools=5.9.1
@@ -14,6 +14,7 @@
 -D lime-opengl
 -D openfl-html5
 -D lime-html5
+-D fdb
 -D html5
 -D web
 --remap flash:openfl

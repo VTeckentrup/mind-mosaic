@@ -1041,7 +1041,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "AppSlotMachine";
-	var config = { build : "10", company : "Vanessa Teckentrup", file : "AppSlotMachine", fps : 60, name : "App_SlotMachine", orientation : "", packageName : "AppSlotMachine", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 480, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "App_SlotMachine", vsync : false, width : 800, x : null, y : null}]};
+	var config = { build : "56", company : "Vanessa Teckentrup", file : "AppSlotMachine", fps : 60, name : "App_SlotMachine", orientation : "", packageName : "AppSlotMachine", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 480, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "App_SlotMachine", vsync : false, width : 800, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -3765,6 +3765,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 	,reward_prob_green: null
 	,reward_prob_round: null
 	,correct_choice: null
+	,button: null
 	,resize: function(e) {
 		if(!this.inited) {
 			this.init();
@@ -3865,8 +3866,18 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 		this.addChild(selectedpw);
 	}
 	,drawInfopage: function() {
-		var newgame = new openfl_display_SimpleButton();
-		newgame.enabled = true;
+		var b1 = new Button(2185911);
+		var b2 = new Button(12001317);
+		var b3 = new Button(16775969);
+		var b4 = new Button(3585823);
+		this.button = new openfl_display_SimpleButton(b1,b2,b3,b4);
+		this.button.set_x(this.button.set_y(20));
+		this.button.addEventListener("click",$bind(this,this.onClick));
+		this.addChild(this.button);
+	}
+	,onClick: function(event) {
+		this.removeChild(this.button);
+		this.getSetupImage();
 	}
 	,drawSlotmachine: function() {
 		this.slot_machine_blue = new Machine_$blue();
@@ -4006,7 +4017,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 			this.circle_selection.set_x(400);
 			this.circle_selection.set_y(300);
 			this.addChild(this.circle_selection);
-			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 482, className : "Main", methodName : "endRound"});
+			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 502, className : "Main", methodName : "endRound"});
 			if(machine_color == "blue") {
 				this.scorePlayer = this.scorePlayer + this.blue_reward | 0;
 				this.scoreField.set_text("Score: " + this.scorePlayer);
@@ -4018,7 +4029,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 			this.circle_selection.set_x(400);
 			this.circle_selection.set_y(300);
 			this.addChild(this.circle_selection);
-			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 499, className : "Main", methodName : "endRound"});
+			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 519, className : "Main", methodName : "endRound"});
 			if(machine_color == "green") {
 				this.scorePlayer = this.scorePlayer + this.green_reward | 0;
 				this.scoreField.set_text("Score: " + this.scorePlayer);
@@ -4035,7 +4046,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 			this.green_reward = 100 - this.blue_reward;
 			this.scoreField_blue.set_text(Std.string(this.blue_reward));
 			this.scoreField_green.set_text(Std.string(this.green_reward));
-			haxe_Log.trace(this.probArray[round_counter],{ fileName : "Main.hx", lineNumber : 530, className : "Main", methodName : "newRound"});
+			haxe_Log.trace(this.probArray[round_counter],{ fileName : "Main.hx", lineNumber : 550, className : "Main", methodName : "newRound"});
 			this.reward_prob_blue = this.probArray[round_counter];
 			this.reward_prob_green = 1 - this.reward_prob_blue;
 			this.removeChild(this.circle_selection);
@@ -4059,6 +4070,18 @@ DocumentClass.__name__ = ["DocumentClass"];
 DocumentClass.__super__ = Main;
 DocumentClass.prototype = $extend(Main.prototype,{
 	__class__: DocumentClass
+});
+var Button = function(color) {
+	openfl_display_Sprite.call(this);
+	this.get_graphics().beginFill(color);
+	this.get_graphics().drawRect(0,0,100,50);
+	this.get_graphics().endFill();
+};
+$hxClasses["Button"] = Button;
+Button.__name__ = ["Button"];
+Button.__super__ = openfl_display_Sprite;
+Button.prototype = $extend(openfl_display_Sprite.prototype,{
+	__class__: Button
 });
 var Choice_$Frame = function(color) {
 	openfl_display_Sprite.call(this);
@@ -31170,7 +31193,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 26043;
+	this.version = 575913;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
@@ -73400,7 +73423,7 @@ lime_math_color__$RGBA_RGBA_$Impl_$.__alpha16 = this1;
 var _g = 0;
 while(_g < 256) {
 	var i = _g++;
-	lime_math_color__$RGBA_RGBA_$Impl_$.__alpha16[i] = Math.ceil(i * 257.003921568627447);
+	lime_math_color__$RGBA_RGBA_$Impl_$.__alpha16[i] = Math.ceil(i * 257.00392156862745);
 }
 var this2 = new Uint8Array(510);
 lime_math_color__$RGBA_RGBA_$Impl_$.__clamp = this2;
