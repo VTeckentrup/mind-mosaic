@@ -3,7 +3,7 @@ layout: post
 title: Hello World!
 ---
 
-This blog is part of the project [Towards a bigger picture - Crowdsourcing the mosaic of the mind](https://de.wikiversity.org/wiki/Wikiversity:Fellow-Programm_Freies_Wissen/Einreichungen/Towards_a_bigger_picture_-_Crowdsourcing_the_mosaic_of_the_mind) within the [Open Science Fellowship 2017/2018](https://de.wikiversity.org/wiki/Wikiversity:Fellow-Programm_Freies_Wissen) by Wikimedia, Stifterverband and Volkswagenstiftung. 
+This blog is part of the project [Towards a bigger picture - Crowdsourcing the mosaic of the mind](https://de.wikiversity.org/wiki/Wikiversity:Fellow-Programm_Freies_Wissen/Einreichungen/Towards_a_bigger_picture_-_Crowdsourcing_the_mosaic_of_the_mind) within the [Open Science Fellowship 2017/2018](https://en.wikiversity.org/wiki/Wikimedia_Deutschland/Open_Science_Fellows_Program) by Wikimedia, Stifterverband and Volkswagenstiftung. 
 
 In the following months you will find regular updates regarding the development process in the project that mostly focus on programming issues, theoretical background regarding mental health and the paradigms used as well as open science related practices and my experiences in incorporating them into my work.
 
