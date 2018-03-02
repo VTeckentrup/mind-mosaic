@@ -227,22 +227,14 @@ class Main extends Sprite
 		this.addChild(selectedpw);
 
 		//NEEEEEWWWWWW
-		var b1 = new Button(0x215ab7);
-		var b2 = new Button(0xb72025);
-		var b3 = new Button(0xfffb21);
-		var b4 = new Button(0x36b71f);
-		button_registration = new SimpleButton(b1,b2,b3,b4);
-	
 		
-        button_registration.x = button_registration.y = 20;
-        button_registration.addEventListener( MouseEvent.CLICK, onClick );
- 
-        this.addChild(button);
 
 
 	}
-
-
+//--------------NEW
+	//function to only draw the button - can be called for every button 
+	//- you can pass text that the button has to display
+	//pass  on function to start the new page --> passed onto onClick
 	public function drawButton(){
 
 		var b1 = new Button(0x215ab7);
@@ -253,26 +245,36 @@ class Main extends Sprite
 	
 		
         button.x = button.y = 20;
-        button.addEventListener( MouseEvent.CLICK, onClick );
+        button.addEventListener( MouseEvent.CLICK, onClick) );
  
         this.addChild(button);
 	}
 	//draws the Info page where you can choose from new game, About, Instructions, Score and Log-off
 	// needs text
+	
+	//depending on the Buttontext you call a different function
+	public function onClick (event: MouseEvent):Void {
+		
+		this.removeChild(button);
+		//getSetupImage();
+		if(passedText == "registration" ){
+
+		}
+		
+	}
+
+
 	public function drawInfopage(){
  
         
 	
 	}
-	
-	public function onClick (event: MouseEvent):Void {
-		
-		this.removeChild(button);
-		getSetupImage();
-		
-	}
+	//---------------------------------NEWWWWWW
 
-	
+
+
+
+
 	//function that draws the Slotmachine
 	function drawSlotmachine(){
 
