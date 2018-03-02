@@ -1041,7 +1041,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "AppSlotMachine";
-	var config = { build : "56", company : "Vanessa Teckentrup", file : "AppSlotMachine", fps : 60, name : "App_SlotMachine", orientation : "", packageName : "AppSlotMachine", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 480, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "App_SlotMachine", vsync : false, width : 800, x : null, y : null}]};
+	var config = { build : "12", company : "Vanessa Teckentrup", file : "AppSlotMachine", fps : 60, name : "App_SlotMachine", orientation : "", packageName : "AppSlotMachine", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 480, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "App_SlotMachine", vsync : false, width : 800, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -4017,7 +4017,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 			this.circle_selection.set_x(400);
 			this.circle_selection.set_y(300);
 			this.addChild(this.circle_selection);
-			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 502, className : "Main", methodName : "endRound"});
+			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 504, className : "Main", methodName : "endRound"});
 			if(machine_color == "blue") {
 				this.scorePlayer = this.scorePlayer + this.blue_reward | 0;
 				this.scoreField.set_text("Score: " + this.scorePlayer);
@@ -4029,7 +4029,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 			this.circle_selection.set_x(400);
 			this.circle_selection.set_y(300);
 			this.addChild(this.circle_selection);
-			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 519, className : "Main", methodName : "endRound"});
+			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 521, className : "Main", methodName : "endRound"});
 			if(machine_color == "green") {
 				this.scorePlayer = this.scorePlayer + this.green_reward | 0;
 				this.scoreField.set_text("Score: " + this.scorePlayer);
@@ -4046,7 +4046,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 			this.green_reward = 100 - this.blue_reward;
 			this.scoreField_blue.set_text(Std.string(this.blue_reward));
 			this.scoreField_green.set_text(Std.string(this.green_reward));
-			haxe_Log.trace(this.probArray[round_counter],{ fileName : "Main.hx", lineNumber : 550, className : "Main", methodName : "newRound"});
+			haxe_Log.trace(this.probArray[round_counter],{ fileName : "Main.hx", lineNumber : 552, className : "Main", methodName : "newRound"});
 			this.reward_prob_blue = this.probArray[round_counter];
 			this.reward_prob_green = 1 - this.reward_prob_blue;
 			this.removeChild(this.circle_selection);
@@ -31193,7 +31193,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 575913;
+	this.version = 890577;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
@@ -73423,7 +73423,7 @@ lime_math_color__$RGBA_RGBA_$Impl_$.__alpha16 = this1;
 var _g = 0;
 while(_g < 256) {
 	var i = _g++;
-	lime_math_color__$RGBA_RGBA_$Impl_$.__alpha16[i] = Math.ceil(i * 257.00392156862745);
+	lime_math_color__$RGBA_RGBA_$Impl_$.__alpha16[i] = Math.ceil(i * 257.003921568627447);
 }
 var this2 = new Uint8Array(510);
 lime_math_color__$RGBA_RGBA_$Impl_$.__clamp = this2;

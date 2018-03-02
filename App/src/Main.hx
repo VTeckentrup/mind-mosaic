@@ -226,21 +226,42 @@ class Main extends Sprite
 		selectedpw.type = TextFieldType.INPUT;
 		this.addChild(selectedpw);
 
+		//NEEEEEWWWWWW
+		var b1 = new Button(0x215ab7);
+		var b2 = new Button(0xb72025);
+		var b3 = new Button(0xfffb21);
+		var b4 = new Button(0x36b71f);
+		button_registration = new SimpleButton(b1,b2,b3,b4);
+	
+		
+        button_registration.x = button_registration.y = 20;
+        button_registration.addEventListener( MouseEvent.CLICK, onClick );
+ 
+        this.addChild(button);
+
 
 	}
-	//draws the Info page where you can choose from new game, About, Instructions, Score and Log-off
-	public function drawInfopage(){
- 
-        var b1 = new Button(0x215ab7);
+
+
+	public function drawButton(){
+
+		var b1 = new Button(0x215ab7);
 		var b2 = new Button(0xb72025);
 		var b3 = new Button(0xfffb21);
 		var b4 = new Button(0x36b71f);
 		button = new SimpleButton(b1,b2,b3,b4);
+	
 		
         button.x = button.y = 20;
         button.addEventListener( MouseEvent.CLICK, onClick );
  
         this.addChild(button);
+	}
+	//draws the Info page where you can choose from new game, About, Instructions, Score and Log-off
+	// needs text
+	public function drawInfopage(){
+ 
+        
 	
 	}
 	
