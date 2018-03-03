@@ -113,12 +113,12 @@ class Main extends Sprite
 		var name:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
 		//Text is centered
 		name.align = TextFormatAlign.CENTER;
-		//username.text = "Benutzername";
+		username.text = "Benutzername";
 		username.defaultTextFormat = name;
 		username.restrict = null;
 		//user can edit the textfield
 		username.type = TextFieldType.INPUT;
-		username.replaceSelectedText("Benutzername");
+		//username.replaceSelectedText("Benutzername"); //LEADS TO CRASH OF NEKO
 		this.addChild(username);
 
 
@@ -245,6 +245,7 @@ class Main extends Sprite
 	}
 //--------------NEW
 	//function to only draw the button - can be called for every button 
+<<<<<<< HEAD
     //- you need to pass on a text that the button has to display
     //depending on the text, the onclick function chooses its called function/display
 
@@ -254,6 +255,16 @@ class Main extends Sprite
 		var b2 = new Button(0xb72025, text);
 		var b3 = new Button(0xfffb21, text);
 		var b4 = new Button(0x36b71f, text);
+=======
+	//- you can pass text that the button has to display
+	//pass  on function to start the new page --> passed onto onClick
+	public function drawButton(s:String){
+
+		var b1 = new Button(0x215ab7,s);
+		var b2 = new Button(0xb72025,s);
+		var b3 = new Button(0xfffb21,s);
+		var b4 = new Button(0x36b71f,s);
+>>>>>>> 3e4215d1532b5a5c3504d39b2987b28c994341cb
 		button = new SimpleButton(b1,b2,b3,b4);
 		
         button.x = pos1;
