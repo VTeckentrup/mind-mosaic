@@ -81,6 +81,14 @@ class Main extends Sprite
 	
 	//Define buttons
 	private var button:SimpleButton;
+
+	//int that is changed according to the button status
+	public var button_arr:Array<SimpleButton>;
+
+	private var button1:SimpleButton;
+	private var button2:SimpleButton;
+	private var change:Bool = false;
+	private var info_button:SimpleButton;
     
 
 	/* ENTRY POINT */
@@ -152,7 +160,7 @@ class Main extends Sprite
 
 	//29.01.
 	//creates the LogIn with login details
-	function createLogInPage(){
+	function createRegistration(){
 		//Insertion of the full name
 		var fullname:TextField = new TextField();
 		fullname.background = true;
@@ -226,53 +234,142 @@ class Main extends Sprite
 		selectedpw.type = TextFieldType.INPUT;
 		this.addChild(selectedpw);
 
-		//NEEEEEWWWWWW
+
+		//Button for Login
+		drawButton("Login",20,20);
+
+		
 		
 
 
 	}
 //--------------NEW
 	//function to only draw the button - can be called for every button 
-	//- you can pass text that the button has to display
-	//pass  on function to start the new page --> passed onto onClick
-	public function drawButton(){
+    //- you need to pass on a text that the button has to display
+    //depending on the text, the onclick function chooses its called function/display
 
-		var b1 = new Button(0x215ab7);
-		var b2 = new Button(0xb72025);
-		var b3 = new Button(0xfffb21);
-		var b4 = new Button(0x36b71f);
+	public function drawButton(text:String,pos1:Int,pos2:Int):SimpleButton{
+
+		var b1 = new Button(0x215ab7, text);
+		var b2 = new Button(0xb72025, text);
+		var b3 = new Button(0xfffb21, text);
+		var b4 = new Button(0x36b71f, text);
 		button = new SimpleButton(b1,b2,b3,b4);
-	
 		
-        button.x = button.y = 20;
-        button.addEventListener( MouseEvent.CLICK, onClick) );
- 
+        button.x = pos1;
+		button.y = pos2;
+
+		button.addEventListener(MouseEvent.CLICK, onClick);
+		var info_button = onClick;
+
+		/*if(text == "Registrieren"){
+			button.addEventListener(MouseEvent.CLICK, onClick);
+		}
+		else if(text == "Login")
+			button.addEventListener(MouseEvent.CLICK, onClick1);
+		else if(text == "Neues Spiel"){
+			button.addEventListener(MouseEvent.CLICK, onClick3);
+			
+		}*/
         this.addChild(button);
+		return(button);
 	}
+	
+	//_____________________________________________________________________________
+	//ONCLICK RETURNS THE BUTTON THAT HAS BEEN PRESSED
+
+
+	//DATENBANK ABSPEICHERN
+	//Registrationbutton event
+	public function onClick (event: MouseEvent):SimpleButton {
+		/*this.removeChild(button);
+			drawInfopage();
+			var change = true;
+			return change;*/
+			return button;
+	}
+
+	//starting a new game
+	/*public function onClick2 (event: MouseEvent):SimpleButton {
+		this.removeChild(button);
+		drawSlotmachine();
+		var change = true;
+		return change;
+		return button2;
+}*/
+
+//_____________________________________________________________________________
+
+
+	public function onClick_0 (event: MouseEvent):Void {
+		this.removeChild(button);
+	}
+	//DATENBANK ABRUFEN
+	//Log-In Button event
+	public function onClick1 (event: MouseEvent):Void {
+		this.removeChild(button);
+			drawInfopage();
+	}
+	//Instruction for the game
+	/*public function onClick2 (event: MouseEvent):Void {
+		this.removeChild(button);
+		//INSTRUCTION PAGE
+	}*/
+	
+	//DATENBANK ABRUFEN
+	//see game status
+	public function onClick4 (event: MouseEvent):Void {
+		this.removeChild(button);
+		gameStatus();
+	}
+	//LOG-out
+	public function onClick5 (event: MouseEvent):Void {
+		this.removeChild(button);
+		//startpage
+	}
+	
+
+	public function onClick3_1 (event: MouseEvent):Void {
+		this.removeChild(button);
+		
+	}
+
+
 	//draws the Info page where you can choose from new game, About, Instructions, Score and Log-off
 	// needs text
-	
-	//depending on the Buttontext you call a different function
-	public function onClick (event: MouseEvent):Void {
-		
-		this.removeChild(button);
-		//getSetupImage();
-		if(passedText == "registration" ){
-
-		}
-		
-	}
 
 
 	public function drawInfopage(){
  
-        
+        var button1 = drawButton("Neues Spiel",50,20);
+		var button2 = drawButton("Registrieren",50,60);
+
+		if(info_button == button1)
+			drawSlotmachine();
+
+			
+		/*button1.addEventListener(MouseEvent.CLICK, onClick1);
+		button2.addEventListener(MouseEvent.CLICK, onClick2);*/
+		
+		
+		
+		
+		
+		//drawButton("Anleitung",50,100);
+		//drawButton("Spielstand");
+		//drawButton("Logout");
 	
 	}
-	//---------------------------------NEWWWWWW
+	
+	//DATENBANK ABRUFEN
+	//gamestatus 
+	public function gameStatus(){
 
+	}
+	//instructiontext
+	public function giveInstruction(){
 
-
+	}
 
 
 	//function that draws the Slotmachine
