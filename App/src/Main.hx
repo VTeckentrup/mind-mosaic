@@ -85,11 +85,18 @@ class Main extends Sprite
 	//int that is changed according to the button status
 	public var button_arr:Array<SimpleButton>;
 
-	private var button1:SimpleButton;
-	private var button2:SimpleButton;
+	//Button variables for multiple buttons
+	public var button1:SimpleButton;
+	public var button2:SimpleButton;
+	public var button_reg:SimpleButton;
+	public var button_end:SimpleButton;
+	public var button_login:SimpleButton;
+
+
 	private var change:Bool = false;
-	private var info_button:SimpleButton;
-    
+	private var clicked_button:SimpleButton;
+    private var click_button:Bool = false;
+
 
 	/* ENTRY POINT */
 	
@@ -141,19 +148,8 @@ class Main extends Sprite
 
 
 		//draw Log-In button
-		logIn_selection = new TextField();
-		logIn_selection.width = 100;
-		logIn_selection.height = 30;
-		logIn_selection.x = 350;
-		logIn_selection.y = 400;
-		logIn_selection.text = "Login";
-		var logIn_format:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
-		logIn_format.align = TextFormatAlign.CENTER;
-		logIn_selection.defaultTextFormat = logIn_format;
-		logIn_selection.selectable = true;
-		logIn_selection.type = TextFieldType.DYNAMIC;
-		this.addChild(logIn_selection);
-
+		var button_login = drawButton("Login",20,20);
+		button_login.addEventListener(MouseEvent.CLICK, onClick2);
 
 
 	}
@@ -235,8 +231,10 @@ class Main extends Sprite
 		this.addChild(selectedpw);
 
 
-		//Button for Login
-		drawButton("Login",20,20);
+		//Button for Registration
+		var button_reg = drawButton("Registrieren",20,20);
+		button_reg.addEventListener(MouseEvent.CLICK, onClick1);
+
 
 		
 		
@@ -245,7 +243,6 @@ class Main extends Sprite
 	}
 //--------------NEW
 	//function to only draw the button - can be called for every button 
-<<<<<<< HEAD
     //- you need to pass on a text that the button has to display
     //depending on the text, the onclick function chooses its called function/display
 
@@ -255,49 +252,32 @@ class Main extends Sprite
 		var b2 = new Button(0xb72025, text);
 		var b3 = new Button(0xfffb21, text);
 		var b4 = new Button(0x36b71f, text);
-=======
-	//- you can pass text that the button has to display
-	//pass  on function to start the new page --> passed onto onClick
-	public function drawButton(s:String){
-
-		var b1 = new Button(0x215ab7,s);
-		var b2 = new Button(0xb72025,s);
-		var b3 = new Button(0xfffb21,s);
-		var b4 = new Button(0x36b71f,s);
->>>>>>> 3e4215d1532b5a5c3504d39b2987b28c994341cb
 		button = new SimpleButton(b1,b2,b3,b4);
 		
         button.x = pos1;
 		button.y = pos2;
 
+		/*removed eventlistener and set it directly to the function because you need 
+		different onClick functions for different events
 		button.addEventListener(MouseEvent.CLICK, onClick);
-		var info_button = onClick;
+		*/
 
-		/*if(text == "Registrieren"){
-			button.addEventListener(MouseEvent.CLICK, onClick);
-		}
-		else if(text == "Login")
-			button.addEventListener(MouseEvent.CLICK, onClick1);
-		else if(text == "Neues Spiel"){
-			button.addEventListener(MouseEvent.CLICK, onClick3);
-			
-		}*/
         this.addChild(button);
 		return(button);
 	}
 	
 	//_____________________________________________________________________________
-	//ONCLICK RETURNS THE BUTTON THAT HAS BEEN PRESSED
-
+	
+	//TRYING TO IMPLEMENT THE REMOVAL OF MULTIPLE BUTTONS - TEST SITE	
 
 	//DATENBANK ABSPEICHERN
 	//Registrationbutton event
-	public function onClick (event: MouseEvent):SimpleButton {
-		/*this.removeChild(button);
-			drawInfopage();
-			var change = true;
-			return change;*/
-			return button;
+	public function onClick (event: MouseEvent):Void {
+		this.removeChild(button);
+		this.removeChild(button1);
+		this.removeChild(button2);
+		drawSlotmachine();
+			
 	}
 
 	//starting a new game
@@ -310,17 +290,39 @@ class Main extends Sprite
 }*/
 
 //_____________________________________________________________________________
-
-
-	public function onClick_0 (event: MouseEvent):Void {
+	
+	//DATENBANK - ABSPEICHERN
+	//End Game slotmachine
+	public function onClick0 (event: MouseEvent):Void {
 		this.removeChild(button);
+		this.removeChild(circle_selection);
+		this.removeChild(slot_machine_green);
+		this.removeChild(slot_machine_blue);
+		this.removeChild(scoreField);
+		this.removeChild(scoreField_blue);
+		this.removeChild(scoreField_green);
+		this.removeChild(frame_choice);
+
+		drawInfopage();
 	}
 	//DATENBANK ABRUFEN
-	//Log-In Button event
+	//Registration Button event
 	public function onClick1 (event: MouseEvent):Void {
 		this.removeChild(button);
-			drawInfopage();
+		/*this.removeChild(selectedpw);
+		this.removeChild(selecteduser);
+		this.removeChild(birthdate);
+		this.removeChild(fullname);*/
+		drawInfopage();
 	}
+	//Login Button
+	public function onClick2 (event: MouseEvent):Void {
+		/*this.removeChild(button);
+		this.removeChild(passw);
+		this.removeChild(username);*/
+		drawInfopage();
+	}
+
 	//Instruction for the game
 	/*public function onClick2 (event: MouseEvent):Void {
 		this.removeChild(button);
@@ -349,14 +351,20 @@ class Main extends Sprite
 	//draws the Info page where you can choose from new game, About, Instructions, Score and Log-off
 	// needs text
 
-
+	/**
+	 *PROBLEM HERE: NOT POSSIBLE TO REMOVE MULTIPLE BUTTONS
+	 */
 	public function drawInfopage(){
  
         var button1 = drawButton("Neues Spiel",50,20);
 		var button2 = drawButton("Registrieren",50,60);
 
-		if(info_button == button1)
-			drawSlotmachine();
+		/*if(info_button == button1)
+			drawSlotmachine();*/
+
+		
+
+		//var info_button = onClick;
 
 			
 		/*button1.addEventListener(MouseEvent.CLICK, onClick1);
@@ -385,6 +393,14 @@ class Main extends Sprite
 
 	//function that draws the Slotmachine
 	function drawSlotmachine(){
+
+
+		//End game Button --> drawInfoPage
+		var button_end = drawButton("Beenden",700,20);
+		//this.addChild(button_end);
+		button_end.addEventListener(MouseEvent.CLICK, onClick0);
+		
+
 
 		// Draw slot machines on screen
 		slot_machine_blue = new Machine_blue();
@@ -497,9 +513,9 @@ class Main extends Sprite
 		// Listen for input
 		this.addEventListener(Event.ENTER_FRAME, everyFrame);
 
-		//getSetupImage();
+		getSetupImage();
 		//createLogInPage();
-		drawInfopage();
+		//drawInfopage();
 		//drawSlotmachine();
 
 
@@ -530,30 +546,30 @@ class Main extends Sprite
 	}
 
 	private function onResize(e:Event):Void {
-    var stageScaleX:Float = stage.stageWidth / NOMINAL_WIDTH;
-    var stageScaleY:Float = stage.stageHeight / NOMINAL_HEIGHT;
+    	var stageScaleX:Float = stage.stageWidth / NOMINAL_WIDTH;
+    	var stageScaleY:Float = stage.stageHeight / NOMINAL_HEIGHT;
     
-    var stageScale:Float = Math.min(stageScaleX, stageScaleY);
+    	var stageScale:Float = Math.min(stageScaleX, stageScaleY);
     
-    Lib.current.x = 0;
-    Lib.current.y = 0;
-    Lib.current.scaleX = stageScale;
-    Lib.current.scaleY = stageScale;
+    	Lib.current.x = 0;
+    	Lib.current.y = 0;
+    	Lib.current.scaleX = stageScale;
+    	Lib.current.scaleY = stageScale;
     
-    if(stageScaleX > stageScaleY) {
+    	if(stageScaleX > stageScaleY) {
         Lib.current.x = (stage.stageWidth - NOMINAL_WIDTH * stageScale) / 2;
-    } else {
+    	} else {
         Lib.current.y = (stage.stageHeight - NOMINAL_HEIGHT * stageScale) / 2;
-    }
+    	}
 	}
 
 	// Set keyboard keys actived/deactivated on key press/release
 	private function onKeyDown(evt:KeyboardEvent):Void {
-	keys[evt.keyCode] = true;
+		keys[evt.keyCode] = true;
 	}
 
 	private function onKeyUp(evt:KeyboardEvent):Void {
-	keys[evt.keyCode] = false;
+		keys[evt.keyCode] = false;
 	}
 
 

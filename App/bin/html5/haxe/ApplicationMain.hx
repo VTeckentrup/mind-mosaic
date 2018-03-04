@@ -24,7 +24,7 @@ import haxe.macro.Expr;
 		
 		var config = {
 			
-			build: "16",
+			build: "19",
 			company: "Vanessa Teckentrup",
 			file: "AppSlotMachine",
 			fps: 60,

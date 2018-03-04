@@ -1041,7 +1041,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "AppSlotMachine";
-	var config = { build : "16", company : "Vanessa Teckentrup", file : "AppSlotMachine", fps : 60, name : "App_SlotMachine", orientation : "", packageName : "AppSlotMachine", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 480, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "App_SlotMachine", vsync : false, width : 800, x : null, y : null}]};
+	var config = { build : "19", company : "Vanessa Teckentrup", file : "AppSlotMachine", fps : 60, name : "App_SlotMachine", orientation : "", packageName : "AppSlotMachine", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 480, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "App_SlotMachine", vsync : false, width : 800, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -3726,6 +3726,7 @@ openfl_display_Sprite.prototype = $extend(openfl_display_DisplayObjectContainer.
 	,__class__: openfl_display_Sprite
 });
 var Main = function() {
+	this.click_button = false;
 	this.change = false;
 	this.probArray = [0.5];
 	this.stageHeight = openfl_Lib.get_current().stage.stageHeight;
@@ -3770,8 +3771,12 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 	,button_arr: null
 	,button1: null
 	,button2: null
+	,button_reg: null
+	,button_end: null
+	,button_login: null
 	,change: null
-	,info_button: null
+	,clicked_button: null
+	,click_button: null
 	,resize: function(e) {
 		if(!this.inited) {
 			this.init();
@@ -3786,10 +3791,10 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 		username.set_y(210);
 		var name = new openfl_text_TextFormat("Verdana",16,12303291,true);
 		name.align = 0;
+		username.set_text("Benutzername");
 		username.set_defaultTextFormat(name);
 		username.set_restrict(null);
 		username.set_type(1);
-		username.replaceSelectedText("Benutzername");
 		this.addChild(username);
 		var passw = new openfl_text_TextField();
 		passw.set_displayAsPassword(true);
@@ -3804,18 +3809,8 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 		passw_format.align = 0;
 		passw.set_defaultTextFormat(passw_format);
 		this.addChild(passw);
-		this.logIn_selection = new openfl_text_TextField();
-		this.logIn_selection.set_width(100);
-		this.logIn_selection.set_height(30);
-		this.logIn_selection.set_x(350);
-		this.logIn_selection.set_y(400);
-		this.logIn_selection.set_text("Login");
-		var logIn_format = new openfl_text_TextFormat("Verdana",16,12303291,true);
-		logIn_format.align = 0;
-		this.logIn_selection.set_defaultTextFormat(logIn_format);
-		this.logIn_selection.set_selectable(true);
-		this.logIn_selection.set_type(0);
-		this.addChild(this.logIn_selection);
+		var button_login = this.drawButton("Login",20,20);
+		button_login.addEventListener("click",$bind(this,this.onClick2));
 	}
 	,createRegistration: function() {
 		var fullname = new openfl_text_TextField();
@@ -3870,7 +3865,8 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 		selectedpw.set_restrict(null);
 		selectedpw.set_type(1);
 		this.addChild(selectedpw);
-		this.drawButton("Login",20,20);
+		var button_reg = this.drawButton("Registrieren",20,20);
+		button_reg.addEventListener("click",$bind(this,this.onClick1));
 	}
 	,drawButton: function(text,pos1,pos2) {
 		var b1 = new Button(2185911,text);
@@ -3880,19 +3876,31 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 		this.button = new openfl_display_SimpleButton(b1,b2,b3,b4);
 		this.button.set_x(pos1);
 		this.button.set_y(pos2);
-		this.button.addEventListener("click",$bind(this,this.onClick));
-		var info_button = $bind(this,this.onClick);
 		this.addChild(this.button);
 		return this.button;
 	}
 	,onClick: function(event) {
-		return this.button;
-	}
-	,onClick_0: function(event) {
 		this.removeChild(this.button);
+		this.removeChild(this.button1);
+		this.removeChild(this.button2);
+		this.drawSlotmachine();
+	}
+	,onClick0: function(event) {
+		this.removeChild(this.button);
+		this.removeChild(this.circle_selection);
+		this.removeChild(this.slot_machine_green);
+		this.removeChild(this.slot_machine_blue);
+		this.removeChild(this.scoreField);
+		this.removeChild(this.scoreField_blue);
+		this.removeChild(this.scoreField_green);
+		this.removeChild(this.frame_choice);
+		this.drawInfopage();
 	}
 	,onClick1: function(event) {
 		this.removeChild(this.button);
+		this.drawInfopage();
+	}
+	,onClick2: function(event) {
 		this.drawInfopage();
 	}
 	,onClick4: function(event) {
@@ -3908,15 +3916,14 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 	,drawInfopage: function() {
 		var button1 = this.drawButton("Neues Spiel",50,20);
 		var button2 = this.drawButton("Registrieren",50,60);
-		if(this.info_button == button1) {
-			this.drawSlotmachine();
-		}
 	}
 	,gameStatus: function() {
 	}
 	,giveInstruction: function() {
 	}
 	,drawSlotmachine: function() {
+		var button_end = this.drawButton("Beenden",700,20);
+		button_end.addEventListener("click",$bind(this,this.onClick0));
 		this.slot_machine_blue = new Machine_$blue();
 		this.slot_machine_blue.set_x(50);
 		this.slot_machine_blue.set_y(150);
@@ -3985,7 +3992,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 		this.stage.addEventListener("keyDown",$bind(this,this.onKeyDown));
 		this.stage.addEventListener("keyUp",$bind(this,this.onKeyUp));
 		this.addEventListener("enterFrame",$bind(this,this.everyFrame));
-		this.drawInfopage();
+		this.getSetupImage();
 	}
 	,onResize: function(e) {
 		var stageScaleX = this.stage.stageWidth / 800;
@@ -4054,7 +4061,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 			this.circle_selection.set_x(400);
 			this.circle_selection.set_y(300);
 			this.addChild(this.circle_selection);
-			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 620, className : "Main", methodName : "endRound"});
+			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 649, className : "Main", methodName : "endRound"});
 			if(machine_color == "blue") {
 				this.scorePlayer = this.scorePlayer + this.blue_reward | 0;
 				this.scoreField.set_text("Score: " + this.scorePlayer);
@@ -4066,7 +4073,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 			this.circle_selection.set_x(400);
 			this.circle_selection.set_y(300);
 			this.addChild(this.circle_selection);
-			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 637, className : "Main", methodName : "endRound"});
+			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 666, className : "Main", methodName : "endRound"});
 			if(machine_color == "green") {
 				this.scorePlayer = this.scorePlayer + this.green_reward | 0;
 				this.scoreField.set_text("Score: " + this.scorePlayer);
@@ -4083,7 +4090,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 			this.green_reward = 100 - this.blue_reward;
 			this.scoreField_blue.set_text(Std.string(this.blue_reward));
 			this.scoreField_green.set_text(Std.string(this.green_reward));
-			haxe_Log.trace(this.probArray[round_counter],{ fileName : "Main.hx", lineNumber : 668, className : "Main", methodName : "newRound"});
+			haxe_Log.trace(this.probArray[round_counter],{ fileName : "Main.hx", lineNumber : 697, className : "Main", methodName : "newRound"});
 			this.reward_prob_blue = this.probArray[round_counter];
 			this.reward_prob_green = 1 - this.reward_prob_blue;
 			this.removeChild(this.circle_selection);
@@ -31242,7 +31249,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 685223;
+	this.version = 227210;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
