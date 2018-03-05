@@ -1041,7 +1041,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "AppSlotMachine";
-	var config = { build : "19", company : "Vanessa Teckentrup", file : "AppSlotMachine", fps : 60, name : "App_SlotMachine", orientation : "", packageName : "AppSlotMachine", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 480, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "App_SlotMachine", vsync : false, width : 800, x : null, y : null}]};
+	var config = { build : "20", company : "Vanessa Teckentrup", file : "AppSlotMachine", fps : 60, name : "App_SlotMachine", orientation : "", packageName : "AppSlotMachine", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 480, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "App_SlotMachine", vsync : false, width : 800, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -3768,105 +3768,27 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 	,reward_prob_round: null
 	,correct_choice: null
 	,button: null
-	,button_arr: null
 	,button1: null
 	,button2: null
+	,button3: null
+	,button4: null
+	,button5: null
 	,button_reg: null
 	,button_end: null
 	,button_login: null
+	,button_log: null
+	,button_reg1: null
 	,change: null
 	,clicked_button: null
 	,click_button: null
+	,fullname: null
+	,birthdate: null
+	,selecteduser: null
+	,selectedpw: null
 	,resize: function(e) {
 		if(!this.inited) {
 			this.init();
 		}
-	}
-	,getSetupImage: function() {
-		var username = new openfl_text_TextField();
-		username.set_background(true);
-		username.set_width(200);
-		username.set_height(50);
-		username.set_x(300);
-		username.set_y(210);
-		var name = new openfl_text_TextFormat("Verdana",16,12303291,true);
-		name.align = 0;
-		username.set_text("Benutzername");
-		username.set_defaultTextFormat(name);
-		username.set_restrict(null);
-		username.set_type(1);
-		this.addChild(username);
-		var passw = new openfl_text_TextField();
-		passw.set_displayAsPassword(true);
-		passw.set_background(true);
-		passw.set_width(200);
-		passw.set_height(50);
-		passw.set_x(300);
-		passw.set_y(300);
-		passw.set_restrict(null);
-		passw.set_type(1);
-		var passw_format = new openfl_text_TextFormat("Verdana",16,12303291,true);
-		passw_format.align = 0;
-		passw.set_defaultTextFormat(passw_format);
-		this.addChild(passw);
-		var button_login = this.drawButton("Login",20,20);
-		button_login.addEventListener("click",$bind(this,this.onClick2));
-	}
-	,createRegistration: function() {
-		var fullname = new openfl_text_TextField();
-		fullname.set_background(true);
-		fullname.set_width(200);
-		fullname.set_height(50);
-		fullname.set_x(300);
-		fullname.set_y(50);
-		var name1 = new openfl_text_TextFormat("Verdana",16,12303291,true);
-		name1.align = 0;
-		fullname.set_text("Name");
-		fullname.set_defaultTextFormat(name1);
-		fullname.set_restrict(null);
-		fullname.set_type(1);
-		this.addChild(fullname);
-		var birthdate = new openfl_text_TextField();
-		birthdate.set_background(true);
-		birthdate.set_width(200);
-		birthdate.set_height(50);
-		birthdate.set_x(300);
-		birthdate.set_y(100);
-		var name2 = new openfl_text_TextFormat("Verdana",16,12303291,true);
-		name2.align = 0;
-		birthdate.set_text("TT.MM.JJJJ");
-		birthdate.set_defaultTextFormat(name2);
-		birthdate.set_restrict("0-9.TJM");
-		birthdate.set_type(1);
-		this.addChild(birthdate);
-		var selecteduser = new openfl_text_TextField();
-		selecteduser.set_background(true);
-		selecteduser.set_width(200);
-		selecteduser.set_height(50);
-		selecteduser.set_x(300);
-		selecteduser.set_y(150);
-		var name21 = new openfl_text_TextFormat("Verdana",16,12303291,true);
-		name21.align = 0;
-		selecteduser.set_text("Benutzername");
-		selecteduser.set_defaultTextFormat(name21);
-		selecteduser.set_restrict("0-9 a-z");
-		selecteduser.set_type(1);
-		this.addChild(selecteduser);
-		var selectedpw = new openfl_text_TextField();
-		selectedpw.set_background(true);
-		selectedpw.set_width(200);
-		selectedpw.set_height(50);
-		selectedpw.set_x(300);
-		selectedpw.set_y(200);
-		var name22 = new openfl_text_TextFormat("Verdana",16,12303291,true);
-		name22.align = 0;
-		selectedpw.set_text("Passwort");
-		selectedpw.set_defaultTextFormat(name22);
-		selectedpw.set_restrict(null);
-		selectedpw.set_type(1);
-		this.addChild(selectedpw);
-		var button_reg = this.drawButton("Registrieren",20,20);
-		button_reg.addEventListener("click",$bind(this,this.onClick1));
 	}
 	,drawButton: function(text,pos1,pos2) {
 		var b1 = new Button(2185911,text);
@@ -3879,14 +3801,44 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 		this.addChild(this.button);
 		return this.button;
 	}
-	,onClick: function(event) {
-		this.removeChild(this.button);
+	,onClick1: function(event) {
 		this.removeChild(this.button1);
 		this.removeChild(this.button2);
+		this.removeChild(this.button3);
+		this.removeChild(this.button4);
+		this.removeChild(this.button5);
 		this.drawSlotmachine();
 	}
-	,onClick0: function(event) {
-		this.removeChild(this.button);
+	,onClick2: function(event) {
+		this.removeChild(this.button1);
+		this.removeChild(this.button2);
+		this.removeChild(this.button3);
+		this.removeChild(this.button4);
+		this.removeChild(this.button5);
+	}
+	,onClick3: function(event) {
+		this.removeChild(this.button1);
+		this.removeChild(this.button2);
+		this.removeChild(this.button3);
+		this.removeChild(this.button4);
+		this.removeChild(this.button5);
+	}
+	,onClick4: function(event) {
+		this.removeChild(this.button1);
+		this.removeChild(this.button2);
+		this.removeChild(this.button3);
+		this.removeChild(this.button4);
+		this.removeChild(this.button5);
+	}
+	,onClick5: function(event) {
+		this.removeChild(this.button1);
+		this.removeChild(this.button2);
+		this.removeChild(this.button3);
+		this.removeChild(this.button4);
+		this.removeChild(this.button5);
+	}
+	,onClick_end: function(event) {
+		this.removeChild(this.button_end);
 		this.removeChild(this.circle_selection);
 		this.removeChild(this.slot_machine_green);
 		this.removeChild(this.slot_machine_blue);
@@ -3896,34 +3848,141 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 		this.removeChild(this.frame_choice);
 		this.drawInfopage();
 	}
-	,onClick1: function(event) {
-		this.removeChild(this.button);
+	,onClick_Reg: function(event) {
+		this.removeChild(this.button_reg);
+		this.removeChild(this.selectedpw);
+		this.removeChild(this.selecteduser);
+		this.removeChild(this.birthdate);
+		this.removeChild(this.fullname);
 		this.drawInfopage();
 	}
-	,onClick2: function(event) {
+	,onClick_login: function(event) {
+		this.removeChild(this.button_login);
+		this.removeChild(this.passw);
+		this.removeChild(this.username);
 		this.drawInfopage();
 	}
-	,onClick4: function(event) {
-		this.removeChild(this.button);
-		this.gameStatus();
+	,onClick_log: function(event) {
+		this.removeChild(this.button_log);
+		this.removeChild(this.button_reg1);
+		this.getSetupImage();
 	}
-	,onClick5: function(event) {
-		this.removeChild(this.button);
+	,onClick_reg1: function(event) {
+		this.removeChild(this.button_log);
+		this.removeChild(this.button_reg1);
+		this.createRegistration();
 	}
-	,onClick3_1: function(event) {
-		this.removeChild(this.button);
+	,log_and_reg: function() {
+		this.button_log = this.drawButton("Login",300,100);
+		this.button_reg1 = this.drawButton("Registration",300,200);
+		this.button_log.addEventListener("click",$bind(this,this.onClick_log));
+		this.button_reg1.addEventListener("click",$bind(this,this.onClick_reg1));
+	}
+	,getSetupImage: function() {
+		this.username = new openfl_text_TextField();
+		this.username.set_background(true);
+		this.username.set_width(200);
+		this.username.set_height(50);
+		this.username.set_x(300);
+		this.username.set_y(210);
+		var name = new openfl_text_TextFormat("Verdana",16,12303291,true);
+		name.align = 0;
+		this.username.set_text("Benutzername");
+		this.username.set_defaultTextFormat(name);
+		this.username.set_restrict(null);
+		this.username.set_type(1);
+		this.addChild(this.username);
+		this.passw = new openfl_text_TextField();
+		this.passw.set_displayAsPassword(true);
+		this.passw.set_background(true);
+		this.passw.set_width(200);
+		this.passw.set_height(50);
+		this.passw.set_x(300);
+		this.passw.set_y(300);
+		this.passw.set_restrict(null);
+		this.passw.set_type(1);
+		var passw_format = new openfl_text_TextFormat("Verdana",16,12303291,true);
+		passw_format.align = 0;
+		this.passw.set_defaultTextFormat(passw_format);
+		this.addChild(this.passw);
+		this.button_login = this.drawButton("Login",20,20);
+		this.button_login.addEventListener("click",$bind(this,this.onClick_login));
+	}
+	,createRegistration: function() {
+		this.fullname = new openfl_text_TextField();
+		this.fullname.set_background(true);
+		this.fullname.set_width(200);
+		this.fullname.set_height(50);
+		this.fullname.set_x(300);
+		this.fullname.set_y(50);
+		var name1 = new openfl_text_TextFormat("Verdana",16,12303291,true);
+		name1.align = 0;
+		this.fullname.set_text("Name");
+		this.fullname.set_defaultTextFormat(name1);
+		this.fullname.set_restrict(null);
+		this.fullname.set_type(1);
+		this.addChild(this.fullname);
+		this.birthdate = new openfl_text_TextField();
+		this.birthdate.set_background(true);
+		this.birthdate.set_width(200);
+		this.birthdate.set_height(50);
+		this.birthdate.set_x(300);
+		this.birthdate.set_y(100);
+		var name2 = new openfl_text_TextFormat("Verdana",16,12303291,true);
+		name2.align = 0;
+		this.birthdate.set_text("TT.MM.JJJJ");
+		this.birthdate.set_defaultTextFormat(name2);
+		this.birthdate.set_restrict("0-9.TJM");
+		this.birthdate.set_type(1);
+		this.addChild(this.birthdate);
+		this.selecteduser = new openfl_text_TextField();
+		this.selecteduser.set_background(true);
+		this.selecteduser.set_width(200);
+		this.selecteduser.set_height(50);
+		this.selecteduser.set_x(300);
+		this.selecteduser.set_y(150);
+		var name21 = new openfl_text_TextFormat("Verdana",16,12303291,true);
+		name21.align = 0;
+		this.selecteduser.set_text("Benutzername");
+		this.selecteduser.set_defaultTextFormat(name21);
+		this.selecteduser.set_restrict("0-9 a-z");
+		this.selecteduser.set_type(1);
+		this.addChild(this.selecteduser);
+		this.selectedpw = new openfl_text_TextField();
+		this.selectedpw.set_background(true);
+		this.selectedpw.set_width(200);
+		this.selectedpw.set_height(50);
+		this.selectedpw.set_x(300);
+		this.selectedpw.set_y(200);
+		var name22 = new openfl_text_TextFormat("Verdana",16,12303291,true);
+		name22.align = 0;
+		this.selectedpw.set_text("Passwort");
+		this.selectedpw.set_defaultTextFormat(name22);
+		this.selectedpw.set_restrict(null);
+		this.selectedpw.set_type(1);
+		this.addChild(this.selectedpw);
+		this.button_reg = this.drawButton("Registrieren",20,20);
+		this.button_reg.addEventListener("click",$bind(this,this.onClick_Reg));
 	}
 	,drawInfopage: function() {
-		var button1 = this.drawButton("Neues Spiel",50,20);
-		var button2 = this.drawButton("Registrieren",50,60);
+		this.button1 = this.drawButton("Neues Spiel",300,180);
+		this.button2 = this.drawButton("Anleitung",300,240);
+		this.button3 = this.drawButton("Spielstand",300,300);
+		this.button4 = this.drawButton("Beenden",300,360);
+		this.button5 = this.drawButton("Logout",300,360);
+		this.button1.addEventListener("click",$bind(this,this.onClick1));
+		this.button2.addEventListener("click",$bind(this,this.onClick2));
+		this.button3.addEventListener("click",$bind(this,this.onClick3));
+		this.button4.addEventListener("click",$bind(this,this.onClick4));
+		this.button5.addEventListener("click",$bind(this,this.onClick5));
 	}
 	,gameStatus: function() {
 	}
 	,giveInstruction: function() {
 	}
 	,drawSlotmachine: function() {
-		var button_end = this.drawButton("Beenden",700,20);
-		button_end.addEventListener("click",$bind(this,this.onClick0));
+		this.button_end = this.drawButton("Beenden",700,20);
+		this.button_end.addEventListener("click",$bind(this,this.onClick_end));
 		this.slot_machine_blue = new Machine_$blue();
 		this.slot_machine_blue.set_x(50);
 		this.slot_machine_blue.set_y(150);
@@ -3992,7 +4051,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 		this.stage.addEventListener("keyDown",$bind(this,this.onKeyDown));
 		this.stage.addEventListener("keyUp",$bind(this,this.onKeyUp));
 		this.addEventListener("enterFrame",$bind(this,this.everyFrame));
-		this.getSetupImage();
+		this.log_and_reg();
 	}
 	,onResize: function(e) {
 		var stageScaleX = this.stage.stageWidth / 800;
@@ -4061,7 +4120,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 			this.circle_selection.set_x(400);
 			this.circle_selection.set_y(300);
 			this.addChild(this.circle_selection);
-			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 649, className : "Main", methodName : "endRound"});
+			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 656, className : "Main", methodName : "endRound"});
 			if(machine_color == "blue") {
 				this.scorePlayer = this.scorePlayer + this.blue_reward | 0;
 				this.scoreField.set_text("Score: " + this.scorePlayer);
@@ -4073,7 +4132,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 			this.circle_selection.set_x(400);
 			this.circle_selection.set_y(300);
 			this.addChild(this.circle_selection);
-			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 666, className : "Main", methodName : "endRound"});
+			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 673, className : "Main", methodName : "endRound"});
 			if(machine_color == "green") {
 				this.scorePlayer = this.scorePlayer + this.green_reward | 0;
 				this.scoreField.set_text("Score: " + this.scorePlayer);
@@ -4090,7 +4149,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 			this.green_reward = 100 - this.blue_reward;
 			this.scoreField_blue.set_text(Std.string(this.blue_reward));
 			this.scoreField_green.set_text(Std.string(this.green_reward));
-			haxe_Log.trace(this.probArray[round_counter],{ fileName : "Main.hx", lineNumber : 697, className : "Main", methodName : "newRound"});
+			haxe_Log.trace(this.probArray[round_counter],{ fileName : "Main.hx", lineNumber : 704, className : "Main", methodName : "newRound"});
 			this.reward_prob_blue = this.probArray[round_counter];
 			this.reward_prob_green = 1 - this.reward_prob_blue;
 			this.removeChild(this.circle_selection);
@@ -4118,11 +4177,11 @@ DocumentClass.prototype = $extend(Main.prototype,{
 var Button = function(color,s) {
 	openfl_display_Sprite.call(this);
 	this.get_graphics().beginFill(color);
-	this.get_graphics().drawRect(0,0,100,50);
+	this.get_graphics().drawRect(0,0,250,50);
 	this.get_graphics().endFill();
 	var button_textfield = new openfl_text_TextField();
 	button_textfield.set_background(false);
-	button_textfield.set_width(100);
+	button_textfield.set_width(250);
 	button_textfield.set_height(50);
 	button_textfield.set_x(0);
 	button_textfield.set_y(0);
@@ -31249,7 +31308,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 227210;
+	this.version = 164692;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];

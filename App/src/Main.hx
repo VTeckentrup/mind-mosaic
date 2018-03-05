@@ -82,20 +82,27 @@ class Main extends Sprite
 	//Define buttons
 	private var button:SimpleButton;
 
-	//int that is changed according to the button status
-	public var button_arr:Array<SimpleButton>;
-
 	//Button variables for multiple buttons
 	public var button1:SimpleButton;
 	public var button2:SimpleButton;
+	public var button3:SimpleButton;
+	public var button4:SimpleButton;
+	public var button5:SimpleButton;
 	public var button_reg:SimpleButton;
 	public var button_end:SimpleButton;
 	public var button_login:SimpleButton;
+	public var button_log:SimpleButton;
+	public var button_reg1:SimpleButton;
 
 
 	private var change:Bool = false;
 	private var clicked_button:SimpleButton;
     private var click_button:Bool = false;
+
+	private var fullname:TextField;
+	private var birthdate:TextField;
+	private var selecteduser:TextField;
+	private var selectedpw:TextField;
 
 
 	/* ENTRY POINT */
@@ -105,13 +112,126 @@ class Main extends Sprite
 		if (!inited) init();
 		// else (resize or orientation change)
 	}
-	
-	//first SetUp Image with the Log-in data & PW
-	function getSetupImage(){
-		//22.01.: displays 2 textfield where you can enter the username & pw
-		//new Textfield for username insertion
+
+	/*function to only draw the button - can be called for every button 
+    you need to pass on a text that the button has to display*/
+	public function drawButton(text:String,pos1:Int,pos2:Int):SimpleButton{
+
+		var b1 = new Button(0x215ab7, text);
+		var b2 = new Button(0xb72025, text);
+		var b3 = new Button(0xfffb21, text);
+		var b4 = new Button(0x36b71f, text);
+		button = new SimpleButton(b1,b2,b3,b4);
 		
-		var username:TextField = new TextField();
+        button.x = pos1;
+		button.y = pos2;
+
+        this.addChild(button);
+		return(button);
+	}
+	
+	/*onClick functions for the multiple buttons
+	
+	DATENBANK ABSPEICHERN
+	Button: New Game - Button1*/
+	public function onClick1 (event: MouseEvent):Void {
+		this.removeChild(button1);
+		this.removeChild(button2);
+		this.removeChild(button3);
+		this.removeChild(button4);
+		this.removeChild(button5);
+		drawSlotmachine();	
+	}
+	//Instruction - Button2
+	public function onClick2 (event: MouseEvent):Void {
+		this.removeChild(button1);
+		this.removeChild(button2);
+		this.removeChild(button3);
+		this.removeChild(button4);
+		this.removeChild(button5);	
+	}
+	//DATENBANKABRUF
+	//Button Game Status - Button3
+	public function onClick3 (event: MouseEvent):Void {
+		this.removeChild(button1);
+		this.removeChild(button2);
+		this.removeChild(button3);
+		this.removeChild(button4);
+		this.removeChild(button5);	
+	}
+	//Button Beenden - Button4
+	public function onClick4 (event: MouseEvent):Void {
+		this.removeChild(button1);
+		this.removeChild(button2);
+		this.removeChild(button3);
+		this.removeChild(button4);
+		this.removeChild(button5);	
+	}
+	//Button Logout - button5
+	public function onClick5 (event: MouseEvent):Void {
+		this.removeChild(button1);
+		this.removeChild(button2);
+		this.removeChild(button3);
+		this.removeChild(button4);
+		this.removeChild(button5);	
+	}
+	
+	//DATENBANK - ABSPEICHERN
+	//End Game slotmachine - Button_end
+	public function onClick_end (event: MouseEvent):Void {
+		this.removeChild(button_end);
+		this.removeChild(circle_selection);
+		this.removeChild(slot_machine_green);
+		this.removeChild(slot_machine_blue);
+		this.removeChild(scoreField);
+		this.removeChild(scoreField_blue);
+		this.removeChild(scoreField_green);
+		this.removeChild(frame_choice);
+		drawInfopage();
+	}
+	//DATENBANK ABRUFEN
+	//Registration Button event - button_reg
+	public function onClick_Reg (event: MouseEvent):Void {
+		this.removeChild(button_reg);
+		this.removeChild(selectedpw);
+		this.removeChild(selecteduser);
+		this.removeChild(birthdate);
+		this.removeChild(fullname);
+		drawInfopage();
+	}
+	//Login Button - button_login
+	public function onClick_login (event: MouseEvent):Void {
+		this.removeChild(button_login);
+		this.removeChild(passw);
+		this.removeChild(username);
+		drawInfopage();
+	}
+	//leads you to Login page
+	public function onClick_log(event: MouseEvent):Void {
+		this.removeChild(button_log);
+		this.removeChild(button_reg1);
+		getSetupImage();
+	}
+	//leads you to Registration page
+	public function onClick_reg1(event: MouseEvent):Void {
+		this.removeChild(button_log);
+		this.removeChild(button_reg1);
+		createRegistration();
+	}
+
+
+	//first page that lets you choose between Login and Registration
+	public function log_and_reg(){
+		button_log = drawButton("Login",300,100);
+		button_reg1 = drawButton("Registration", 300, 200);
+		button_log.addEventListener(MouseEvent.CLICK, onClick_log);
+		button_reg1.addEventListener(MouseEvent.CLICK, onClick_reg1);
+	}
+
+	//first SetUp Image with the Log-in data & PW
+	public function getSetupImage(){
+		
+		username = new TextField();
 		username.background = true;
 		username.width = 200;
 		username.height = 50;
@@ -130,7 +250,7 @@ class Main extends Sprite
 
 
 		//new Textfield for password insertion
-		var passw:TextField = new TextField();
+		passw = new TextField();
 		//edited text is displayed as a password
 		passw.displayAsPassword = true;
 		passw.background = true;
@@ -146,19 +266,16 @@ class Main extends Sprite
 		passw.defaultTextFormat = passw_format;
 		this.addChild(passw);
 
-
 		//draw Log-In button
-		var button_login = drawButton("Login",20,20);
-		button_login.addEventListener(MouseEvent.CLICK, onClick2);
-
-
+		button_login = drawButton("Login",20,20);
+		button_login.addEventListener(MouseEvent.CLICK, onClick_login);
 	}
 
-	//29.01.
-	//creates the LogIn with login details
+
+	//creates the registration page
 	function createRegistration(){
 		//Insertion of the full name
-		var fullname:TextField = new TextField();
+		fullname = new TextField();
 		fullname.background = true;
 		fullname.width = 200;
 		fullname.height = 50;
@@ -176,7 +293,7 @@ class Main extends Sprite
 		this.addChild(fullname);
 
 		//birthdate
-		var birthdate:TextField = new TextField();
+		birthdate = new TextField();
 		birthdate.background = true;
 		birthdate.width = 200;
 		birthdate.height = 50;
@@ -195,7 +312,7 @@ class Main extends Sprite
 		this.addChild(birthdate);
 
 		//Select your username
-		var selecteduser:TextField = new TextField();
+		selecteduser = new TextField();
 		selecteduser.background = true;
 		selecteduser.width = 200;
 		selecteduser.height = 50;
@@ -213,7 +330,7 @@ class Main extends Sprite
 
 
 		//selection of password
-		var selectedpw:TextField = new TextField();
+		selectedpw = new TextField();
 		selectedpw.background = true;
 		selectedpw.width = 200;
 		selectedpw.height = 50;
@@ -232,151 +349,38 @@ class Main extends Sprite
 
 
 		//Button for Registration
-		var button_reg = drawButton("Registrieren",20,20);
-		button_reg.addEventListener(MouseEvent.CLICK, onClick1);
-
-
-		
-		
+		button_reg = drawButton("Registrieren",20,20);
+		button_reg.addEventListener(MouseEvent.CLICK, onClick_Reg);
 
 
 	}
-//--------------NEW
-	//function to only draw the button - can be called for every button 
-    //- you need to pass on a text that the button has to display
-    //depending on the text, the onclick function chooses its called function/display
-
-	public function drawButton(text:String,pos1:Int,pos2:Int):SimpleButton{
-
-		var b1 = new Button(0x215ab7, text);
-		var b2 = new Button(0xb72025, text);
-		var b3 = new Button(0xfffb21, text);
-		var b4 = new Button(0x36b71f, text);
-		button = new SimpleButton(b1,b2,b3,b4);
-		
-        button.x = pos1;
-		button.y = pos2;
-
-		/*removed eventlistener and set it directly to the function because you need 
-		different onClick functions for different events
-		button.addEventListener(MouseEvent.CLICK, onClick);
-		*/
-
-        this.addChild(button);
-		return(button);
-	}
-	
-	//_____________________________________________________________________________
-	
-	//TRYING TO IMPLEMENT THE REMOVAL OF MULTIPLE BUTTONS - TEST SITE	
-
-	//DATENBANK ABSPEICHERN
-	//Registrationbutton event
-	public function onClick (event: MouseEvent):Void {
-		this.removeChild(button);
-		this.removeChild(button1);
-		this.removeChild(button2);
-		drawSlotmachine();
-			
-	}
-
-	//starting a new game
-	/*public function onClick2 (event: MouseEvent):SimpleButton {
-		this.removeChild(button);
-		drawSlotmachine();
-		var change = true;
-		return change;
-		return button2;
-}*/
-
-//_____________________________________________________________________________
-	
-	//DATENBANK - ABSPEICHERN
-	//End Game slotmachine
-	public function onClick0 (event: MouseEvent):Void {
-		this.removeChild(button);
-		this.removeChild(circle_selection);
-		this.removeChild(slot_machine_green);
-		this.removeChild(slot_machine_blue);
-		this.removeChild(scoreField);
-		this.removeChild(scoreField_blue);
-		this.removeChild(scoreField_green);
-		this.removeChild(frame_choice);
-
-		drawInfopage();
-	}
-	//DATENBANK ABRUFEN
-	//Registration Button event
-	public function onClick1 (event: MouseEvent):Void {
-		this.removeChild(button);
-		/*this.removeChild(selectedpw);
-		this.removeChild(selecteduser);
-		this.removeChild(birthdate);
-		this.removeChild(fullname);*/
-		drawInfopage();
-	}
-	//Login Button
-	public function onClick2 (event: MouseEvent):Void {
-		/*this.removeChild(button);
-		this.removeChild(passw);
-		this.removeChild(username);*/
-		drawInfopage();
-	}
-
-	//Instruction for the game
-	/*public function onClick2 (event: MouseEvent):Void {
-		this.removeChild(button);
-		//INSTRUCTION PAGE
-	}*/
-	
-	//DATENBANK ABRUFEN
-	//see game status
-	public function onClick4 (event: MouseEvent):Void {
-		this.removeChild(button);
-		gameStatus();
-	}
-	//LOG-out
-	public function onClick5 (event: MouseEvent):Void {
-		this.removeChild(button);
-		//startpage
-	}
-	
-
-	public function onClick3_1 (event: MouseEvent):Void {
-		this.removeChild(button);
-		
-	}
 
 
-	//draws the Info page where you can choose from new game, About, Instructions, Score and Log-off
-	// needs text
 
-	/**
-	 *PROBLEM HERE: NOT POSSIBLE TO REMOVE MULTIPLE BUTTONS
-	 */
+
+	/*draws the Info page where you can choose from new game, About, Instructions, Score and Log-off
+	needs text*/
 	public function drawInfopage(){
- 
-        var button1 = drawButton("Neues Spiel",50,20);
-		var button2 = drawButton("Registrieren",50,60);
-
-		/*if(info_button == button1)
-			drawSlotmachine();*/
-
 		
+		//New game button
+        button1 = drawButton("Neues Spiel",300,180);
+		//Anleitung
+		button2 = drawButton("Anleitung",300,240);
+		//Spielstand
+		button3 = drawButton("Spielstand",300,300);
+		//Beenden
+		button4 = drawButton("Beenden",300,360);
+		//Logout
+		button5 = drawButton("Logout",300,360);
 
-		//var info_button = onClick;
 
 			
-		/*button1.addEventListener(MouseEvent.CLICK, onClick1);
-		button2.addEventListener(MouseEvent.CLICK, onClick2);*/
+		button1.addEventListener(MouseEvent.CLICK, onClick1);
+		button2.addEventListener(MouseEvent.CLICK, onClick2);
+		button3.addEventListener(MouseEvent.CLICK, onClick3);
+		button4.addEventListener(MouseEvent.CLICK, onClick4);
+		button5.addEventListener(MouseEvent.CLICK, onClick5);
 		
-		
-		
-		
-		
-		//drawButton("Anleitung",50,100);
-		//drawButton("Spielstand");
-		//drawButton("Logout");
 	
 	}
 	
@@ -396,9 +400,9 @@ class Main extends Sprite
 
 
 		//End game Button --> drawInfoPage
-		var button_end = drawButton("Beenden",700,20);
+		button_end = drawButton("Beenden",700,20);
 		//this.addChild(button_end);
-		button_end.addEventListener(MouseEvent.CLICK, onClick0);
+		button_end.addEventListener(MouseEvent.CLICK, onClick_end);
 		
 
 
@@ -513,7 +517,8 @@ class Main extends Sprite
 		// Listen for input
 		this.addEventListener(Event.ENTER_FRAME, everyFrame);
 
-		getSetupImage();
+		log_and_reg();
+		//getSetupImage();
 		//createLogInPage();
 		//drawInfopage();
 		//drawSlotmachine();

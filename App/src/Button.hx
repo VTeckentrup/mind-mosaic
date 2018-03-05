@@ -11,13 +11,13 @@ class Button extends Sprite
     {
         super();
 		this.graphics.beginFill(color);
-		this.graphics.drawRect(0, 0, 100, 50);
+		this.graphics.drawRect(0, 0, 250, 50);
 		this.graphics.endFill();
 		
 		var button_textfield:TextField = new TextField();
 		//overlay text on the button
 		button_textfield.background = false;
-		button_textfield.width = 100;
+		button_textfield.width = 250;
 		button_textfield.height = 50;
 		button_textfield.x = 0;
 		button_textfield.y = 0;
