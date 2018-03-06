@@ -1041,7 +1041,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "AppSlotMachine";
-	var config = { build : "20", company : "Vanessa Teckentrup", file : "AppSlotMachine", fps : 60, name : "App_SlotMachine", orientation : "", packageName : "AppSlotMachine", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 480, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "App_SlotMachine", vsync : false, width : 800, x : null, y : null}]};
+	var config = { build : "21", company : "Vanessa Teckentrup", file : "AppSlotMachine", fps : 60, name : "App_SlotMachine", orientation : "", packageName : "AppSlotMachine", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 480, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "App_SlotMachine", vsync : false, width : 800, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -3778,6 +3778,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 	,button_login: null
 	,button_log: null
 	,button_reg1: null
+	,button_back: null
 	,change: null
 	,clicked_button: null
 	,click_button: null
@@ -3815,6 +3816,8 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 		this.removeChild(this.button3);
 		this.removeChild(this.button4);
 		this.removeChild(this.button5);
+		this.button_back = this.drawButton("Zurück",300,300);
+		this.button_back.addEventListener("click",$bind(this,this.onClick_back));
 	}
 	,onClick3: function(event) {
 		this.removeChild(this.button1);
@@ -3822,6 +3825,8 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 		this.removeChild(this.button3);
 		this.removeChild(this.button4);
 		this.removeChild(this.button5);
+		this.button_back = this.drawButton("Zurück",300,300);
+		this.button_back.addEventListener("click",$bind(this,this.onClick_back));
 	}
 	,onClick4: function(event) {
 		this.removeChild(this.button1);
@@ -3871,6 +3876,10 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 		this.removeChild(this.button_log);
 		this.removeChild(this.button_reg1);
 		this.createRegistration();
+	}
+	,onClick_back: function(event) {
+		this.removeChild(this.button_end);
+		this.drawInfopage();
 	}
 	,log_and_reg: function() {
 		this.button_log = this.drawButton("Login",300,100);
@@ -3975,10 +3984,6 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 		this.button3.addEventListener("click",$bind(this,this.onClick3));
 		this.button4.addEventListener("click",$bind(this,this.onClick4));
 		this.button5.addEventListener("click",$bind(this,this.onClick5));
-	}
-	,gameStatus: function() {
-	}
-	,giveInstruction: function() {
 	}
 	,drawSlotmachine: function() {
 		this.button_end = this.drawButton("Beenden",700,20);
@@ -31308,7 +31313,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 164692;
+	this.version = 540376;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];

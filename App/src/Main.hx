@@ -62,8 +62,8 @@ class Main extends Sprite
     var stageHeight:Int = Lib.current.stage.stageHeight;
 	
 	// Define score text field
-	private var scoreField:TextField;
-	private var scorePlayer:Int;
+	public var scoreField:TextField;
+	public var scorePlayer:Int;
 	
 	// Define array for reward probabilities
 	var probArray:Array<Float> = [0.5];
@@ -93,6 +93,7 @@ class Main extends Sprite
 	public var button_login:SimpleButton;
 	public var button_log:SimpleButton;
 	public var button_reg1:SimpleButton;
+	private var button_back:SimpleButton;
 
 
 	private var change:Bool = false;
@@ -148,7 +149,9 @@ class Main extends Sprite
 		this.removeChild(button2);
 		this.removeChild(button3);
 		this.removeChild(button4);
-		this.removeChild(button5);	
+		this.removeChild(button5);
+		button_back = drawButton("Zurück",300,300);
+		button_back.addEventListener(MouseEvent.CLICK, onClick_back);	
 	}
 	//DATENBANKABRUF
 	//Button Game Status - Button3
@@ -157,7 +160,9 @@ class Main extends Sprite
 		this.removeChild(button2);
 		this.removeChild(button3);
 		this.removeChild(button4);
-		this.removeChild(button5);	
+		this.removeChild(button5);
+		button_back = drawButton("Zurück",300,300);
+		button_back.addEventListener(MouseEvent.CLICK, onClick_back);	
 	}
 	//Button Beenden - Button4
 	public function onClick4 (event: MouseEvent):Void {
@@ -218,8 +223,11 @@ class Main extends Sprite
 		this.removeChild(button_reg1);
 		createRegistration();
 	}
-
-
+	//Back Button to Infopage
+	public function onClick_back (event: MouseEvent):Void {
+		this.removeChild(button_end);
+		drawInfopage();
+	}
 	//first page that lets you choose between Login and Registration
 	public function log_and_reg(){
 		button_log = drawButton("Login",300,100);
@@ -230,7 +238,7 @@ class Main extends Sprite
 
 	//first SetUp Image with the Log-in data & PW
 	public function getSetupImage(){
-		
+
 		username = new TextField();
 		username.background = true;
 		username.width = 200;
@@ -266,6 +274,7 @@ class Main extends Sprite
 		passw.defaultTextFormat = passw_format;
 		this.addChild(passw);
 
+		//SHOULD ONLY BE POSSIBLE WHEN TEXT IS INSERTED & MATCHED DATA BASE
 		//draw Log-In button
 		button_login = drawButton("Login",20,20);
 		button_login.addEventListener(MouseEvent.CLICK, onClick_login);
@@ -347,7 +356,7 @@ class Main extends Sprite
 		selectedpw.type = TextFieldType.INPUT;
 		this.addChild(selectedpw);
 
-
+		//SHOULD ONLY BE POSSIBLE IF TEXT IS INSERTED
 		//Button for Registration
 		button_reg = drawButton("Registrieren",20,20);
 		button_reg.addEventListener(MouseEvent.CLICK, onClick_Reg);
@@ -384,15 +393,8 @@ class Main extends Sprite
 	
 	}
 	
-	//DATENBANK ABRUFEN
-	//gamestatus 
-	public function gameStatus(){
-
-	}
-	//instructiontext
-	public function giveInstruction(){
-
-	}
+	
+	
 
 
 	//function that draws the Slotmachine
