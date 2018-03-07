@@ -14,6 +14,9 @@ import flash.ui.Keyboard;
 import openfl.display.SimpleButton;
 import openfl.events.MouseEvent;
 import Math.random;
+import openfl.Assets;
+import openfl.display.BitmapData;
+import openfl.display.Bitmap;
 
 enum GameState {
 	
@@ -105,6 +108,8 @@ class Main extends Sprite
 	private var selecteduser:TextField;
 	private var selectedpw:TextField;
 
+	var bd:BitmapData;
+	var b:Bitmap;	
 
 	/* ENTRY POINT */
 	
@@ -114,6 +119,25 @@ class Main extends Sprite
 		// else (resize or orientation change)
 	}
 
+//_________Try out zone assets_______________________________________________
+
+/*	public function drawButton1(text:String,pos1:Int,pos2:Int,bm:Bitmap):SimpleButton{
+
+		var b1 = new Button(0x215ab7, text);
+		var b2 = new Button(0xb72025, text);
+		var b3 = new Button(0xfffb21, text);
+		var b4 = new Button(0x36b71f, text);
+		button = new SimpleButton(b1,b2,b3,b4);
+		
+        button.x = pos1;
+		button.y = pos2;
+		this.addChild(bm);
+        this.addChild(button);
+		return(button);
+	}
+*/
+
+//_________Try out zone assets_______________________________________________
 	/*function to only draw the button - can be called for every button 
     you need to pass on a text that the button has to display*/
 	public function drawButton(text:String,pos1:Int,pos2:Int):SimpleButton{
@@ -230,6 +254,9 @@ class Main extends Sprite
 	}
 	//first page that lets you choose between Login and Registration
 	public function log_and_reg(){
+	//	bd = Assets.getBitmapData("img/logo.png");
+	//	b = new Bitmap(bd);
+		//addChild(b);
 		button_log = drawButton("Login",300,100);
 		button_reg1 = drawButton("Registration", 300, 200);
 		button_log.addEventListener(MouseEvent.CLICK, onClick_log);
@@ -510,6 +537,9 @@ class Main extends Sprite
 
 		if (inited) return;
 		inited = true;
+		   bd = Assets.getBitmapData("img/logo.png");
+		b = new Bitmap(bd);
+        addChild(b);
 		
 		// Set up keys to select option: usually in init function 
 		keys = [];

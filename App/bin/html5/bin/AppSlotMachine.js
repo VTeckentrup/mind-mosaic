@@ -1041,7 +1041,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "AppSlotMachine";
-	var config = { build : "21", company : "Vanessa Teckentrup", file : "AppSlotMachine", fps : 60, name : "App_SlotMachine", orientation : "", packageName : "AppSlotMachine", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 480, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "App_SlotMachine", vsync : false, width : 800, x : null, y : null}]};
+	var config = { build : "22", company : "Vanessa Teckentrup", file : "AppSlotMachine", fps : 60, name : "App_SlotMachine", orientation : "", packageName : "AppSlotMachine", version : "1.0.0", windows : [{ allowHighDPI : false, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 480, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "App_SlotMachine", vsync : false, width : 800, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -3786,6 +3786,8 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 	,birthdate: null
 	,selecteduser: null
 	,selectedpw: null
+	,bd: null
+	,b: null
 	,resize: function(e) {
 		if(!this.inited) {
 			this.init();
@@ -4052,6 +4054,9 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 			return;
 		}
 		this.inited = true;
+		this.bd = openfl_utils_Assets.getBitmapData("img/logo.png");
+		this.b = new openfl_display_Bitmap(this.bd);
+		this.addChild(this.b);
 		this.keys = [];
 		this.stage.addEventListener("keyDown",$bind(this,this.onKeyDown));
 		this.stage.addEventListener("keyUp",$bind(this,this.onKeyUp));
@@ -4125,7 +4130,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 			this.circle_selection.set_x(400);
 			this.circle_selection.set_y(300);
 			this.addChild(this.circle_selection);
-			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 656, className : "Main", methodName : "endRound"});
+			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 686, className : "Main", methodName : "endRound"});
 			if(machine_color == "blue") {
 				this.scorePlayer = this.scorePlayer + this.blue_reward | 0;
 				this.scoreField.set_text("Score: " + this.scorePlayer);
@@ -4137,7 +4142,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 			this.circle_selection.set_x(400);
 			this.circle_selection.set_y(300);
 			this.addChild(this.circle_selection);
-			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 673, className : "Main", methodName : "endRound"});
+			haxe_Log.trace("" + this.scorePlayer,{ fileName : "Main.hx", lineNumber : 703, className : "Main", methodName : "endRound"});
 			if(machine_color == "green") {
 				this.scorePlayer = this.scorePlayer + this.green_reward | 0;
 				this.scoreField.set_text("Score: " + this.scorePlayer);
@@ -4154,7 +4159,7 @@ Main.prototype = $extend(openfl_display_Sprite.prototype,{
 			this.green_reward = 100 - this.blue_reward;
 			this.scoreField_blue.set_text(Std.string(this.blue_reward));
 			this.scoreField_green.set_text(Std.string(this.green_reward));
-			haxe_Log.trace(this.probArray[round_counter],{ fileName : "Main.hx", lineNumber : 704, className : "Main", methodName : "newRound"});
+			haxe_Log.trace(this.probArray[round_counter],{ fileName : "Main.hx", lineNumber : 734, className : "Main", methodName : "newRound"});
 			this.reward_prob_blue = this.probArray[round_counter];
 			this.reward_prob_green = 1 - this.reward_prob_blue;
 			this.removeChild(this.circle_selection);
@@ -4470,7 +4475,7 @@ ManifestResources.init = function(config) {
 	var data;
 	var manifest;
 	var library;
-	data = "{\"name\":null,\"assets\":\"ah\",\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
+	data = "{\"name\":null,\"assets\":\"aoy4:pathy14:img%2Flogo.pngy4:sizei11946y4:typey5:IMAGEy2:idR1y7:preloadtgh\",\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
 	manifest = lime_utils_AssetManifest.parse(data,rootPath);
 	library = lime_utils_AssetLibrary.fromManifest(manifest);
 	lime_utils_Assets.registerLibrary("default",library);
@@ -31313,7 +31318,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 540376;
+	this.version = 568827;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];

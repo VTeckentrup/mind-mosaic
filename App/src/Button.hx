@@ -2,17 +2,29 @@ package;
  
 import openfl.display.Sprite;
 import openfl.text.*;
+import openfl.display.BitmapData;
+import openfl.display.Bitmap;
+import openfl.Assets;
 
 
 
 class Button extends Sprite
 	{
+
+    //private var bd:BitmapData;
+    //private var b:Bitmap;
+
     public function new(color:Int,s:String)
     {
         super();
 		this.graphics.beginFill(color);
 		this.graphics.drawRect(0, 0, 250, 50);
 		this.graphics.endFill();
+
+     //bd = new BitmapData(250, 50, true,0xFFFFFFFF);
+        /*bd = Assets.getBitmapData("img/logo.png");
+		b = new Bitmap(bd);
+        addChild(b);*/
 		
 		var button_textfield:TextField = new TextField();
 		//overlay text on the button
