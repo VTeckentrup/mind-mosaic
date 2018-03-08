@@ -11,8 +11,8 @@ import openfl.Assets;
 class Button extends Sprite
 	{
 
-    //private var bd:BitmapData;
-    //private var b:Bitmap;
+    private var bd:BitmapData;
+    private var b:Bitmap;
 
     public function new(color:Int,s:String)
     {
@@ -22,9 +22,9 @@ class Button extends Sprite
 		this.graphics.endFill();
 
      //bd = new BitmapData(250, 50, true,0xFFFFFFFF);
-        /*bd = Assets.getBitmapData("img/logo.png");
+        bd = Assets.getBitmapData("img/logo.png");
 		b = new Bitmap(bd);
-        addChild(b);*/
+        addChild(b);
 		
 		var button_textfield:TextField = new TextField();
 		//overlay text on the button

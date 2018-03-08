@@ -537,9 +537,9 @@ class Main extends Sprite
 
 		if (inited) return;
 		inited = true;
-		   bd = Assets.getBitmapData("img/logo.png");
+		/*   bd = Assets.getBitmapData("img/logo.png");
 		b = new Bitmap(bd);
-        addChild(b);
+        addChild(b);*/
 		
 		// Set up keys to select option: usually in init function 
 		keys = [];
