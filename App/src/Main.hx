@@ -108,8 +108,12 @@ class Main extends Sprite
 	private var selecteduser:TextField;
 	private var selectedpw:TextField;
 
-	var bd:BitmapData;
-	var b:Bitmap;	
+	//represents the level you are in
+	private var level:Int = 2;
+	//represents an array (length 30) with all pathogens
+	private var pathogenArrayBM:Array<BitmapData> = [];
+	private var pathogenArray:Array<Bitmap> = [];
+	private var add:Int;
 
 	/* ENTRY POINT */
 	
@@ -185,6 +189,7 @@ class Main extends Sprite
 		this.removeChild(button3);
 		this.removeChild(button4);
 		this.removeChild(button5);
+		seeGamestatus(level);
 		button_back = drawButton("Zurück",300,300);
 		button_back.addEventListener(MouseEvent.CLICK, onClick_back);	
 	}
@@ -303,7 +308,7 @@ class Main extends Sprite
 
 		//SHOULD ONLY BE POSSIBLE WHEN TEXT IS INSERTED & MATCHED DATA BASE
 		//draw Log-In button
-		button_login = drawButton("Login",20,20);
+		button_login = drawButton("Login",250,400);
 		button_login.addEventListener(MouseEvent.CLICK, onClick_login);
 	}
 
@@ -385,7 +390,7 @@ class Main extends Sprite
 
 		//SHOULD ONLY BE POSSIBLE IF TEXT IS INSERTED
 		//Button for Registration
-		button_reg = drawButton("Registrieren",20,20);
+		button_reg = drawButton("Registrieren",250,400);
 		button_reg.addEventListener(MouseEvent.CLICK, onClick_Reg);
 
 
@@ -530,6 +535,43 @@ class Main extends Sprite
 
 	}
 
+	public function getPathogenAssignment(){
+		pathogenArrayBM[1] = Assets.getBitmapData("img/virus1.png");
+		pathogenArrayBM[2] = Assets.getBitmapData("img/virus2.png");
+
+		//3 will be replaced with 31
+		for(i in 1...3){
+			pathogenArray[i] = new Bitmap(pathogenArrayBM[i]);
+		}
+		
+	}
+
+	public function seeGamestatus(level:Int){
+		/*probably a variable that gets its value from the 
+		data base to represent the level that you reached
+		--> var level: now set to 1 because no data base available
+		*/
+		add = 100;
+		//3 will be replaced with level
+		for(i in 1...3){
+			pathogenArray[i].x = 0;
+			pathogenArray[i].y = add;
+			addChild(pathogenArray[i]);
+			add = add + 50;
+
+		/**
+		 *  if we have 30 different pathogen we need to build in 
+		 *  for loops to make coloumns to present them
+		 */
+		}
+
+	/**
+	 *   bd = Assets.getBitmapData("img/logo.png");
+		b = new Bitmap(bd);
+        addChild(b);
+	 */
+	}
+
 	function init() 
 	{
 
@@ -549,6 +591,7 @@ class Main extends Sprite
 		// Listen for input
 		this.addEventListener(Event.ENTER_FRAME, everyFrame);
 
+		getPathogenAssignment();
 		log_and_reg();
 		//getSetupImage();
 		//createLogInPage();
@@ -558,7 +601,6 @@ class Main extends Sprite
 
 		
 	}
-
 	
 	/* SETUP */
 	//Entry point of main function: treats it as an object
