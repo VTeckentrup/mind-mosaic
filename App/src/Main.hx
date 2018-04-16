@@ -37,6 +37,8 @@ class Main extends Sprite
 	private var username:TextField;
 	private var passw:TextField;
 	private var logIn_selection:TextField;
+	private var levelField:TextField;
+	private var levelFormat:TextFormat;
 
 	// Set up game state variable
 	private var currentGameState:GameState;
@@ -117,7 +119,7 @@ class Main extends Sprite
 	private var selectedpw:TextField;
 
 	//represents the level you are in
-	private var level:Int = 2;
+	private var level:Int=1;
 	//represents an array (length 30) with all pathogens
 	private var pathogenArrayBM:Array<BitmapData> = [];
 	private var pathogenArray:Array<Bitmap> = [];
@@ -128,7 +130,7 @@ class Main extends Sprite
 	private var background_b:Bitmap;
 	
 	// Counter for rounds
-	public static var _round_ind:Int;
+	public static var _round_ind:Int=1;
 	
 	
 
@@ -483,6 +485,18 @@ class Main extends Sprite
 		cityName = "Tübingen";
 		cityField.text = '$cityName';
 
+		levelFormat = new TextFormat("Verdana", 30, 0xbbbbbb, true);
+		levelFormat.align = TextFormatAlign.RIGHT;
+		
+		levelField = new TextField();
+		addChild(levelField);
+		levelField.width = 800;
+		//cityField.x = 650;
+		levelField.y = 90;
+		levelField.defaultTextFormat = levelFormat;
+		levelField.selectable = false;
+		levelField.text = '$_round_ind';
+
 
 		// Define and format text fields displaying slot machine outcome
 		// blue
@@ -585,20 +599,23 @@ class Main extends Sprite
 	    //what to do if app is out of focus
     private function pause(e:Event):Void{
         currentGameState=Paused;
+
     }
     //app back in focus - start last round again
     private function unpause(e:Event):Void{
-    /**
+    /*
      *  currentGameState=Playing;
      *  and we need to set the counter back
      */
+	_round_ind = 1;
+	levelField.text = '$_round_ind';
+	currentGameState=Playing;
+	
     }
 
 
 	function init() 
 	{
-
-
 
 		if (inited) return;
 		inited = true;
@@ -680,6 +697,9 @@ class Main extends Sprite
 
 
 	private function everyFrame(event:Event):Void {
+		
+		
+		
 		
 		// Only execute if the game is currently active to prevent excessive summation of rewards
 		if (currentGameState == Playing) {
@@ -779,13 +799,23 @@ class Main extends Sprite
 				
 			}
 		}
-		
+		/**
+		 *  needs to delete the data base entries from before
+		 *  sets rounds back to 1 so level needs to be played again
+		 */
+		/*if(currentGameState==Paused){
+			_round_ind=1;
+		}*/
 		
 		// Set timer to give player time to evaluate the outcome
 		if (_round_ind < rounds + 1){
-				
+			//calls function newRound with delay of 1000ms	
 			haxe.Timer.delay(newRound,1000);
 			
+			}else{
+				level = level+1;
+				_round_ind=1;
+				currentGameState=Playing;
 			}
 		
 	}
@@ -802,8 +832,8 @@ class Main extends Sprite
 		scoreField_green.text = Std.string(green_reward);
 		
 		// Grab new reward probabilities
-		trace(probArray[round_counter]);
-		reward_prob_blue = probArray[round_counter];
+		trace(probArray[_round_ind]);
+		reward_prob_blue = probArray[_round_ind];
 		reward_prob_green = 1 - reward_prob_blue;
 		
 		// Reset selection circle
@@ -816,7 +846,11 @@ class Main extends Sprite
 		// Remove any selection frames
 		this.removeChild(frame_choice);
 		
+		_round_ind = _round_ind + 1;
+		levelField.text = '$_round_ind';
 		// Resume game
+		//everyframe always active when currentGameState=Playing
+		//->goes to everyFrame
 		currentGameState = Playing;
 		
 	}

@@ -7,6 +7,8 @@
 -D lime=5.9.1
 -cp /Users/jenniferthem/haxelib/actuate/1,8,7
 -D actuate=1.8.7
+-cp /Users/jenniferthem/haxelib/advanced-layout/0,7,0
+-D advanced-layout=0.7.0
 -cp src
 -D lime-openal
 -D tools=5.9.1

@@ -70,6 +70,7 @@ import sys.FileSystem;
 #if !display
 #if flash
 
+@:keep @:bind #if display private #end class __ASSET__img_background_medium_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__img_logo_kopie_xcf extends null { }
 @:keep @:bind #if display private #end class __ASSET__img_logo_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__img_logo1_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
