@@ -14,6 +14,7 @@ import flash.ui.Keyboard;
 import openfl.display.SimpleButton;
 import openfl.events.MouseEvent;
 import Math.random;
+import GlobalDBVars.*;
 import openfl.Assets;
 import openfl.display.BitmapData;
 import openfl.display.Bitmap;
@@ -129,8 +130,6 @@ class Main extends Sprite
 	private var background_bd:BitmapData;
 	private var background_b:Bitmap;
 	
-	// Counter for rounds
-	public static var _round_ind:Int=1;
 	
 	
 
@@ -554,6 +553,14 @@ class Main extends Sprite
 		reward_prob_blue = probArray[0];
 		reward_prob_green = 1 - reward_prob_blue;
 		
+		// DUMMY: Initialize database entries
+		_id = 1;
+		_round_ind = 1;
+		_blue_reward_prob = reward_prob_blue;
+		_green_reward_prob = reward_prob_green;
+		_reward_blue = blue_reward;
+		_reward_green = green_reward;
+		
 		// Set game state
 		currentGameState = Playing;		
 		
@@ -799,6 +806,21 @@ class Main extends Sprite
 				
 			}
 		}
+		
+		//  Set values for database
+		_round_reward_prob = reward_prob_round;
+		_choice_correct = correct_choice;
+		_choice_player = machine_color;
+		if (correct_choice == machine_color) {
+			_player_won = 1;
+		} else {
+			_player_won = 0;
+		}
+		_timestamp = Date.now();
+
+		// Write to database
+		new AppdataEntryLite();
+		
 		/**
 		 *  needs to delete the data base entries from before
 		 *  sets rounds back to 1 so level needs to be played again
@@ -848,6 +870,16 @@ class Main extends Sprite
 		
 		_round_ind = _round_ind + 1;
 		levelField.text = '$_round_ind';
+		
+		// Remove any selection frames
+		this.removeChild(frame_choice);
+		
+		// Set new values for database
+		_blue_reward_prob = reward_prob_blue;
+		_green_reward_prob = reward_prob_green;
+		_reward_blue = blue_reward;
+		_reward_green = green_reward;
+		
 		// Resume game
 		//everyframe always active when currentGameState=Playing
 		//->goes to everyFrame
