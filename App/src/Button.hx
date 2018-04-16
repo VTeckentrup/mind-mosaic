@@ -21,10 +21,10 @@ class Button extends Sprite
 		this.graphics.drawRect(0, 0, 250, 50);
 		this.graphics.endFill();
 
-     //bd = new BitmapData(250, 50, true,0xFFFFFFFF);
-        bd = Assets.getBitmapData("img/logo.png");
-		b = new Bitmap(bd);
-        addChild(b);
+		//bd = new BitmapData(250, 50, true,0xFFFFFFFF);
+        //bd = Assets.getBitmapData("img/logo.png");
+		//b = new Bitmap(bd);
+        //addChild(b);
 		
 		var button_textfield:TextField = new TextField();
 		//overlay text on the button
@@ -32,7 +32,7 @@ class Button extends Sprite
 		button_textfield.width = 250;
 		button_textfield.height = 50;
 		button_textfield.x = 0;
-		button_textfield.y = 0;
+		button_textfield.y = 10;
 		var button_text:TextFormat = new TextFormat("Verdana", 20, 0xbbbbbb, true);
 		button_text.align = TextFormatAlign.CENTER;
 		button_textfield.defaultTextFormat = button_text;

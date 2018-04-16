@@ -17,6 +17,8 @@ import Math.random;
 import openfl.Assets;
 import openfl.display.BitmapData;
 import openfl.display.Bitmap;
+using layout.LayoutCreator;
+using layout.LayoutPreserver;
 
 enum GameState {
 	
@@ -68,6 +70,10 @@ class Main extends Sprite
 	public var scoreField:TextField;
 	public var scorePlayer:Int;
 	
+	//Define city text field
+	public var cityField:TextField;
+	public var cityName:String;
+	
 	// Define array for reward probabilities
 	var probArray:Array<Float> = [0.5];
 	
@@ -79,8 +85,8 @@ class Main extends Sprite
 	private var correct_choice:String;
 
     //Insert base stage size values
-	private static inline var NOMINAL_WIDTH:Int = 800;
-	private static inline var NOMINAL_HEIGHT:Int = 600;
+	private static inline var NOMINAL_WIDTH:Int = 1920;
+	private static inline var NOMINAL_HEIGHT:Int = 1080;
 	
 	//Define buttons
 	private var button:SimpleButton;
@@ -92,6 +98,7 @@ class Main extends Sprite
 	public var button4:SimpleButton;
 	public var button5:SimpleButton;
 	public var button_reg:SimpleButton;
+	public var button_reg_back:SimpleButton;
 	public var button_end:SimpleButton;
 	public var button_login:SimpleButton;
 	public var button_log:SimpleButton;
@@ -114,6 +121,12 @@ class Main extends Sprite
 	private var pathogenArrayBM:Array<BitmapData> = [];
 	private var pathogenArray:Array<Bitmap> = [];
 	private var add:Int;
+	
+	// Setup background graphic
+	private var background_bd:BitmapData;
+	private var background_b:Bitmap;
+	
+	
 
 	/* ENTRY POINT */
 	
@@ -164,97 +177,67 @@ class Main extends Sprite
 	DATENBANK ABSPEICHERN
 	Button: New Game - Button1*/
 	public function onClick1 (event: MouseEvent):Void {
-		this.removeChild(button1);
-		this.removeChild(button2);
-		this.removeChild(button3);
-		this.removeChild(button4);
-		this.removeChild(button5);
+		this.removeChildren();
 		drawSlotmachine();	
 	}
 	//Instruction - Button2
 	public function onClick2 (event: MouseEvent):Void {
-		this.removeChild(button1);
-		this.removeChild(button2);
-		this.removeChild(button3);
-		this.removeChild(button4);
-		this.removeChild(button5);
+		this.removeChildren();
 		button_back = drawButton("Zurück",300,300);
 		button_back.addEventListener(MouseEvent.CLICK, onClick_back);	
 	}
 	//DATENBANKABRUF
 	//Button Game Status - Button3
 	public function onClick3 (event: MouseEvent):Void {
-		this.removeChild(button1);
-		this.removeChild(button2);
-		this.removeChild(button3);
-		this.removeChild(button4);
-		this.removeChild(button5);
+		this.removeChildren();
 		seeGamestatus(level);
 		button_back = drawButton("Zurück",300,300);
 		button_back.addEventListener(MouseEvent.CLICK, onClick_back);	
 	}
-	//Button Beenden - Button4
+	//Button Über das Spiel - Button4
 	public function onClick4 (event: MouseEvent):Void {
-		this.removeChild(button1);
-		this.removeChild(button2);
-		this.removeChild(button3);
-		this.removeChild(button4);
-		this.removeChild(button5);	
+		this.removeChildren();	
 	}
 	//Button Logout - button5
 	public function onClick5 (event: MouseEvent):Void {
-		this.removeChild(button1);
-		this.removeChild(button2);
-		this.removeChild(button3);
-		this.removeChild(button4);
-		this.removeChild(button5);	
+		this.removeChildren();
 	}
 	
 	//DATENBANK - ABSPEICHERN
 	//End Game slotmachine - Button_end
 	public function onClick_end (event: MouseEvent):Void {
-		this.removeChild(button_end);
-		this.removeChild(circle_selection);
-		this.removeChild(slot_machine_green);
-		this.removeChild(slot_machine_blue);
-		this.removeChild(scoreField);
-		this.removeChild(scoreField_blue);
-		this.removeChild(scoreField_green);
-		this.removeChild(frame_choice);
+		this.removeChildren();
 		drawInfopage();
 	}
 	//DATENBANK ABRUFEN
 	//Registration Button event - button_reg
 	public function onClick_Reg (event: MouseEvent):Void {
-		this.removeChild(button_reg);
-		this.removeChild(selectedpw);
-		this.removeChild(selecteduser);
-		this.removeChild(birthdate);
-		this.removeChild(fullname);
+		this.removeChildren();
 		drawInfopage();
+	}
+	//Leads back to start page from registration
+	public function onClick_Reg_Back (event: MouseEvent):Void {
+		this.removeChildren();
+		log_and_reg();
 	}
 	//Login Button - button_login
 	public function onClick_login (event: MouseEvent):Void {
-		this.removeChild(button_login);
-		this.removeChild(passw);
-		this.removeChild(username);
+		this.removeChildren();
 		drawInfopage();
 	}
 	//leads you to Login page
 	public function onClick_log(event: MouseEvent):Void {
-		this.removeChild(button_log);
-		this.removeChild(button_reg1);
+		this.removeChildren();
 		getSetupImage();
 	}
 	//leads you to Registration page
 	public function onClick_reg1(event: MouseEvent):Void {
-		this.removeChild(button_log);
-		this.removeChild(button_reg1);
+		this.removeChildren();
 		createRegistration();
 	}
 	//Back Button to Infopage
 	public function onClick_back (event: MouseEvent):Void {
-		this.removeChild(button_end);
+		this.removeChildren();
 		drawInfopage();
 	}
 	//first page that lets you choose between Login and Registration
@@ -262,6 +245,11 @@ class Main extends Sprite
 	//	bd = Assets.getBitmapData("img/logo.png");
 	//	b = new Bitmap(bd);
 		//addChild(b);
+		background_bd = Assets.getBitmapData("img/background_medium.png");
+		background_b = new Bitmap(background_bd);
+		addChild(background_b);
+		//background_b.matchWidth(stage);
+		//background_b.maintainAspectRatio();
 		button_log = drawButton("Login",300,100);
 		button_reg1 = drawButton("Registration", 300, 200);
 		button_log.addEventListener(MouseEvent.CLICK, onClick_log);
@@ -297,7 +285,7 @@ class Main extends Sprite
 		passw.width = 200;
 		passw.height = 50;
 		passw.x = 300;
-		passw.y = 300;
+		passw.y = 270;
 		passw.restrict = null;
 		//user can edit the textfield
 		passw.type = TextFieldType.INPUT;
@@ -308,7 +296,7 @@ class Main extends Sprite
 
 		//SHOULD ONLY BE POSSIBLE WHEN TEXT IS INSERTED & MATCHED DATA BASE
 		//draw Log-In button
-		button_login = drawButton("Login",250,400);
+		button_login = drawButton("Login",275,350);
 		button_login.addEventListener(MouseEvent.CLICK, onClick_login);
 	}
 
@@ -318,9 +306,9 @@ class Main extends Sprite
 		//Insertion of the full name
 		fullname = new TextField();
 		fullname.background = true;
-		fullname.width = 200;
+		fullname.width = 400;
 		fullname.height = 50;
-		fullname.x = 300;
+		fullname.x = 200;
 		fullname.y = 50;
 
 		var name1:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
@@ -336,10 +324,10 @@ class Main extends Sprite
 		//birthdate
 		birthdate = new TextField();
 		birthdate.background = true;
-		birthdate.width = 200;
+		birthdate.width = 400;
 		birthdate.height = 50;
-		birthdate.x = 300;
-		birthdate.y = 100;
+		birthdate.x = 200;
+		birthdate.y = 120;
 
 		var name2:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
 		//Text is centered
@@ -355,17 +343,17 @@ class Main extends Sprite
 		//Select your username
 		selecteduser = new TextField();
 		selecteduser.background = true;
-		selecteduser.width = 200;
+		selecteduser.width = 400;
 		selecteduser.height = 50;
-		selecteduser.x = 300;
-		selecteduser.y = 150;
+		selecteduser.x = 200;
+		selecteduser.y = 190;
 
 		var name2:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
 		//Text is centered
 		name2.align = TextFormatAlign.CENTER;
 		selecteduser.text = "Benutzername";
 		selecteduser.defaultTextFormat = name2;
-		selecteduser.restrict = "0-9 a-z";
+		selecteduser.restrict = "0-9 A-Z a-z";
 		selecteduser.type = TextFieldType.INPUT;
 		this.addChild(selecteduser);
 
@@ -373,10 +361,10 @@ class Main extends Sprite
 		//selection of password
 		selectedpw = new TextField();
 		selectedpw.background = true;
-		selectedpw.width = 200;
+		selectedpw.width = 400;
 		selectedpw.height = 50;
-		selectedpw.x = 300;
-		selectedpw.y = 200;
+		selectedpw.x = 200;
+		selectedpw.y = 260;
 
 		var name2:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
 		//Text is centered
@@ -390,8 +378,11 @@ class Main extends Sprite
 
 		//SHOULD ONLY BE POSSIBLE IF TEXT IS INSERTED
 		//Button for Registration
-		button_reg = drawButton("Registrieren",250,400);
+		button_reg = drawButton("Registrieren",100,400);
 		button_reg.addEventListener(MouseEvent.CLICK, onClick_Reg);
+		
+		button_reg_back = drawButton("Zurück",400,400);
+		button_reg_back.addEventListener(MouseEvent.CLICK, onClick_Reg_Back);
 
 
 	}
@@ -404,15 +395,15 @@ class Main extends Sprite
 	public function drawInfopage(){
 		
 		//New game button
-        button1 = drawButton("Neues Spiel",300,180);
+        button1 = drawButton("Neues Spiel",300,150);
 		//Anleitung
-		button2 = drawButton("Anleitung",300,240);
+		button2 = drawButton("Anleitung",300,210);
 		//Spielstand
-		button3 = drawButton("Spielstand",300,300);
-		//Beenden
-		button4 = drawButton("Beenden",300,360);
+		button3 = drawButton("Spielstand/Galerie",300,270);
+		//Über das Spiel
+		button4 = drawButton("Über das Spiel",300,330);
 		//Logout
-		button5 = drawButton("Logout",300,360);
+		button5 = drawButton("Logout",300,390);
 
 
 			
@@ -434,7 +425,7 @@ class Main extends Sprite
 
 
 		//End game Button --> drawInfoPage
-		button_end = drawButton("Beenden",700,20);
+		button_end = drawButton("Zurück",0,540);
 		//this.addChild(button_end);
 		button_end.addEventListener(MouseEvent.CLICK, onClick_end);
 		
@@ -459,18 +450,34 @@ class Main extends Sprite
 		this.addChild(circle_selection);
 		
 		// Draw score text field and set starting score points to zero
-		var scoreFormat:TextFormat = new TextFormat("Verdana", 24, 0xbbbbbb, true);
-		scoreFormat.align = TextFormatAlign.CENTER;
+		var scoreFormat:TextFormat = new TextFormat("Verdana", 30, 0xbbbbbb, true);
+		scoreFormat.align = TextFormatAlign.LEFT;
 		
 		scoreField = new TextField();
 		addChild(scoreField);
 		scoreField.width = 800;
+		//scoreField.x = 50;
 		scoreField.y = 30;
 		scoreField.defaultTextFormat = scoreFormat;
 		scoreField.selectable = false;
 		
 		scorePlayer = 0;
 		scoreField.text = 'Score: $scorePlayer';
+		
+		// Draw city text field	
+		var cityFormat:TextFormat = new TextFormat("Verdana", 30, 0xbbbbbb, true);
+		scoreFormat.align = TextFormatAlign.RIGHT;
+		
+		cityField = new TextField();
+		addChild(cityField);
+		cityField.width = 800;
+		//cityField.x = 650;
+		cityField.y = 30;
+		cityField.defaultTextFormat = scoreFormat;
+		cityField.selectable = false;
+		
+		cityName = "Tübingen";
+		cityField.text = '$cityName';
 
 
 		// Define and format text fields displaying slot machine outcome
