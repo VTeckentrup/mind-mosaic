@@ -119,9 +119,10 @@ class Main extends Sprite
 	private var selecteduser:TextField;
 	private var selectedpw:TextField;
 
-	//represents the level you are in
+	//represents the level you are in- just for presentation
+	//purpose - needs to be drawn from sheet
 	private var level:Int=1;
-	private var level_trial:Array<Int>;
+	private var score_trial:Array<Int>=[31];
 	//represents an array (length 30) with all pathogens
 	private var pathogenArrayBM:Array<BitmapData> = [];
 	private var pathogenArray:Array<Bitmap> = [];
@@ -615,7 +616,9 @@ class Main extends Sprite
      *  and we need to set the counter back
      */
 		_round_ind = 1;
-		levelField.text = '$_round_ind';
+		levelField.text = 'Runde: $_round_ind';
+		scorePlayer = Std.int(scorePlayer - score_trial[level]);
+		scoreField.text = 'Score: $scorePlayer';
 		currentGameState=Playing;
 	
     }
@@ -806,7 +809,10 @@ class Main extends Sprite
 				
 			}
 		}
-		
+		//array for subtraction if game is aborted under 200trials
+		score_trial[level] = scorePlayer;
+
+
 		//  Set values for database
 		_round_reward_prob = reward_prob_round;
 		_choice_correct = correct_choice;
@@ -869,7 +875,7 @@ class Main extends Sprite
 		this.removeChild(frame_choice);
 		
 		_round_ind = _round_ind + 1;
-		levelField.text = '$_round_ind';
+		levelField.text = 'Runde: $_round_ind';
 		
 		// Remove any selection frames
 		this.removeChild(frame_choice);
