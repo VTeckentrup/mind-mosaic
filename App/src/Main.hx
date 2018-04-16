@@ -127,6 +127,9 @@ class Main extends Sprite
 	private var background_bd:BitmapData;
 	private var background_b:Bitmap;
 	
+	// Counter for rounds
+	public static var _round_ind:Int;
+	
 	
 
 	/* ENTRY POINT */
@@ -779,14 +782,16 @@ class Main extends Sprite
 		
 		
 		// Set timer to give player time to evaluate the outcome
-		haxe.Timer.delay(newRound,1000);
+		if (_round_ind < rounds + 1){
+				
+			haxe.Timer.delay(newRound,1000);
+			
+			}
 		
 	}
 	
 	
 	private function newRound():Void {
-		
-		for (round_counter in 1...rounds) {
 		
 		// Set up new rewards
 		//blue_reward = 0 + Math.floor(((100 - 0 + 1) * Math.random()));
@@ -813,8 +818,6 @@ class Main extends Sprite
 		
 		// Resume game
 		currentGameState = Playing;
-		
-		}
 		
 	}
 	
