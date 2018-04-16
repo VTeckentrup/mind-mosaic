@@ -121,6 +121,7 @@ class Main extends Sprite
 
 	//represents the level you are in
 	private var level:Int=1;
+	private var level_trial:Array<Int>;
 	//represents an array (length 30) with all pathogens
 	private var pathogenArrayBM:Array<BitmapData> = [];
 	private var pathogenArray:Array<Bitmap> = [];
@@ -428,7 +429,7 @@ class Main extends Sprite
 	//function that draws the Slotmachine
 	function drawSlotmachine(){
 
-
+		_round_ind = 1;
 		//End game Button --> drawInfoPage
 		button_end = drawButton("Zurück",0,540);
 		//this.addChild(button_end);
@@ -555,7 +556,6 @@ class Main extends Sprite
 		
 		// DUMMY: Initialize database entries
 		_id = 1;
-		_round_ind = 1;
 		_blue_reward_prob = reward_prob_blue;
 		_green_reward_prob = reward_prob_green;
 		_reward_blue = blue_reward;
@@ -614,9 +614,9 @@ class Main extends Sprite
      *  currentGameState=Playing;
      *  and we need to set the counter back
      */
-	_round_ind = 1;
-	levelField.text = '$_round_ind';
-	currentGameState=Playing;
+		_round_ind = 1;
+		levelField.text = '$_round_ind';
+		currentGameState=Playing;
 	
     }
 
