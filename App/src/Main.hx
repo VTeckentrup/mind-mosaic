@@ -24,6 +24,7 @@ enum GameState {
 	
 	Playing;
 	Evaluate;
+	Paused;
 }
 
 class Main extends Sprite 
@@ -578,6 +579,18 @@ class Main extends Sprite
         addChild(b);
 	 */
 	}
+	    //what to do if app is out of focus
+    private function pause(e:Event):Void{
+        currentGameState=Paused;
+    }
+    //app back in focus - start last round again
+    private function unpause(e:Event):Void{
+    /**
+     *  currentGameState=Playing;
+     *  and we need to set the counter back
+     */
+    }
+
 
 	function init() 
 	{
@@ -589,7 +602,11 @@ class Main extends Sprite
 		/*   bd = Assets.getBitmapData("img/logo.png");
 		b = new Bitmap(bd);
         addChild(b);*/
-		
+		//stops game when not zoned in
+		//insert focus out???
+        stage.addEventListener(Event.DEACTIVATE, pause);
+        stage.addEventListener(Event.ACTIVATE, unpause);
+
 		// Set up keys to select option: usually in init function 
 		keys = [];
 		stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
