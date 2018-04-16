@@ -4,6 +4,7 @@ import GlobalDBVars.*;
 import openfl.Assets;
 import sys.db.Manager;
 import sys.FileSystem;
+import haxe.io.Path;
 
 class AppdataEntryLite
 {
@@ -12,11 +13,11 @@ class AppdataEntryLite
     {
         // open connection to SQLite database
         //var litecnx = sys.db.Sqlite.open(Assets.getPath("database/appdata.db"));
-		if(!FileSystem.exists("database")) {
-            FileSystem.createDirectory("database");
+		if(!FileSystem.exists(database_path)) {
+            FileSystem.createDirectory(database_path);
         }
 		
-		var litecnx = sys.db.Sqlite.open("database/appdata.db");
+		var litecnx = sys.db.Sqlite.open(Path.join([database_path,"./appdata.db"]));
 		//var litecnx = sys.db.Sqlite.open("appdata.db");
         
         // set connection as current manager

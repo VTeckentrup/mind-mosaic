@@ -24,7 +24,7 @@ import haxe.macro.Expr;
 		
 		var config = {
 			
-			build: "29",
+			build: "31",
 			company: "Vanessa Teckentrup",
 			file: "AppSlotMachine",
 			fps: 60,
@@ -45,7 +45,7 @@ import haxe.macro.Expr;
 					display: 0,
 					fullscreen: false,
 					hardware: true,
-					height: 480,
+					height: 900,
 					hidden: #if munit true #else false #end,
 					maximized: false,
 					minimized: false,
@@ -54,7 +54,7 @@ import haxe.macro.Expr;
 					stencilBuffer: true,
 					title: "App_SlotMachine",
 					vsync: false,
-					width: 800,
+					width: 1600,
 					x: null,
 					y: null
 				},
@@ -74,7 +74,7 @@ import haxe.macro.Expr;
 		
 		#if (js && html5)
 		#if (munit || utest)
-		lime.system.System.embed (projectName, null, 800, 480, config);
+		lime.system.System.embed (projectName, null, 1600, 900, config);
 		#end
 		#else
 		create (config);

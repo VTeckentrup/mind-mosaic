@@ -1,5 +1,7 @@
 package;
 
+import haxe.io.Path;
+
 class GlobalDBVars
 {
     public static var _id:Int;
@@ -13,4 +15,5 @@ class GlobalDBVars
     public static var _choice_player:String;
     public static var _player_won:Int;
     public static var _timestamp:Dynamic;
+	public static var database_path = Path.join([Path.directory(Sys.programPath()), "database"]);
 }
