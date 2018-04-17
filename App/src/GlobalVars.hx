@@ -1,8 +1,9 @@
 package;
 
 import haxe.io.Path;
+import lime.system.System;
 
-class GlobalDBVars
+class GlobalVars
 {
     public static var _id:Int;
 	public static var _round_ind:Int;
@@ -17,5 +18,5 @@ class GlobalDBVars
     public static var _choice_player:String;
     public static var _player_won:Int;
     public static var _timestamp:Dynamic;
-	public static var database_path = Path.join([Path.directory(Sys.programPath()), "database"]);
+	public static var database_path = Path.join([System.applicationStorageDirectory, "database"]);
 }

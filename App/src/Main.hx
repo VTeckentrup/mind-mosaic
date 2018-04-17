@@ -15,7 +15,7 @@ import flash.ui.Keyboard;
 import openfl.display.SimpleButton;
 import openfl.events.MouseEvent;
 import Math.random;
-import GlobalDBVars.*;
+import GlobalVars.*;
 import openfl.Assets;
 import openfl.display.BitmapData;
 import openfl.display.Bitmap;
