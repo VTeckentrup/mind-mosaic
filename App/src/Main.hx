@@ -19,6 +19,8 @@ import GlobalVars.*;
 import openfl.Assets;
 import openfl.display.BitmapData;
 import openfl.display.Bitmap;
+import sys.FileSystem;
+import haxe.io.Path;
 //using layout.LayoutCreator;
 //using layout.LayoutPreserver;
 
@@ -122,7 +124,7 @@ class Main extends Sprite
 
 	//represents the level you are in- just for presentation
 	//purpose - needs to be drawn from sheet
-	private var level:Int=1;
+	//private var level:Int=1;
 	private var score_trial:Array<Int>=[31];
 	//represents an array (length 30) with all pathogens
 	private var pathogenArrayBM:Array<BitmapData> = [];
@@ -198,7 +200,7 @@ class Main extends Sprite
 	//Button Game Status - Button3
 	public function onClick3 (event: MouseEvent):Void {
 		this.removeChildren();
-		seeGamestatus(level);
+		seeGamestatus(_level);
 		button_back = drawButton("Zurück",300,300);
 		button_back.addEventListener(MouseEvent.CLICK, onClick_back);	
 	}
@@ -430,7 +432,23 @@ class Main extends Sprite
 	//function that draws the Slotmachine
 	function drawSlotmachine(){
 
-		_round_ind = 1;
+		// Check for existing appdata
+		_id = 1; //Dummy
+		savepath_id = "./" + Std.string(_id) + "_appdata.json";
+		if(!FileSystem.exists(Path.join([save_path, savepath_id]))) {
+		
+			_id = 1;
+			_round_ind = 1;
+			_level = 1;
+			new AppdataSave();
+			
+		} else {
+			
+			new AppdataLoad();
+			_round_ind = 1;
+			
+		}
+		
 		//End game Button --> drawInfoPage
 		button_end = drawButton("Zurück",0,540);
 		//this.addChild(button_end);
@@ -497,6 +515,7 @@ class Main extends Sprite
 		levelField.defaultTextFormat = levelFormat;
 		levelField.selectable = false;
 		levelField.text = '$_round_ind';
+		//levelField.text = '$_level';
 
 
 		// Define and format text fields displaying slot machine outcome
@@ -556,11 +575,11 @@ class Main extends Sprite
 		reward_prob_green = 1 - reward_prob_blue;
 		
 		// DUMMY: Initialize database entries
-		_id = 1;
 		_blue_reward_prob = reward_prob_blue;
 		_green_reward_prob = reward_prob_green;
 		_reward_blue = blue_reward;
 		_reward_green = green_reward;
+		
 		
 		// Set game state
 		currentGameState = Playing;		
@@ -579,7 +598,7 @@ class Main extends Sprite
 		
 	}
 
-	public function seeGamestatus(level:Int){
+	public function seeGamestatus(_level:Int){
 		/*probably a variable that gets its value from the 
 		data base to represent the level that you reached
 		--> var level: now set to 1 because no data base available
@@ -617,7 +636,8 @@ class Main extends Sprite
      */
 		_round_ind = 1;
 		levelField.text = 'Runde: $_round_ind';
-		scorePlayer = Std.int(scorePlayer - score_trial[level]);
+		//levelField.text = '$_level';
+		scorePlayer = Std.int(scorePlayer - score_trial[_level]);
 		scoreField.text = 'Score: $scorePlayer';
 		currentGameState=Playing;
 	
@@ -809,7 +829,7 @@ class Main extends Sprite
 			}
 		}
 		//array for subtraction if game is aborted under 200trials
-		score_trial[level] = scorePlayer;
+		score_trial[_level] = scorePlayer;
 
 
 		//  Set values for database
@@ -835,15 +855,19 @@ class Main extends Sprite
 		}*/
 		
 		// Set timer to give player time to evaluate the outcome
-		if (_round_ind < rounds + 1){
+		if (_round_ind < rounds + 1)
+		{
 			//calls function newRound with delay of 1000ms	
 			haxe.Timer.delay(newRound,1000);
 			
-			}else{
-				level = level+1;
-				_round_ind=1;
-				currentGameState=Playing;
-			}
+		} else
+		{
+			_level = _level+1;
+			_round_ind = 1;
+			// DUMMY: JSON save
+			new AppdataSave();
+			haxe.Timer.delay(newRound,1000);
+		}
 		
 	}
 	
@@ -859,8 +883,8 @@ class Main extends Sprite
 		scoreField_green.text = Std.string(green_reward);
 		
 		// Grab new reward probabilities
-		trace(probArray[_round_ind]);
-		reward_prob_blue = probArray[_round_ind];
+		trace(probArray[_round_ind-1]);
+		reward_prob_blue = probArray[_round_ind-1];
 		reward_prob_green = 1 - reward_prob_blue;
 		
 		// Reset selection circle
@@ -875,6 +899,7 @@ class Main extends Sprite
 		
 		_round_ind = _round_ind + 1;
 		levelField.text = 'Runde: $_round_ind';
+		//levelField.text = '$_level';
 		
 		// Remove any selection frames
 		this.removeChild(frame_choice);

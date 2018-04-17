@@ -18,5 +18,12 @@ class GlobalVars
     public static var _choice_player:String;
     public static var _player_won:Int;
     public static var _timestamp:Dynamic;
+	// paths
 	public static var database_path = Path.join([System.applicationStorageDirectory, "database"]);
+	public static var save_path = Path.join([System.applicationStorageDirectory, "appdata"]);
+	// save variables
+	public static var savepath_id:String;
+	public static var json_savepath;
+	public static var appdata_json;
+	public static var appdata;
 }
