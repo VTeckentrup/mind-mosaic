@@ -5,6 +5,7 @@ import flash.events.Event;
 import flash.Lib;
 import flash.text.TextField;
 import openfl.text.TextFieldType;
+import openfl.system.Capabilities;
 import flash.text.TextFormat;
 import flash.text.Font;
 import flash.text.FontStyle;
@@ -18,8 +19,8 @@ import GlobalDBVars.*;
 import openfl.Assets;
 import openfl.display.BitmapData;
 import openfl.display.Bitmap;
-using layout.LayoutCreator;
-using layout.LayoutPreserver;
+//using layout.LayoutCreator;
+//using layout.LayoutPreserver;
 
 enum GameState {
 	
@@ -254,9 +255,8 @@ class Main extends Sprite
 		//addChild(b);
 		background_bd = Assets.getBitmapData("img/background_medium.png");
 		background_b = new Bitmap(background_bd);
+		background_b.smoothing = true;
 		addChild(background_b);
-		//background_b.matchWidth(stage);
-		//background_b.maintainAspectRatio();
 		button_log = drawButton("Login",300,100);
 		button_reg1 = drawButton("Registration", 300, 200);
 		button_log.addEventListener(MouseEvent.CLICK, onClick_log);
@@ -660,10 +660,13 @@ class Main extends Sprite
 	//Entry point of main function: treats it as an object
 	public function new() 
 	{
+		Lib.application.window.resize(Std.int(Capabilities.screenResolutionX), Std.int(Capabilities.screenResolutionY));
+		
 		super();	
 		//addEventListener(Event.ADDED_TO_STAGE, added);
 
 		stage.scaleMode = openfl.display.StageScaleMode.SHOW_ALL;
+		
 		#if flash
         stage.align = untyped "";
     	#else
@@ -684,16 +687,12 @@ class Main extends Sprite
     
     	var stageScale:Float = Math.min(stageScaleX, stageScaleY);
     
-    	Lib.current.x = 0;
-    	Lib.current.y = 0;
     	Lib.current.scaleX = stageScale;
     	Lib.current.scaleY = stageScale;
-    
-    	if(stageScaleX > stageScaleY) {
+		
         Lib.current.x = (stage.stageWidth - NOMINAL_WIDTH * stageScale) / 2;
-    	} else {
         Lib.current.y = (stage.stageHeight - NOMINAL_HEIGHT * stageScale) / 2;
-    	}
+		
 	}
 
 	// Set keyboard keys actived/deactivated on key press/release
