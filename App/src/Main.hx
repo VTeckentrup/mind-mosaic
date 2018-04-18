@@ -534,7 +534,7 @@ class Main extends Sprite
 		scoreField.defaultTextFormat = scoreFormat;
 		scoreField.selectable = false;
 		
-		
+		_score = 1;
 		scoreField.text = 'Score: $_score';
 		
 		// Draw city text field	
@@ -880,7 +880,7 @@ class Main extends Sprite
 			// If the winning green machine was selected add reward to score and update score field
 			if (machine_color == 'green') {
 				
-				_score = Std.int(_score + green_reward);
+				_score = _score + green_reward;
 				scoreField.text = 'Score: $_score';
 				
 			}
