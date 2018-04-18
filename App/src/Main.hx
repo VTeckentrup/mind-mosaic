@@ -643,9 +643,39 @@ class Main extends Sprite
 	}
 
 	public function getPathogenAssignment(){
+		//pathogen assignments to the pathogen array
 		pathogenArrayBM[1] = Assets.getBitmapData("img/virus1.png");
 		pathogenArrayBM[2] = Assets.getBitmapData("img/virus2.png");
-
+		/*pathogenArrayBM[3]
+		pathogenArrayBM[4]
+		pathogenArrayBM[5]
+		pathogenArrayBM[6]
+		pathogenArrayBM[7]
+		pathogenArrayBM[8]
+		pathogenArrayBM[9]
+		pathogenArrayBM[10]
+		pathogenArrayBM[11]
+		pathogenArrayBM[12]
+		pathogenArrayBM[13]
+		pathogenArrayBM[14]
+		pathogenArrayBM[15]
+		pathogenArrayBM[16]
+		pathogenArrayBM[17]
+		pathogenArrayBM[18]
+		pathogenArrayBM[19]
+		pathogenArrayBM[20]
+		pathogenArrayBM[21]
+		pathogenArrayBM[22]
+		pathogenArrayBM[23]
+		pathogenArrayBM[24]
+		pathogenArrayBM[25]
+		pathogenArrayBM[26]
+		pathogenArrayBM[27]
+		pathogenArrayBM[28]
+		pathogenArrayBM[29]
+		pathogenArrayBM[30]
+		pathogenArrayBM[31]
+		*/
 		//3 will be replaced with 31
 		for(i in 1...3){
 			pathogenArray[i] = new Bitmap(pathogenArrayBM[i]);
@@ -852,7 +882,7 @@ class Main extends Sprite
 			circle_selection.x = 400;
 			circle_selection.y = 300;
 			this.addChild(circle_selection);
-			trace('$'_score);
+			trace('$_score');
 						
 			// If the winning green machine was selected add reward to score and update score field
 			if (machine_color == 'green') {
