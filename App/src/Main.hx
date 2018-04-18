@@ -477,8 +477,6 @@ class Main extends Sprite
 		//insert focus out???
 		stage.addEventListener(Event.DEACTIVATE, pause);
         stage.addEventListener(Event.ACTIVATE, unpause);
-		//Check for internet connection
-		var database_availability = InternetConnection.isAvailable();
 
 		// Check for existing appdata
 		_id = 1; //Dummy
@@ -721,6 +719,13 @@ class Main extends Sprite
 		
 		// Listen for input
 		this.addEventListener(Event.ENTER_FRAME, everyFrame);
+		
+		// Listen for exit events and attach clean up functions
+		ExitHandler.setExitHandler(function() {
+			
+			var database_availability = InternetConnection.isAvailable();
+			
+		});
 
 		getPathogenAssignment();
 		log_and_reg();
