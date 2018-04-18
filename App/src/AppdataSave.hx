@@ -17,9 +17,9 @@ class AppdataSave
 		
 		savepath_id = "./" + Std.string(_id) + "_appdata.json";
 		json_savepath = Path.join([save_path, savepath_id]);
+		
 			
-			
-		appdata = {id:_id, level:_level};
+		appdata = {id:_id, level:_level, score:_score};
 		
 		appdata_json = haxe.Json.stringify(appdata);
 		

@@ -392,7 +392,10 @@ class Main extends Sprite
 		button_reg_back = drawButton("Zurück",400,400);
 		button_reg_back.addEventListener(MouseEvent.CLICK, onClick_Reg_Back);
 
-
+		//Initialisation of 'start' values
+		//_id = 
+		_score = 0;
+		_level = 1;
 	}
 
 
@@ -425,12 +428,62 @@ class Main extends Sprite
 	}
 	
 	
+	//what to do if app is out of focus
+    private function pause(e:Event):Void{
+        currentGameState=Paused;
+
+    }
+	//app back in focus - start last round again
+    private function unpause(e:Event):Void{
+   
+		blue_reward = Math.round(NormRandom.floatNormal(50,12));
+		green_reward = 100 - blue_reward;
+		scoreField_blue.text = Std.string(blue_reward);
+		scoreField_green.text = Std.string(green_reward);
+		
+		// Grab new reward probabilities
+		trace(probArray[_round_ind-1]);
+		reward_prob_blue = probArray[_round_ind-1];
+		reward_prob_green = 1 - reward_prob_blue;
+		
+		// Reset selection circle
+		this.removeChild(circle_selection);
+		circle_selection = new Selection_Circle(0xc7ccd6);
+		circle_selection.x = 400;
+		circle_selection.y = 300;
+		this.addChild(circle_selection);
+		
+		// Remove any selection frames
+		this.removeChild(frame_choice);	 
+		_round_ind = 1;
+		levelField.text = 'Runde: $_round_ind';
+		//levelField.text = '$_level';
+		_score = Std.int(_score - score_trial[_level]);
+		scoreField.text = 'Score: $_score';
+		// Remove any selection frames
+		this.removeChild(frame_choice);
+		
+		// Set new values for database
+		_blue_reward_prob = reward_prob_blue;
+		_green_reward_prob = reward_prob_green;
+		_reward_blue = blue_reward;
+		_reward_green = green_reward;
+		
+		// Resume game
+		//everyframe always active when currentGameState=Playing
+		//->goes to everyFrame
+		currentGameState = Playing;
 	
+    }
 
 
 	//function that draws the Slotmachine
 	function drawSlotmachine(){
 		
+		//stops game when not zoned in
+		//insert focus out???
+		stage.addEventListener(Event.DEACTIVATE, pause);
+        stage.addEventListener(Event.ACTIVATE, unpause);
 		//Check for internet connection
 		var database_availability = InternetConnection.isAvailable();
 
@@ -488,8 +541,8 @@ class Main extends Sprite
 		scoreField.defaultTextFormat = scoreFormat;
 		scoreField.selectable = false;
 		
-		scorePlayer = 0;
-		scoreField.text = 'Score: $scorePlayer';
+		
+		scoreField.text = 'Score: $_score';
 		
 		// Draw city text field	
 		var cityFormat:TextFormat = new TextFormat("Verdana", 30, 0xbbbbbb, true);
@@ -625,25 +678,7 @@ class Main extends Sprite
         addChild(b);
 	 */
 	}
-	    //what to do if app is out of focus
-    private function pause(e:Event):Void{
-        currentGameState=Paused;
 
-    }
-    //app back in focus - start last round again
-    private function unpause(e:Event):Void{
-    /*
-     *  currentGameState=Playing;
-     *  and we need to set the counter back
-     */
-		_round_ind = 1;
-		levelField.text = 'Runde: $_round_ind';
-		//levelField.text = '$_level';
-		scorePlayer = Std.int(scorePlayer - score_trial[_level]);
-		scoreField.text = 'Score: $scorePlayer';
-		currentGameState=Playing;
-	
-    }
 
 
 	function init() 
@@ -654,10 +689,6 @@ class Main extends Sprite
 		/*   bd = Assets.getBitmapData("img/logo.png");
 		b = new Bitmap(bd);
         addChild(b);*/
-		//stops game when not zoned in
-		//insert focus out???
-        stage.addEventListener(Event.DEACTIVATE, pause);
-        stage.addEventListener(Event.ACTIVATE, unpause);
 
 		// Set up keys to select option: usually in init function 
 		keys = [];
@@ -681,6 +712,7 @@ class Main extends Sprite
 	/* SETUP */
 	//Entry point of main function: treats it as an object
 	public function new() 
+
 	{
 		Lib.application.window.resize(Std.int(Capabilities.screenResolutionX), Std.int(Capabilities.screenResolutionY));
 		
@@ -803,13 +835,13 @@ class Main extends Sprite
 			circle_selection.x = 400;
 			circle_selection.y = 300;
 			this.addChild(circle_selection);
-			trace('$scorePlayer');
+			trace('$_score');
 			
 			// If the winning blue machine was selected add reward to score and update score field
 			if (machine_color == 'blue') {
 				
-				scorePlayer = Std.int(scorePlayer + blue_reward);
-				scoreField.text = 'Score: $scorePlayer';
+				_score = Std.int(_score + blue_reward);
+				scoreField.text = 'Score: $_score';
 				
 			}
 		
@@ -820,18 +852,18 @@ class Main extends Sprite
 			circle_selection.x = 400;
 			circle_selection.y = 300;
 			this.addChild(circle_selection);
-			trace('$scorePlayer');
+			trace('$'_score);
 						
 			// If the winning green machine was selected add reward to score and update score field
 			if (machine_color == 'green') {
 				
-				scorePlayer = Std.int(scorePlayer + green_reward);
-				scoreField.text = 'Score: $scorePlayer';
+				_score = Std.int(_score + green_reward);
+				scoreField.text = 'Score: $_score';
 				
 			}
 		}
 		//array for subtraction if game is aborted under 200trials
-		score_trial[_level] = scorePlayer;
+		score_trial[_level] = _score;
 
 
 		//  Set values for database
@@ -918,6 +950,5 @@ class Main extends Sprite
 		currentGameState = Playing;
 		
 	}
-	
-	
+
 }
