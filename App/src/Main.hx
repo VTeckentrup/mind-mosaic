@@ -32,7 +32,7 @@ enum GameState {
 
 class Main extends Sprite 
 {
-
+//%%%%%%%%%%%%%VARIABLEN%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
 	var inited:Bool;
 	
@@ -134,7 +134,7 @@ class Main extends Sprite
 	private var background_bd:BitmapData;
 	private var background_b:Bitmap;
 	
-	
+	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
 
 	/* ENTRY POINT */
@@ -145,25 +145,8 @@ class Main extends Sprite
 		// else (resize or orientation change)
 	}
 
-//_________Try out zone assets_______________________________________________
 
-/*	public function drawButton1(text:String,pos1:Int,pos2:Int,bm:Bitmap):SimpleButton{
-
-		var b1 = new Button(0x215ab7, text);
-		var b2 = new Button(0xb72025, text);
-		var b3 = new Button(0xfffb21, text);
-		var b4 = new Button(0x36b71f, text);
-		button = new SimpleButton(b1,b2,b3,b4);
-		
-        button.x = pos1;
-		button.y = pos2;
-		this.addChild(bm);
-        this.addChild(button);
-		return(button);
-	}
-*/
-
-//_________Try out zone assets_______________________________________________
+//%%%%%%%%%%BUTTONS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	/*function to only draw the button - can be called for every button 
     you need to pass on a text that the button has to display*/
 	public function drawButton(text:String,pos1:Int,pos2:Int):SimpleButton{
@@ -249,6 +232,11 @@ class Main extends Sprite
 		this.removeChildren();
 		drawInfopage();
 	}
+
+
+	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	//%%%%%%%%REGISTRATION&LOGINS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//first page that lets you choose between Login and Registration
 	public function log_and_reg(){
 	//	bd = Assets.getBitmapData("img/logo.png");
@@ -426,7 +414,9 @@ class Main extends Sprite
 		
 	
 	}
-	
+	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	//%%%%%%%%%OUT OF FOCUS FUNCTIONS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
 	//what to do if app is out of focus
     private function pause(e:Event):Void{
@@ -476,7 +466,10 @@ class Main extends Sprite
 	
     }
 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+//%%%%%%%%%%%SLOT MACHINE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//function that draws the Slotmachine
 	function drawSlotmachine(){
 		
@@ -641,7 +634,10 @@ class Main extends Sprite
 		
 
 	}
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+//%%%%%%%%%%PATHOGEN PIC ASSIGNMENT%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%		
 	public function getPathogenAssignment(){
 		//pathogen assignments to the pathogen array
 		pathogenArrayBM[1] = Assets.getBitmapData("img/virus1.png");
@@ -708,17 +704,15 @@ class Main extends Sprite
         addChild(b);
 	 */
 	}
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
+//%%%%%%%%%%INITIATION FUNCTION%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 	function init() 
 	{
 
 		if (inited) return;
 		inited = true;
-		/*   bd = Assets.getBitmapData("img/logo.png");
-		b = new Bitmap(bd);
-        addChild(b);*/
 
 		// Set up keys to select option: usually in init function 
 		keys = [];
@@ -738,6 +732,7 @@ class Main extends Sprite
 
 		
 	}
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
 	/* SETUP */
 	//Entry point of main function: treats it as an object
@@ -789,11 +784,9 @@ class Main extends Sprite
 	}
 
 
+//%%%%%%%%%%%% GAME %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	private function everyFrame(event:Event):Void {
-		
-		
-		
-		
+	
 		// Only execute if the game is currently active to prevent excessive summation of rewards
 		if (currentGameState == Playing) {
 		
@@ -980,5 +973,6 @@ class Main extends Sprite
 		currentGameState = Playing;
 		
 	}
+//%%%%%%%%%%%% GAME %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 }
