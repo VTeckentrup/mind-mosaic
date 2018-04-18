@@ -25,6 +25,7 @@ class AppdataLoad
 		
 		_id = appdata.id;
 		_level = appdata.level;
+		_score = appdata.score;
 	
 		}
 	

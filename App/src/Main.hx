@@ -134,6 +134,8 @@ class Main extends Sprite
 	private var background_bd:BitmapData;
 	private var background_b:Bitmap;
 	
+
+	
 	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
 
@@ -246,7 +248,12 @@ class Main extends Sprite
 		background_b = new Bitmap(background_bd);
 		background_b.smoothing = true;
 		addChild(background_b);
-		button_log = drawButton("Login",300,100);
+		trace(Lib.current.stage.window.width);
+		trace(Lib.current.stage.window.height);
+		trace(stageScaleX);
+		trace(stageScaleX1);
+		trace(Lib.current.stage.stageWidth);
+		button_log = drawButton("Login",Std.int(Lib.current.stage.window.width / 2),Std.int(Lib.current.stage.window.height / 2));
 		button_reg1 = drawButton("Registration", 300, 200);
 		button_log.addEventListener(MouseEvent.CLICK, onClick_log);
 		button_reg1.addEventListener(MouseEvent.CLICK, onClick_reg1);
@@ -766,16 +773,19 @@ class Main extends Sprite
 	}
 
 	private function onResize(e:Event):Void {
-    	var stageScaleX:Float = stage.stageWidth / NOMINAL_WIDTH;
-    	var stageScaleY:Float = stage.stageHeight / NOMINAL_HEIGHT;
-    
-    	var stageScale:Float = Math.min(stageScaleX, stageScaleY);
+    	//stageScaleX = stage.stageWidth / NOMINAL_WIDTH;
+    	//stageScaleY = stage.stageHeight / NOMINAL_HEIGHT;
+		
+		stageScaleX = Lib.current.stage.window.width / NOMINAL_WIDTH;
+    	stageScaleY = Lib.current.stage.window.height / NOMINAL_HEIGHT;
+
+    	stageScale = Math.min(stageScaleX, stageScaleY);
     
     	Lib.current.scaleX = stageScale;
     	Lib.current.scaleY = stageScale;
 		
-        Lib.current.x = (stage.stageWidth - NOMINAL_WIDTH * stageScale) / 2;
-        Lib.current.y = (stage.stageHeight - NOMINAL_HEIGHT * stageScale) / 2;
+        Lib.current.x = (Lib.current.stage.window.width - NOMINAL_WIDTH * stageScale) / 2;
+        Lib.current.y = (Lib.current.stage.window.height - NOMINAL_HEIGHT * stageScale) / 2;
 		
 	}
 
