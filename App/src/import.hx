@@ -1,0 +1,2 @@
+import GlobalVars.*;
+import InternetConnection.*;

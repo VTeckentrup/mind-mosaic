@@ -1,6 +1,5 @@
 package;
 
-import GlobalVars.*;
 import openfl.Assets;
 import sys.db.Manager;
 import sys.FileSystem;

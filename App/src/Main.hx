@@ -15,7 +15,6 @@ import flash.ui.Keyboard;
 import openfl.display.SimpleButton;
 import openfl.events.MouseEvent;
 import Math.random;
-import GlobalVars.*;
 import openfl.Assets;
 import openfl.display.BitmapData;
 import openfl.display.Bitmap;
@@ -431,6 +430,9 @@ class Main extends Sprite
 
 	//function that draws the Slotmachine
 	function drawSlotmachine(){
+		
+		//Check for internet connection
+		var database_availability = InternetConnection.isAvailable();
 
 		// Check for existing appdata
 		_id = 1; //Dummy

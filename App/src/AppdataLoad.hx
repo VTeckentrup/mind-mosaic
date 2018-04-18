@@ -1,6 +1,5 @@
 package;
 
-import GlobalVars.*;
 import haxe.Json;
 import haxe.io.Path;
 import sys.FileSystem;
