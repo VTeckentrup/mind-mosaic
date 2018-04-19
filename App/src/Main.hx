@@ -244,6 +244,7 @@ class Main extends Sprite
 	//%%%%%%%%REGISTRATION&LOGINS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//first page that lets you choose between Login and Registration
 	public function log_and_reg(){
+		
 		background_bd = Assets.getBitmapData("img/background_medium.png");
 		background_b = new Bitmap(background_bd);
 		background_b.smoothing = true;
@@ -256,7 +257,7 @@ class Main extends Sprite
 		button_reg1 = drawButton("Registration", Std.int(Lib.application.window.width * 0.5), Std.int(Lib.application.window.height * 0.8));
 		button_log.addEventListener(MouseEvent.CLICK, onClick_log);
 		button_reg1.addEventListener(MouseEvent.CLICK, onClick_reg1);
-		DatabaseSync.loadSQLite();
+		
 	}
 
 	//first SetUp Image with the Log-in data & PW
@@ -727,10 +728,14 @@ class Main extends Sprite
 		// Listen for input
 		this.addEventListener(Event.ENTER_FRAME, everyFrame);
 		
-		// Listen for exit events and attach clean up functions
+		// Listen for exit events and attach sync functions
 		ExitHandler.setExitHandler(function() {
 			
 			var database_availability = InternetConnection.isAvailable();
+			// Move data from local SQLite database to MariaDB if internet connection is available
+			if (database_availability == true) {
+				DatabaseSync.loadSQLite();
+			}
 			
 		});
 
