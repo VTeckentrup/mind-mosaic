@@ -1,6 +1,5 @@
 package;
 
-import openfl.Assets;
 import sys.db.Manager;
 import sys.FileSystem;
 import haxe.io.Path;
@@ -47,16 +46,16 @@ class AppdataEntryLite
     {
 
         var app_round = new AppdataDB();
-        app_round.uid = _id;
-        app_round.round_ind = _round_ind;
+        app_round.subject_id = _id;
+        app_round.round_index = _round_ind;
         app_round.blue_reward_prob = _blue_reward_prob;
         app_round.green_reward_prob = _green_reward_prob;
         app_round.round_reward_prob = _round_reward_prob;
-        app_round.choice_correct = _choice_correct;
+        app_round.correct_choice = _choice_correct;
         app_round.reward_blue = _reward_blue;
         app_round.reward_green = _reward_green;
         app_round.choice_player = _choice_player;
-        app_round.player_won = _player_won;
+        app_round.player_wins = _player_won;
         app_round.timestamp = _timestamp;
         return app_round;
     

@@ -29,8 +29,9 @@ class GlobalVars
 	public static var appdata;
 	// save variables database
 	public static var db_address:String = "http://www.google.com";
+	public static var entry_list;
+	
     public static var stageScaleX:Float;
-    public static var stageScaleX1:Float;
 	public static var stageScaleY:Float;
 	public static var stageScale:Float;
 }

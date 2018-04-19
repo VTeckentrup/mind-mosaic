@@ -161,6 +161,8 @@ class Main extends Sprite
 		
         button.x = pos1;
 		button.y = pos2;
+		
+		button.useHandCursor = true;
 
         this.addChild(button);
 		return(button);
@@ -195,6 +197,7 @@ class Main extends Sprite
 	//Button Logout - button5
 	public function onClick5 (event: MouseEvent):Void {
 		this.removeChildren();
+		Lib.application.window.close();
 	}
 	
 	//DATENBANK - ABSPEICHERN
@@ -241,22 +244,19 @@ class Main extends Sprite
 	//%%%%%%%%REGISTRATION&LOGINS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//first page that lets you choose between Login and Registration
 	public function log_and_reg(){
-	//	bd = Assets.getBitmapData("img/logo.png");
-	//	b = new Bitmap(bd);
-		//addChild(b);
 		background_bd = Assets.getBitmapData("img/background_medium.png");
 		background_b = new Bitmap(background_bd);
 		background_b.smoothing = true;
 		addChild(background_b);
-		trace(Lib.current.stage.window.width);
-		trace(Lib.current.stage.window.height);
-		trace(stageScaleX);
-		trace(stageScaleX1);
-		trace(Lib.current.stage.stageWidth);
-		button_log = drawButton("Login",Std.int(Lib.current.stage.window.width / 2),Std.int(Lib.current.stage.window.height / 2));
-		button_reg1 = drawButton("Registration", 300, 200);
+		//trace(Lib.current.stage.window.width);
+		//trace(Lib.current.stage.window.height);
+		//trace(stageScaleX);
+		//trace(Lib.current.stage.stageWidth);
+		button_log = drawButton("Login",Std.int(Lib.application.window.width * 0.5),Std.int(Lib.application.window.height * 0.5));
+		button_reg1 = drawButton("Registration", Std.int(Lib.application.window.width * 0.5), Std.int(Lib.application.window.height * 0.8));
 		button_log.addEventListener(MouseEvent.CLICK, onClick_log);
 		button_reg1.addEventListener(MouseEvent.CLICK, onClick_reg1);
+		DatabaseSync.loadSQLite();
 	}
 
 	//first SetUp Image with the Log-in data & PW
@@ -751,18 +751,21 @@ class Main extends Sprite
 	public function new() 
 
 	{
+		Lib.application.window.x = 0;
+		Lib.application.window.y = 0;
+		
 		Lib.application.window.resize(Std.int(Capabilities.screenResolutionX), Std.int(Capabilities.screenResolutionY));
 		
 		super();	
 		//addEventListener(Event.ADDED_TO_STAGE, added);
 
-		stage.scaleMode = openfl.display.StageScaleMode.SHOW_ALL;
+		//stage.scaleMode = openfl.display.StageScaleMode.SHOW_ALL;
 		
 		#if flash
         stage.align = untyped "";
     	#else
         stage.addEventListener(Event.RESIZE, onResize);
-        onResize(null);
+        //onResize(null);
 		#end
 
 		#if ios
