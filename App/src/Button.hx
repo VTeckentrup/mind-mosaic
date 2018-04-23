@@ -19,8 +19,10 @@ class Button extends Sprite
     {
         super();
 		this.graphics.beginFill(color);
-		this.graphics.drawRect((Lib.application.window.width * 0.3) * 0.175, 0, Lib.application.window.width * 0.3, Lib.application.window.height * 0.1);
+		this.graphics.drawRect(-300, -75, 600, 150);
 		this.graphics.endFill();
+		this.scaleX = stageScale;
+		this.scaleY = stageScale;
 
 		//bd = new BitmapData(250, 50, true,0xFFFFFFFF);
         //bd = Assets.getBitmapData("img/logo.png");
@@ -30,11 +32,11 @@ class Button extends Sprite
 		var button_textfield:TextField = new TextField();
 		//overlay text on the button
 		button_textfield.background = false;
-		button_textfield.width = Lib.application.window.width * 0.3;
-		button_textfield.height = Lib.application.window.height * 0.1;
-		button_textfield.x = (Lib.application.window.width * 0.3) * 0.175;
-		button_textfield.y = (Lib.application.window.height * 0.1) * 0.3;
-		var button_text:TextFormat = new TextFormat("Arial", 30, 0xFFFFFF, true);
+		button_textfield.width = 600;
+		button_textfield.height = 150;
+		button_textfield.x = -300;
+		button_textfield.y = -75;
+		var button_text:TextFormat = new TextFormat("Arial", 45, 0xFFFFFF, true);
 		button_text.align = TextFormatAlign.CENTER;
 		button_textfield.defaultTextFormat = button_text;
 		button_textfield.text = s;
