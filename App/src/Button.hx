@@ -15,11 +15,15 @@ class Button extends Sprite
     private var bd:BitmapData;
     private var b:Bitmap;
 
-    public function new(color:Int,s:String)
+	//flexible Buttonsize with width & height
+    public function new(color:Int,s:String,width:Int,height:Int)
     {
         super();
+		//width = Std.int(width);
+		//height = Std.int(height);
 		this.graphics.beginFill(color);
-		this.graphics.drawRect(-300, -75, 600, 150);
+		//this.graphics.drawRect(-300, -75, 600, 150);
+		this.graphics.drawRect(- (width / 2), - (height / 2), width, height);
 		this.graphics.endFill();
 		this.scaleX = stageScale;
 		this.scaleY = stageScale;
@@ -32,10 +36,10 @@ class Button extends Sprite
 		var button_textfield:TextField = new TextField();
 		//overlay text on the button
 		button_textfield.background = false;
-		button_textfield.width = 600;
-		button_textfield.height = 150;
-		button_textfield.x = -300;
-		button_textfield.y = -75;
+		button_textfield.width = width;
+		button_textfield.height = height;
+		button_textfield.x = - (width / 2);
+		button_textfield.y = - (height / 2);
 		var button_text:TextFormat = new TextFormat("Arial", 45, 0xFFFFFF, true);
 		button_text.align = TextFormatAlign.CENTER;
 		button_textfield.defaultTextFormat = button_text;

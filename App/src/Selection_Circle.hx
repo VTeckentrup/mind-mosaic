@@ -9,7 +9,7 @@ class Selection_Circle extends Sprite
 		super();
 		
 		this.graphics.beginFill(color);
-		this.graphics.drawCircle(0, 0, 75);
+		this.graphics.drawCircle(0, 0, Std.int(NOMINAL_WIDTH / 22));
 		this.graphics.endFill();
 		
 	}

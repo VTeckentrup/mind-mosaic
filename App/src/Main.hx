@@ -32,7 +32,7 @@ enum GameState {
 
 class Main extends Sprite 
 {
-//%%%%%%%%%%%%%VARIABLEN%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//%%%%%%%%%%%%% VARIABLEN %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
 	var inited:Bool;
 	
@@ -152,12 +152,12 @@ class Main extends Sprite
 //%%%%%%%%%%BUTTONS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	/*function to only draw the button - can be called for every button 
     you need to pass on a text that the button has to display*/
-	public function drawButton(text:String,pos1:Int,pos2:Int):SimpleButton{
+	public function drawButton(text:String,pos1:Int,pos2:Int,width:Int, height:Int):SimpleButton{
 
-		var b1 = new Button(0x215ab7, text);
-		var b2 = new Button(0xb72025, text);
-		var b3 = new Button(0xfffb21, text);
-		var b4 = new Button(0x36b71f, text);
+		var b1 = new Button(0x215ab7, text, width, height);
+		var b2 = new Button(0xb72025, text, width, height);
+		var b3 = new Button(0xfffb21, text, width, height);
+		var b4 = new Button(0x36b71f, text, width, height);
 		button = new SimpleButton(b1,b2,b3,b4);
 		
         button.x = pos1;
@@ -180,7 +180,7 @@ class Main extends Sprite
 	//Instruction - Button2
 	public function onClick2 (event: MouseEvent):Void {
 		this.removeChildren();
-		button_back = drawButton("Zurück",300,300);
+		button_back = drawButton("Zurück",300,300,Std.int(NOMINAL_WIDTH / 5),Std.int(NOMINAL_HEIGHT / 9));
 		button_back.addEventListener(MouseEvent.CLICK, onClick_back);	
 	}
 	//DATENBANKABRUF
@@ -188,7 +188,7 @@ class Main extends Sprite
 	public function onClick3 (event: MouseEvent):Void {
 		this.removeChildren();
 		seeGamestatus(_level);
-		button_back = drawButton("Zurück",300,300);
+		button_back = drawButton("Zurück",300,300,Std.int(NOMINAL_WIDTH / 5),Std.int(NOMINAL_HEIGHT / 9));
 		button_back.addEventListener(MouseEvent.CLICK, onClick_back);	
 	}
 	
@@ -348,7 +348,7 @@ class Main extends Sprite
 
 	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-	//%%%%%%%%REGISTRATION&LOGINS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	//%%%%%%%% REGISTRATION & LOGINS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//first page that lets you choose between Login and Registration
 	public function log_and_reg(){
 		
@@ -356,8 +356,8 @@ class Main extends Sprite
 		background_b = new Bitmap(background_bd);
 		background_b.smoothing = true;
 		addChild(background_b);
-		button_log = drawButton("Login",Std.int(NOMINAL_WIDTH / 2),Std.int(NOMINAL_HEIGHT / 2));
-		button_reg1 = drawButton("Registration", Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) + (NOMINAL_HEIGHT / 8))));
+		button_log = drawButton("Login",Std.int(NOMINAL_WIDTH / 2),Std.int(NOMINAL_HEIGHT / 2),Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
+		button_reg1 = drawButton("Registration", Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) + (NOMINAL_HEIGHT / 8))),Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
 		button_log.addEventListener(MouseEvent.CLICK, onClick_log);
 		button_reg1.addEventListener(MouseEvent.CLICK, onClick_reg1);
 		
@@ -408,7 +408,7 @@ class Main extends Sprite
 
 		//SHOULD ONLY BE POSSIBLE WHEN TEXT IS INSERTED & MATCHED DATA BASE
 		//draw Log-In button
-		button_login = drawButton("Login",275,350);
+		button_login = drawButton("Login",275,350,Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
 		button_login.addEventListener(MouseEvent.CLICK, onClick_login);
 	}
 
@@ -497,10 +497,10 @@ class Main extends Sprite
 
 		//Enabled only if text is inserted, internet connection available and mail address is not already in the database
 		//Button for Registration
-		button_reg = drawButton("Registrieren",100,400);
+		button_reg = drawButton("Registrieren",100,400,Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
 		button_reg.addEventListener(MouseEvent.CLICK, onClick_Reg);
 		
-		button_reg_back = drawButton("Zurück",400,400);
+		button_reg_back = drawButton("Zurück",400,400,Std.int(NOMINAL_WIDTH / 5),Std.int(NOMINAL_HEIGHT / 9));
 		button_reg_back.addEventListener(MouseEvent.CLICK, onClick_Reg_Back);
 
 		//Initialisation of 'start' values
@@ -517,17 +517,17 @@ class Main extends Sprite
 	public function drawInfopage(){
 		
 		//New game button
-        button1 = drawButton("Neues Spiel",Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) - 2.5*(NOMINAL_HEIGHT / 8))));
+        button1 = drawButton("Neues Spiel",Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) - 2.5*(NOMINAL_HEIGHT / 8))), Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
 		//Anleitung
-		button2 = drawButton("Anleitung",Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) - 1.5*(NOMINAL_HEIGHT / 8))));
+		button2 = drawButton("Anleitung",Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) - 1.5*(NOMINAL_HEIGHT / 8))), Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
 		//Spielstand
-		button3 = drawButton("Spielstand/Galerie",Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) - 0.5*(NOMINAL_HEIGHT / 8))));
+		button3 = drawButton("Spielstand/Galerie",Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) - 0.5*(NOMINAL_HEIGHT / 8))),Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
 		//Über das Spiel
-		button4 = drawButton("Über das Spiel",Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) + 0.5*(NOMINAL_HEIGHT / 8))));
+		button4 = drawButton("Über das Spiel",Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) + 0.5*(NOMINAL_HEIGHT / 8))), Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
 		//Logout
-		button5 = drawButton("Logout", Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) + 1.5*(NOMINAL_HEIGHT / 8))));
+		button5 = drawButton("Logout", Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) + 1.5*(NOMINAL_HEIGHT / 8))), Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
 		// Beenden
-		button6 = drawButton("Beenden", Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) + 2.5*(NOMINAL_HEIGHT / 8))));
+		button6 = drawButton("Beenden", Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) + 2.5*(NOMINAL_HEIGHT / 8))), Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
 
 
 			
@@ -595,7 +595,7 @@ class Main extends Sprite
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-//%%%%%%%%%%%SLOT MACHINE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//%%%%%%%%%%% SLOT MACHINE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//function that draws the Slotmachine
 	function drawSlotmachine(){
 		
@@ -605,7 +605,7 @@ class Main extends Sprite
         stage.addEventListener(Event.ACTIVATE, unpause);
 		
 		//End game Button --> drawInfoPage
-		button_end = drawButton("Zurück",0,540);
+		button_end = drawButton("Zurück",Std.int(NOMINAL_WIDTH),540, Std.int(NOMINAL_WIDTH / 5),Std.int(NOMINAL_HEIGHT / 9));
 		//this.addChild(button_end);
 		button_end.addEventListener(MouseEvent.CLICK, onClick_end);
 		
@@ -613,20 +613,24 @@ class Main extends Sprite
 
 		// Draw slot machines on screen
 		slot_machine_blue = new Machine_blue();
-		slot_machine_blue.x = 50;
-		slot_machine_blue.y = 150;
+		//slot_machine_blue.x = 50;
+		//slot_machine_blue.y = 150;
+		slot_machine_blue.x = Std.int(NOMINAL_WIDTH / 2) - Std.int(NOMINAL_WIDTH / 6);
+		slot_machine_blue.y = Std.int(NOMINAL_HEIGHT / 2);
 		this.addChild(slot_machine_blue);
 
 		slot_machine_green = new Machine_green();
-		slot_machine_green.x = 550;
-		slot_machine_green.y = 150;
+		slot_machine_green.x = Std.int(NOMINAL_WIDTH / 2) + Std.int(NOMINAL_WIDTH / 6);
+		slot_machine_green.y = Std.int(NOMINAL_HEIGHT / 2);
 		this.addChild(slot_machine_green);
 		
 		
 		// Draw selection circle
 		circle_selection = new Selection_Circle(0xc7ccd6);
-		circle_selection.x = 400;
-		circle_selection.y = 300;
+		//circle_selection.x = 0;
+		//circle_selection.y = 0;
+		circle_selection.x = Std.int(NOMINAL_WIDTH / 2);
+		circle_selection.y = Std.int(NOMINAL_HEIGHT / 2);
 		this.addChild(circle_selection);
 		
 		// Draw score text field and set starting score points to zero
@@ -635,9 +639,9 @@ class Main extends Sprite
 		
 		scoreField = new TextField();
 		addChild(scoreField);
-		scoreField.width = 800;
+		scoreField.width = NOMINAL_WIDTH / 2.2;
 		//scoreField.x = 50;
-		scoreField.y = 30;
+		scoreField.y = NOMINAL_HEIGHT / 60;
 		scoreField.defaultTextFormat = scoreFormat;
 		scoreField.selectable = false;
 		
@@ -650,9 +654,9 @@ class Main extends Sprite
 		
 		cityField = new TextField();
 		addChild(cityField);
-		cityField.width = 800;
+		cityField.width = NOMINAL_WIDTH / 2.2;
 		//cityField.x = 650;
-		cityField.y = 30;
+		cityField.y = NOMINAL_HEIGHT / 60;
 		cityField.defaultTextFormat = scoreFormat;
 		cityField.selectable = false;
 		
@@ -664,9 +668,9 @@ class Main extends Sprite
 		
 		levelField = new TextField();
 		addChild(levelField);
-		levelField.width = 800;
+		levelField.width = NOMINAL_WIDTH / 2.2;
 		//cityField.x = 650;
-		levelField.y = 90;
+		levelField.y = NOMINAL_HEIGHT / 20;
 		levelField.defaultTextFormat = levelFormat;
 		levelField.selectable = false;
 		levelField.text = '$_round_ind';
@@ -681,8 +685,10 @@ class Main extends Sprite
 		scoreField_blue = new TextField();
 		addChild(scoreField_blue);
 		scoreField_blue.width = 50;
-		scoreField_blue.x = 125;
-		scoreField_blue.y = 245;
+		//scoreField_blue.x = 125;
+		//scoreField_blue.y = 245;
+		scoreField_blue.x = Std.int(NOMINAL_WIDTH / 2) - Std.int(NOMINAL_WIDTH / 6);
+		scoreField_blue.y = Std.int(NOMINAL_HEIGHT / 2);
 		scoreField_blue.defaultTextFormat = scoreFormat_blue;
 		scoreField_blue.selectable = false;
 
@@ -693,8 +699,10 @@ class Main extends Sprite
 		scoreField_green = new TextField();
 		addChild(scoreField_green);
 		scoreField_green.width = 50;
-		scoreField_green.x = 625;
-		scoreField_green.y = 245;
+		//scoreField_green.x = 625;
+		//scoreField_green.y = 245;
+		scoreField_green.x = Std.int(NOMINAL_WIDTH / 2) + Std.int(NOMINAL_WIDTH / 6);
+		scoreField_green.y = Std.int(NOMINAL_HEIGHT / 2);
 		scoreField_green.defaultTextFormat = scoreFormat_green;
 		scoreField_green.selectable = false;
 		
