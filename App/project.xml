@@ -16,16 +16,16 @@
 	
 	<!-- classpath, haxe libs -->
 	<source path="src" />
+	<set name="next" />
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
-	<haxelib name="advanced-layout" />
 	<haxelib name="record-macros" />
 	
 	<!-- assets -->
 	<icon path="assets/openfl.svg" />
 	
 	<!--loads an asset image from your img folder that i created -->
-	<assets path="assets/img" rename="img" />
+	<assets path="assets/img" rename="img" embed="true" />
 	<!-- optimize output
 	<haxeflag name="-dce full" /> -->
 	

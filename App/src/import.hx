@@ -3,3 +3,4 @@ import InternetConnection.*;
 import ExitHandler;
 import DatabaseSync.*;
 import AppdataJSON.*;
+import AppdataEntryLite.*;

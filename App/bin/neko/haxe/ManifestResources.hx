@@ -53,7 +53,10 @@ import sys.FileSystem;
 		
 		var data, manifest, library;
 		
-		Assets.libraryPaths["default"] = rootPath + "manifest/default.json";
+		data = '{"name":null,"assets":"aoy4:sizei384307y4:typey5:IMAGEy9:classNamey34:__ASSET__img_background_medium_pngy2:idy27:img%2Fbackground_medium.pnggoR0i26754R1y6:BINARYR3y27:__ASSET__img_logo_kopie_xcfR5y22:img%2Flogo%20Kopie.xcfgoR0i2597R1R2R3y23:__ASSET__img_virus1_pngR5y16:img%2Fvirus1.pnggoR0i2791R1R2R3y23:__ASSET__img_virus2_pngR5y16:img%2Fvirus2.pnggoR0i87124R1R2R3y23:__ASSET__img_virus3_pngR5y16:img%2Fvirus3.pnggh","version":2,"libraryArgs":[],"libraryType":null}';
+		manifest = AssetManifest.parse (data, rootPath);
+		library = AssetLibrary.fromManifest (manifest);
+		Assets.registerLibrary ("default", library);
 		
 		
 		library = Assets.getLibrary ("default");
@@ -80,6 +83,12 @@ import sys.FileSystem;
 
 #elseif (desktop || cpp)
 
+@:image("assets/img/background_medium.png") #if display private #end class __ASSET__img_background_medium_png extends lime.graphics.Image {}
+@:file("assets/img/logo Kopie.xcf") #if display private #end class __ASSET__img_logo_kopie_xcf extends haxe.io.Bytes {}
+@:image("assets/img/virus1.png") #if display private #end class __ASSET__img_virus1_png extends lime.graphics.Image {}
+@:image("assets/img/virus2.png") #if display private #end class __ASSET__img_virus2_png extends lime.graphics.Image {}
+@:image("assets/img/virus3.png") #if display private #end class __ASSET__img_virus3_png extends lime.graphics.Image {}
+@:file("bin/neko/obj/tmp/manifest/default.json") #if display private #end class __ASSET__manifest_default_json extends haxe.io.Bytes {}
 
 
 

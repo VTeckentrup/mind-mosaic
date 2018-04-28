@@ -46,8 +46,8 @@ class Main extends Sprite
 	// Set up game state variable
 	private var currentGameState:GameState;
 	
-	// Set up number of rounds
-	private var rounds:Int = 200;
+	// Set up number of trials
+	private var trials:Int = 150;
 	
 	// Set up array for keys
 	private var keys:Array<Bool>;
@@ -64,8 +64,8 @@ class Main extends Sprite
 	private var frame_choice_side:Int;
 
 	// Define vars for slot machine values and associated text fields
-	private var blue_reward:Int;
-	private var green_reward:Int;
+	private var A_reward:Int;
+	private var B_reward:Int;
 	private var scoreField_blue:TextField;
 	private var scoreField_green:TextField;
 
@@ -84,10 +84,10 @@ class Main extends Sprite
 	var probArray:Array<Float> = [0.5];
 	
 	// Define vars for reward probabilities
-	private var reward_prob_blue:Float;
-	private var reward_prob_green:Float;
+	private var reward_prob_A:Float;
+	private var reward_prob_B:Float;
 	
-	private var reward_prob_round:Float;
+	private var prob_draw:Float;
 	private var correct_choice:String;
 	
 	//Define buttons
@@ -125,7 +125,6 @@ class Main extends Sprite
 	//represents the level you are in- just for presentation
 	//purpose - needs to be drawn from sheet
 	//private var level:Int=1;
-	private var score_trial:Array<Int>=[31];
 	//represents an array (length 30) with all pathogens
 	private var pathogenArrayBM:Array<BitmapData> = [];
 	private var pathogenArray:Array<Bitmap> = [];
@@ -187,7 +186,7 @@ class Main extends Sprite
 	//Button Game Status - Button3
 	public function onClick3 (event: MouseEvent):Void {
 		this.removeChildren();
-		seeGamestatus(_level);
+		seeGamestatus(_run_ind);
 		button_back = drawButton("Zurück",300,300,Std.int(NOMINAL_WIDTH / 5),Std.int(NOMINAL_HEIGHT / 9));
 		button_back.addEventListener(MouseEvent.CLICK, onClick_back);	
 	}
@@ -229,17 +228,15 @@ class Main extends Sprite
 		if (database_availability == true) {
 				if (fullname.length > 0 && birthdate.length > 0 && mailaddress.length > 0 && selectedpw.length > 0) {
 					// Check if mailaddress is already registered, if not register and log-in
-					_subj_mail = mailaddress.text;
-					var mail_availability = DatabaseSync.CheckRegistration(_subj_mail);
+					_mail_address = mailaddress.text;
+					var mail_availability = DatabaseSync.CheckRegistration(_mail_address);
 					if (mail_availability == false){ // mail address is not registered yet
 						// Register user in database
 						DatabaseSync.UserRegistration();
 						// Get new user ID from database
-						DatabaseSync.GetUserID(_subj_mail);
-						// Set initial values for appdata
-						_round_ind = 1;
-						_level = 1;
-						_score = 0;
+						DatabaseSync.GetUserID(_mail_address);
+						// Set initial run value for appdata
+						_run_ind = 1;
 						// Save local JSON userdata
 						AppdataJSON.AppdataSave();
 						// Set user as logged in
@@ -298,11 +295,11 @@ class Main extends Sprite
 		if (database_availability == true) {
 				if (username.length > 0 && passw.length > 0) {
 					// Check if mailaddress is already registered, if yes log-in
-					_subj_mail = username.text;
-					var mail_availability = DatabaseSync.CheckRegistration(_subj_mail);
+					_mail_address = username.text;
+					var mail_availability = DatabaseSync.CheckRegistration(_mail_address);
 					if (mail_availability == true){ // mail address is registered
 						// retrieve ID
-						DatabaseSync.GetUserID(_subj_mail);
+						DatabaseSync.GetUserID(_mail_address);
 						// set ID as logged in
 						AppdataJSON.saveLogin();
 						// send to main menu
@@ -503,10 +500,6 @@ class Main extends Sprite
 		button_reg_back = drawButton("Zurück",400,400,Std.int(NOMINAL_WIDTH / 5),Std.int(NOMINAL_HEIGHT / 9));
 		button_reg_back.addEventListener(MouseEvent.CLICK, onClick_Reg_Back);
 
-		//Initialisation of 'start' values
-		//_id = 
-		_score = 0;
-		_level = 1;
 	}
 
 
@@ -546,49 +539,39 @@ class Main extends Sprite
 	
 	//what to do if app is out of focus
     private function pause(e:Event):Void{
-        currentGameState=Paused;
+		
+        // set game state to paused to stop task evaluation
+		currentGameState = Paused;
+		// get time stamp of unfocus event
+		var current_time = Date.now();
+		timestamp_unfocus = current_time.getTime();
 
     }
-	//app back in focus - start last round again
+	//app back in focus - start last run again
     private function unpause(e:Event):Void{
    
-		blue_reward = Math.round(NormRandom.floatNormal(50,12));
-		green_reward = 100 - blue_reward;
-		scoreField_blue.text = Std.string(blue_reward);
-		scoreField_green.text = Std.string(green_reward);
+		// check if unfocus was longer than 1 hour (= 3600000 milliseconds)
+		var current_time = Date.now();
+		timestamp_refocus = current_time.getTime();
 		
-		// Grab new reward probabilities
-		trace(probArray[_round_ind-1]);
-		reward_prob_blue = probArray[_round_ind-1];
-		reward_prob_green = 1 - reward_prob_blue;
+		if (timestamp_refocus - timestamp_unfocus > 3600000) {
 		
-		// Reset selection circle
-		this.removeChild(circle_selection);
-		circle_selection = new Selection_Circle(0xc7ccd6);
-		circle_selection.x = 400;
-		circle_selection.y = 300;
-		this.addChild(circle_selection);
-		
-		// Remove any selection frames
-		this.removeChild(frame_choice);	 
-		_round_ind = 1;
-		levelField.text = 'Runde: $_round_ind';
-		//levelField.text = '$_level';
-		_score = Std.int(_score - score_trial[_level]);
-		scoreField.text = 'Score: $_score';
-		// Remove any selection frames
-		this.removeChild(frame_choice);
-		
-		// Set new values for database
-		_blue_reward_prob = reward_prob_blue;
-		_green_reward_prob = reward_prob_green;
-		_reward_blue = blue_reward;
-		_reward_green = green_reward;
-		
-		// Resume game
-		//everyframe always active when currentGameState=Playing
-		//->goes to everyFrame
-		currentGameState = Playing;
+			// Set round index to 0 as it will be increased to 1 in the newRound function 
+			_trial_ind = 0;
+			
+			// restart score for reset run
+			_score = 0;
+			
+			// Resume game
+			// start newRound
+			newRound();
+			
+		} else {
+			
+			// resume game with previous settings
+			currentGameState = Playing;
+			
+		}
 	
     }
 
@@ -673,8 +656,8 @@ class Main extends Sprite
 		levelField.y = NOMINAL_HEIGHT / 20;
 		levelField.defaultTextFormat = levelFormat;
 		levelField.selectable = false;
-		levelField.text = '$_round_ind';
-		//levelField.text = '$_level';
+		levelField.text = '$_trial_ind';
+		//levelField.text = '$_run_ind';
 
 
 		// Define and format text fields displaying slot machine outcome
@@ -706,21 +689,12 @@ class Main extends Sprite
 		scoreField_green.defaultTextFormat = scoreFormat_green;
 		scoreField_green.selectable = false;
 		
-		// Generate starting rewards
-		//Gaussian random walk - normal distribution
-		//blue_reward = 0 + Math.floor(((100 - 0 + 1) * Math.random()));
-		//green_reward = 100 - blue_reward;
-		//blue_reward = Math.round(NormRandom.floatNormal(50,12));
-		//green_reward = 100 - blue_reward;
-		//scoreField_blue.text = Std.string(blue_reward);
-		//scoreField_green.text = Std.string(green_reward);
-		
 		//Initialise probabilities
 		var step:Float;
 		var probvalueadd:Float;
 		
 		// Generate values for a gaussian random walk and append them to the probability values array
-		for (i in 0...rounds-1) {
+		for (i in 0...trials-1) {
 			
 			step = NormRandom.floatNormal(0,0.075);
 			
@@ -734,20 +708,17 @@ class Main extends Sprite
 			probArray.push(probvalueadd);
 		}
 		
-		// Initialize round
-		_round_ind = 0;
-		
 		// Start game
 		newRound();
 		
-		//reward_prob_blue = probArray[0];
-		//reward_prob_green = 1 - reward_prob_blue;
+		//reward_prob_A = probArray[0];
+		//reward_prob_B = 1 - reward_prob_A;
 		
 		// DUMMY: Initialize database entries
-		//_blue_reward_prob = reward_prob_blue;
-		//_green_reward_prob = reward_prob_green;
-		//_reward_blue = blue_reward;
-		//_reward_green = green_reward;
+		//_p_reward_A = reward_prob_A;
+		//_p_reward_B = reward_prob_B;
+		//_reward_A = A_reward;
+		//_reward_B = B_reward;
 		
 		
 		// Set game state
@@ -800,7 +771,7 @@ class Main extends Sprite
 		
 	}
 
-	public function seeGamestatus(_level:Int){
+	public function seeGamestatus(_run_ind:Int){
 		/*probably a variable that gets its value from the 
 		data base to represent the level that you reached
 		--> var level: now set to 1 because no data base available
@@ -849,7 +820,7 @@ class Main extends Sprite
 			var database_availability = InternetConnection.isAvailable();
 			// Move data from local SQLite database to MariaDB if internet connection is available
 			if (database_availability == true) {
-				DatabaseSync.loadSQLite();
+				//DatabaseSync.loadSQLite();
 			}
 			
 		});
@@ -857,6 +828,14 @@ class Main extends Sprite
 		// Load pathogen images into image array
 		getPathogenAssignment();
 		
+		// Set initial values
+		// Set round index to 0 as it will be increased to 1 in the newRound function
+		_trial_ind = 0;
+		// Initialize score
+		_score = 0;
+		// Initialize run finished marker
+		_run_finished = 0;
+			
 		// Check if user is logged in and retrieve ID
 		login_savepath = Path.join([save_path, login_file]);
 		if (FileSystem.exists(login_savepath)) {
@@ -865,8 +844,14 @@ class Main extends Sprite
 			AppdataJSON.loadLogin();
 			// Load appdata
 			AppdataJSON.AppdataLoad();
-			// Set round index
-			_round_ind = 1;
+			// Grab system specs
+			#if desktop
+			_device_type = "desktop";
+			#elseif mobile
+			_device_type = "mobile";
+			#end
+			
+			_device_os = Capabilities.os;
 			// Send to main menu
 			drawInfopage();
 			
@@ -987,7 +972,7 @@ class Main extends Sprite
 				frame_choice.x = 30;
 				frame_choice.y = 130;
 				this.addChild(frame_choice);
-				endRound('blue');
+				endRound('A');
 				
 			}
 			
@@ -1002,7 +987,7 @@ class Main extends Sprite
 				frame_choice.x = 530;
 				frame_choice.y = 130;
 				this.addChild(frame_choice);
-				endRound('green');
+				endRound('B');
 				
 			}
 		
@@ -1011,14 +996,14 @@ class Main extends Sprite
 	}
 	
 	
-	private function endRound(machine_color:String):Void {
+	private function endRound(drug_choice:String):Void {
 		
 		// Get winning machine
-		reward_prob_round = random();
+		prob_draw = random();
 		
 		// Evaluate winning machine and set output accordingly
-		if (reward_prob_round <= reward_prob_blue) {
-			correct_choice = 'blue';
+		if (prob_draw <= reward_prob_A) {
+			correct_choice = 'A';
 			this.removeChild(circle_selection);
 			circle_selection = new Selection_Circle(0x0066cc);
 			circle_selection.x = 400;
@@ -1026,16 +1011,25 @@ class Main extends Sprite
 			this.addChild(circle_selection);
 			trace('$_score');
 			
-			// If the winning blue machine was selected add reward to score and update score field
-			if (machine_color == 'blue') {
+			// If the winning option was selected add reward to score and update score field
+			if (drug_choice == 'A') {
 				
-				_score = Std.int(_score + blue_reward);
+				_score = Std.int(_score + A_reward);
 				scoreField.text = 'Score: $_score';
 				
 			}
+			
+			// If the non-winning option was selected subtract reward from score and update score field
+			else if (drug_choice == 'B') {
+				
+				_score = Std.int(_score - A_reward);
+				scoreField.text = 'Score: $_score';
+				
+			}
+			
 		
 		} else {
-			correct_choice = 'green';
+			correct_choice = 'B';
 			this.removeChild(circle_selection);
 			circle_selection = new Selection_Circle(0x1f7c0a);
 			circle_selection.x = 400;
@@ -1043,52 +1037,71 @@ class Main extends Sprite
 			this.addChild(circle_selection);
 			trace('$_score');
 						
-			// If the winning green machine was selected add reward to score and update score field
-			if (machine_color == 'green') {
+			// If the winning option was selected add reward to score and update score field
+			if (drug_choice == 'B') {
 				
-				_score = _score + green_reward;
+				_score = _score + B_reward;
+				scoreField.text = 'Score: $_score';
+				
+			}
+			
+			// If the non-winning option was selected subtract reward from score and update score field
+			else if (drug_choice == 'A') {
+				
+				_score = _score - B_reward;
 				scoreField.text = 'Score: $_score';
 				
 			}
 		}
-		//array for subtraction if game is aborted under 200trials
-		score_trial[_level] = _score;
-
 
 		//  Set values for database
-		_round_reward_prob = reward_prob_round;
-		_choice_correct = correct_choice;
-		_choice_player = machine_color;
-		if (correct_choice == machine_color) {
-			_player_won = 1;
+		_p_draw = prob_draw;
+		_drawn_outcome = correct_choice;
+		_choice = drug_choice;
+		if (correct_choice == drug_choice) {
+			_win = 1;
 		} else {
-			_player_won = 0;
+			_win = 0;
 		}
 		_timestamp = Date.now();
 
 		// Write to database
-		new AppdataEntryLite();
+		AppdataEntryLite.writeLiteTrialEntry();
 		
 		/**
 		 *  needs to delete the data base entries from before
-		 *  sets rounds back to 1 so level needs to be played again
+		 *  sets trials back to 1 so level needs to be played again
 		 */
 		/*if(currentGameState==Paused){
-			_round_ind=1;
+			_trial_ind=1;
 		}*/
 		
 		// Set timer to give player time to evaluate the outcome
-		if (_round_ind < rounds)
+		if (_trial_ind < trials)
 		{
-			//calls function newRound with delay of 1000ms	
-			haxe.Timer.delay(newRound,1000);
+			// call function newRound with delay of 300 ms	
+			haxe.Timer.delay(newRound,300);
 			
 		} else {
 			
-			_level = _level+1;
-			_round_ind = 0;
+			// modify run_finished entry as run is now finalized
+			AppdataEntryLite.modifyLiteTrialEntry();
+			// increase run index by 1
+			_run_ind = _run_ind + 1;
+			// update global score
+			_global_score = _global_score + _score;
+			// restart score for new run
+			_score = 0;
+			// set trial index to 0 as it will be increased to 1 in the newRound function
+			_trial_ind = 0;
+			// save new run info locally
 			AppdataJSON.AppdataSave();
-			haxe.Timer.delay(newRound,1000);
+			// call function for questionnaire items
+			
+			// save run related info in the database, currently deactivated as not all run entries are available
+			//AppdataEntryLite.writeLiteRunEntry();
+			// call function newRound with delay of 300 ms
+			haxe.Timer.delay(newRound,300);
 		}
 		
 	}
@@ -1096,19 +1109,31 @@ class Main extends Sprite
 	
 	private function newRound():Void {
 		
-		// Adapt round counter
-		_round_ind = _round_ind + 1;
-		levelField.text = 'Runde: $_round_ind';
+		// Adapt trial counter
+		_trial_ind = _trial_ind + 1;
+		levelField.text = 'Runde: $_trial_ind';
 		
 		// Set up new rewards
-		blue_reward = Math.round(NormRandom.floatNormal(50,12));
-		green_reward = 100 - blue_reward;
-		scoreField_blue.text = Std.string(blue_reward);
-		scoreField_green.text = Std.string(green_reward);
+		A_reward = Math.round(NormRandom.floatNormal(50, 16));
+		
+		if (A_reward > 99) {
+			
+			A_reward = 99;
+			
+		} else if (A_reward < 1) {
+			
+			A_reward = 1;
+			
+		}
+		
+		
+		B_reward = 100 - A_reward;
+		scoreField_blue.text = Std.string(A_reward);
+		scoreField_green.text = Std.string(B_reward);
 		
 		// Grab new reward probabilities
-		reward_prob_blue = probArray[_round_ind-1];
-		reward_prob_green = 1 - reward_prob_blue;
+		reward_prob_A = probArray[_trial_ind-1];
+		reward_prob_B = 1 - reward_prob_A;
 		
 		// Reset selection circle
 		this.removeChild(circle_selection);
@@ -1124,10 +1149,10 @@ class Main extends Sprite
 		this.removeChild(frame_choice);
 		
 		// Set new values for database
-		_blue_reward_prob = reward_prob_blue;
-		_green_reward_prob = reward_prob_green;
-		_reward_blue = blue_reward;
-		_reward_green = green_reward;
+		_p_reward_A = reward_prob_A;
+		_p_reward_B = reward_prob_B;
+		_reward_A = A_reward;
+		_reward_B = B_reward;
 		
 		// Resume game
 		//everyframe always active when currentGameState=Playing

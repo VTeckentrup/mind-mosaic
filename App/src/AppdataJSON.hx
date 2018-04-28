@@ -19,7 +19,7 @@ class AppdataJSON
 		json_savepath = Path.join([save_path, savepath_id]);
 		
 			
-		appdata = {id:_id, level:_level, score:_score};
+		appdata = {id:_id, run:_run_ind, score:_global_score};
 		
 		appdata_json = haxe.Json.stringify(appdata);
 		
@@ -43,8 +43,8 @@ class AppdataJSON
 		appdata = Json.parse(appdata_json);
 		
 		_id = appdata.id;
-		_level = appdata.level;
-		_score = appdata.score;
+		_run_ind = appdata.run;
+		_global_score = appdata.score;
 	
 		}
 	
