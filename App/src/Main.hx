@@ -945,8 +945,12 @@ class Main extends Sprite
 				// Draw frame indicating choice
 				this.removeChild(frame_choice);
 				frame_choice = new Choice_Frame(0xc7ccd6);
-				frame_choice.x = 30;
-				frame_choice.y = 130;
+				frame_choice.x = 0;
+				frame_choice.y = 0;
+				frame_choice_side = 1;
+				
+				/*frame_choice.x = Std.int(NOMINAL_WIDTH / 2) - Std.int(NOMINAL_WIDTH / 9);
+				frame_choice.y = Std.int(NOMINAL_HEIGHT / 2) - Std.int(NOMINAL_HEIGHT / 6);*/
 				frame_choice_side = 1;
 				this.addChild(frame_choice);
 			}
@@ -955,8 +959,8 @@ class Main extends Sprite
 				// Draw frame indicating choice
 				this.removeChild(frame_choice);
 				frame_choice = new Choice_Frame(0xc7ccd6);
-				frame_choice.x = 530;
-				frame_choice.y = 130;
+				frame_choice.x = Std.int(NOMINAL_WIDTH / 2) + Std.int(NOMINAL_WIDTH / 6);
+				frame_choice.y = Std.int(NOMINAL_HEIGHT / 2);
 				frame_choice_side = 2;
 				this.addChild(frame_choice);
 			}
@@ -969,8 +973,8 @@ class Main extends Sprite
 				// Change color of choice frame and call function for evaluation
 				this.removeChild(frame_choice);
 				frame_choice = new Choice_Frame(0x8e8e8e);
-				frame_choice.x = 30;
-				frame_choice.y = 130;
+				frame_choice.x = Std.int(NOMINAL_WIDTH / 2) - Std.int(NOMINAL_WIDTH / 6);
+				frame_choice.y = Std.int(NOMINAL_HEIGHT / 2);
 				this.addChild(frame_choice);
 				endRound('A');
 				
@@ -984,8 +988,8 @@ class Main extends Sprite
 				// Change color of choice frame and call function for evaluation
 				this.removeChild(frame_choice);
 				frame_choice = new Choice_Frame(0x8e8e8e);
-				frame_choice.x = 530;
-				frame_choice.y = 130;
+				frame_choice.x = Std.int(NOMINAL_WIDTH / 2) + Std.int(NOMINAL_WIDTH / 6);
+				frame_choice.y = Std.int(NOMINAL_HEIGHT / 2);
 				this.addChild(frame_choice);
 				endRound('B');
 				
@@ -1006,8 +1010,8 @@ class Main extends Sprite
 			correct_choice = 'A';
 			this.removeChild(circle_selection);
 			circle_selection = new Selection_Circle(0x0066cc);
-			circle_selection.x = 400;
-			circle_selection.y = 300;
+			circle_selection.x = Std.int(NOMINAL_WIDTH / 2);
+			circle_selection.y = Std.int(NOMINAL_HEIGHT / 2);
 			this.addChild(circle_selection);
 			trace('$_score');
 			
@@ -1032,8 +1036,8 @@ class Main extends Sprite
 			correct_choice = 'B';
 			this.removeChild(circle_selection);
 			circle_selection = new Selection_Circle(0x1f7c0a);
-			circle_selection.x = 400;
-			circle_selection.y = 300;
+			circle_selection.x = Std.int(NOMINAL_WIDTH / 2);
+			circle_selection.y = Std.int(NOMINAL_HEIGHT / 2);
 			this.addChild(circle_selection);
 			trace('$_score');
 						
@@ -1138,8 +1142,8 @@ class Main extends Sprite
 		// Reset selection circle
 		this.removeChild(circle_selection);
 		circle_selection = new Selection_Circle(0xc7ccd6);
-		circle_selection.x = 400;
-		circle_selection.y = 300;
+		circle_selection.x = Std.int(NOMINAL_WIDTH / 2);
+		circle_selection.y = Std.int(NOMINAL_HEIGHT / 2);
 		this.addChild(circle_selection);
 		
 		// Remove any selection frames
