@@ -134,6 +134,7 @@ class Main extends Sprite
 	private var background_bd:BitmapData;
 	private var background_b:Bitmap;
 	
+	private var inftext:InfoText;
 
 	
 	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -249,7 +250,7 @@ class Main extends Sprite
 					} else {
 						
 						// Info field: mail address already registered
-						reg_mail_info = new InfoText ("Diese E-Mail Adresse wurde bereits für ein Konto registriert. Bitte wählen Sie eine andere E-Mail Adresse.");
+						reg_mail_info = new InfoText ("Diese E-Mail Adresse wurde bereits für ein Konto registriert. Bitte wählen Sie eine andere E-Mail Adresse.", 300, 400);
 						this.addChild(reg_mail_info);
 						reg_mail_info.addEventListener(MouseEvent.CLICK, toggleMessage_mail);
 						
@@ -265,7 +266,7 @@ class Main extends Sprite
 				
 				// Display info text field: Internet Connection is necessary
 				// Info field: mail address already registered
-				reg_inet_info = new InfoText ("Eine Internetverbindung ist zur Registrierung notwendig, wurde aber nicht erkannt. \n Bitte stellen Sie eine Internetverbindung her.");
+				reg_inet_info = new InfoText ("Eine Internetverbindung ist zur Registrierung notwendig, wurde aber nicht erkannt. \n Bitte stellen Sie eine Internetverbindung her.", 300, 400);
 				this.addChild(reg_inet_info);
 				reg_inet_info.addEventListener(MouseEvent.CLICK, toggleMessage_inet);
 				
@@ -582,6 +583,7 @@ class Main extends Sprite
 	//function that draws the Slotmachine
 	function drawSlotmachine(){
 		
+		inftext = new InfoText("Bitte efüllen Sie die Aufgabe gewissenhaft.", 100, 400);
 		//stops game when not zoned in
 		//insert focus out???
 		stage.addEventListener(Event.DEACTIVATE, pause);
@@ -724,7 +726,8 @@ class Main extends Sprite
 		// Set game state
 		//currentGameState = Playing;		
 		
-
+		
+		//addChild(inftext, );
 	}
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
