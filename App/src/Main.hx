@@ -45,10 +45,7 @@ class Main extends Sprite
 
 	// Set up game state variable
 	private var currentGameState:GameState;
-	
-	// Set up number of trials
-	private var trials:Int = 150;
-	
+		
 	// Set up array for keys
 	private var keys:Array<Bool>;
 
@@ -779,19 +776,19 @@ class Main extends Sprite
 		data base to represent the level that you reached
 		--> var level: now set to 1 because no data base available
 		*/
-		add = 100;
-		//3 will be replaced with level
-		for(i in 1...3){
-			pathogenArray[i].x = 0;
-			pathogenArray[i].y = add;
-			addChild(pathogenArray[i]);
+		/*add = 100;
+		// only count to run_ind - 1 as the current pathogen has not been beaten yet
+		for(i in 1..._run_ind-1){
+			pathogen_array[i].x = 0;
+			pathogen_array[i].y = add;
+			addChild(pathogen_array[i]);
 			add = add + 50;
 
-		/**
-		 *  if we have 30 different pathogen we need to build in 
-		 *  for loops to make coloumns to present them
-		 */
-		}
+		
+		 //if we have 30 different pathogen we need to build in 
+		 //for loops to make coloumns to present them
+		 
+		}*/
 
 	/**
 	 *   bd = Assets.getBitmapData("img/logo.png");

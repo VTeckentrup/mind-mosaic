@@ -30,7 +30,7 @@ class InternetConnection
 					callback(false);
 				}
 				isAvailable = false;
-				trace(status);
+				trace("Internet connection not available.");
 			};
 
 			http.onStatus = function(status) {
@@ -38,7 +38,7 @@ class InternetConnection
 					callback(true);
 				}
 				isAvailable = true;
-				trace(status);
+				trace("Internet connection available.");
 			};
 
 			http.request(false);

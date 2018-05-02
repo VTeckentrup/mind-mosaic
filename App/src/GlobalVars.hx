@@ -2,10 +2,15 @@ package;
 
 import haxe.io.Path;
 import lime.system.System;
+import openfl.display.Bitmap;
 
 class GlobalVars
 {
-    // stage scaling
+    // general settings
+	public static var trials:Int = 150;
+	public static var runs:Int = 31;
+	
+	// stage scaling
 	public static var NOMINAL_WIDTH:Int = 1920;
 	public static var NOMINAL_HEIGHT:Int = 1080;
 	
@@ -92,4 +97,41 @@ class GlobalVars
 	// unfocus/refocus time stamps
 	public static var timestamp_unfocus: Float;
 	public static var timestamp_refocus: Float;
+	
+	// graphics
+	// global current
+	public static var img_run_background: Bitmap;
+	public static var img_menu_background: Bitmap;
+	public static var img_gallery_background: Bitmap;
+	public static var img_notepad_A: Bitmap;
+	public static var img_notepad_B: Bitmap;
+	public static var img_syringe_full_A: Bitmap;
+	public static var img_syringe_empty_A: Bitmap;
+	public static var img_syringe_full_B: Bitmap;
+	public static var img_syringe_empty_B: Bitmap;
+	public static var img_pathogen: Bitmap;
+	// background array
+	public static var background_array:Array<Bitmap>;
+	// notepad array
+	public static var notepad_array:Array<Bitmap>;
+	//pathogen array
+	public static var pathogen_array:Array<Bitmap>;
+	// syringe array lab 1
+	public static var syringe_1_full_array:Array<Bitmap>;
+	public static var syringe_1_empty_array:Array<Bitmap>;
+	// syringe array lab 2
+	public static var syringe_2_full_array:Array<Bitmap>;
+	public static var syringe_2_empty_array:Array<Bitmap>;
+	// syringe array lab 3
+	public static var syringe_3_full_array:Array<Bitmap>;
+	public static var syringe_3_empty_array:Array<Bitmap>;
+	// syringe array lab 4
+	public static var syringe_4_full_array:Array<Bitmap>;
+	public static var syringe_4_empty_array:Array<Bitmap>;
+	// syringe array lab 5
+	public static var syringe_5_full_array:Array<Bitmap>;
+	public static var syringe_5_empty_array:Array<Bitmap>;
+	// syringes bonus
+	public static var syringe_bonus_full_array:Array<Bitmap>;
+	public static var syringe_bonus_empty_array:Array<Bitmap>;
 }
