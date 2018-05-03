@@ -350,7 +350,7 @@ class Main extends Sprite
 		background_bd = Assets.getBitmapData("img/background_medium.png");
 		background_b = new Bitmap(background_bd);
 		background_b.smoothing = true;
-		addChild(background_b);
+		this.addChild(background_b);
 		button_log = drawButton("Login",Std.int(NOMINAL_WIDTH / 2),Std.int(NOMINAL_HEIGHT / 2),Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
 		button_reg1 = drawButton("Registration", Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) + (NOMINAL_HEIGHT / 8))),Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
 		button_log.addEventListener(MouseEvent.CLICK, onClick_log);
@@ -579,8 +579,7 @@ class Main extends Sprite
 //%%%%%%%%%%% SLOT MACHINE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//function that draws the Slotmachine
 	function drawSlotmachine(){
-		
-		inftext = new InfoText("Bitte efüllen Sie die Aufgabe gewissenhaft.", 100, 400);
+	
 		//stops game when not zoned in
 		//insert focus out???
 		stage.addEventListener(Event.DEACTIVATE, pause);
@@ -725,6 +724,10 @@ class Main extends Sprite
 		
 		
 		//addChild(inftext, );
+
+			
+		inftext = new InfoText("Bitte efüllen Sie die Aufgabe gewissenhaft.", 100, 400);
+		this.addChild(inftext);
 	}
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

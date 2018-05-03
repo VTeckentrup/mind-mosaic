@@ -12,15 +12,17 @@ class InfoText extends Sprite {
 		super ();
 		
 		var info_textfield:TextField = new TextField();
-		info_textfield.background = true;
-		info_textfield.backgroundColor = 0x0066cc;
+		info_textfield.background = false;
+		//info_textfield.backgroundColor = 0x0066cc;
 		//info_textfield.backgroundColor = 0xFFFFFF;
 		info_textfield.border = true;
 		info_textfield.borderColor = 0x000000;
 		info_textfield.height = 100;
 		info_textfield.width = 100;
+
 		var info_text:TextFormat = new TextFormat("Arial", 45, 0x000000, true);
 		info_text.align = TextFormatAlign.CENTER;
+
 		info_textfield.defaultTextFormat = info_text;
 		info_textfield.text = infotext;
 		info_textfield.textColor = 0xFFFFFF;
