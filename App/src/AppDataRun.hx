@@ -3,11 +3,11 @@ package;
 import sys.db.Types;
 import sys.db.Object;
 
-@:id(subject_id, timestamp)
+@:id(subject_id_app, timestamp)
 @:table("app_data_run")
 class AppDataRun extends Object {
 	
-	public var subject_id : SUInt;
+	public var subject_id_app : SUInt;
 	public var run_ind : SUInt;
 	public var global_score : SUInt;
 	public var item_1 : SUInt;
@@ -40,7 +40,7 @@ class AppDataRun extends Object {
 	public var item_28 : SUInt;
 	public var item_29 : SUInt;
 	public var item_30 : SUInt;
-	public var app_version : SString<10>;
+	public var app_version : SString<8>;
 	public var timestamp : SDateTime;
 	
 }

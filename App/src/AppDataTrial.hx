@@ -3,19 +3,19 @@ package;
 import sys.db.Types;
 import sys.db.Object;
 
-@:id(subject_id, timestamp)
+@:id(subject_id_app, timestamp)
 @:table("app_data_trial")
 class AppDataTrial extends Object
 {
-	public var subject_id : SUInt;
+	public var subject_id_app : SUInt;
 	public var trial_ind : SUInt;
     public var run_ind : SUInt;
-    public var p_reward_A : SFloat;
-    public var p_reward_B : SFloat;
+    public var p_reward_a : SFloat;
+    public var p_reward_b : SFloat;
     public var p_draw : SFloat;
     public var drawn_outcome : SString<1>;
-    public var reward_A : SUInt;
-    public var reward_B : SUInt;
+    public var reward_a : SUInt;
+    public var reward_b : SUInt;
     public var choice : SString<1>;
     public var win : STinyUInt;
 	public var score : SFloat;

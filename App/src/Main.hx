@@ -52,6 +52,10 @@ class Main extends Sprite
 	// Definition of slot machine graphic elements
 	private var slot_machine_blue:Machine_blue;
 	private var slot_machine_green:Machine_green;
+	private var NotepadA:NotepadLeft;
+	private var NotepadB:NotepadRight;
+	private var SyringeA:Syringe;
+	private var SyringeB:Syringe;
 	
 	// Definition of selection circle graphic element
 	private var circle_selection:Selection_Circle;
@@ -63,8 +67,8 @@ class Main extends Sprite
 	// Define vars for slot machine values and associated text fields
 	private var A_reward:Int;
 	private var B_reward:Int;
-	private var scoreField_blue:TextField;
-	private var scoreField_green:TextField;
+	private var scoreField_A:TextField;
+	private var scoreField_B:TextField;
 
 	var stageWidth:Int = Lib.current.stage.stageWidth;
     var stageHeight:Int = Lib.current.stage.stageHeight;
@@ -78,7 +82,7 @@ class Main extends Sprite
 	public var cityName:String;
 	
 	// Define array for reward probabilities
-	var probArray:Array<Float> = [0.5];
+	var probA:Array<Float>;
 	
 	// Define vars for reward probabilities
 	private var reward_prob_A:Float;
@@ -93,6 +97,7 @@ class Main extends Sprite
 	// Define info textfields
 	public var reg_mail_info:InfoText;
 	public var reg_inet_info:InfoText;
+	public var reg_entry_info:InfoText;
 
 	//Button variables for multiple buttons
 	public var button1:SimpleButton;
@@ -114,8 +119,6 @@ class Main extends Sprite
 	private var clicked_button:SimpleButton;
     private var click_button:Bool = false;
 
-	private var fullname:TextField;
-	private var birthdate:TextField;
 	private var mailaddress:TextField;
 	private var selectedpw:TextField;
 
@@ -132,6 +135,10 @@ class Main extends Sprite
 	private var background_b:Bitmap;
 	
 	private var inftext:InfoText;
+	
+	
+	public var timestamp_unfocus:Int = 0;
+	public var timestamp_refocus:Int = 0;
 
 	
 	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -147,45 +154,27 @@ class Main extends Sprite
 
 
 //%%%%%%%%%%BUTTONS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	/*function to only draw the button - can be called for every button 
-    you need to pass on a text that the button has to display*/
-	public function drawButton(text:String,pos1:Int,pos2:Int,width:Int, height:Int):SimpleButton{
-
-		var b1 = new Button(0x215ab7, text, width, height);
-		var b2 = new Button(0xb72025, text, width, height);
-		var b3 = new Button(0xfffb21, text, width, height);
-		var b4 = new Button(0x36b71f, text, width, height);
-		button = new SimpleButton(b1,b2,b3,b4);
-		
-        button.x = pos1;
-		button.y = pos2;
-		
-		button.useHandCursor = true;
-
-        this.addChild(button);
-		return(button);
-	}
 	
-	/*onClick functions for the multiple buttons
+	//onClick functions for the multiple buttons
 	
-	DATENBANK ABSPEICHERN
-	Button: New Game - Button1*/
+	//DATENBANK ABSPEICHERN
+	//Button: New Game - Button1
 	public function onClick1 (event: MouseEvent):Void {
 		this.removeChildren();
-		drawSlotmachine();	
+		MainGame();	
 	}
 	//Instruction - Button2
 	public function onClick2 (event: MouseEvent):Void {
 		this.removeChildren();
-		button_back = drawButton("Zurück",300,300,Std.int(NOMINAL_WIDTH / 5),Std.int(NOMINAL_HEIGHT / 9));
-		button_back.addEventListener(MouseEvent.CLICK, onClick_back);	
+		button_back = Button.drawButton("Zurück",300,300,"menu");
+		button_back.addEventListener(MouseEvent.CLICK, onClick_back);
 	}
 	//DATENBANKABRUF
 	//Button Game Status - Button3
 	public function onClick3 (event: MouseEvent):Void {
 		this.removeChildren();
-		seeGamestatus(_run_ind);
-		button_back = drawButton("Zurück",300,300,Std.int(NOMINAL_WIDTH / 5),Std.int(NOMINAL_HEIGHT / 9));
+		drawGallery();
+		button_back = Button.drawButton("Zurück",300,300,"menu");
 		button_back.addEventListener(MouseEvent.CLICK, onClick_back);	
 	}
 	
@@ -214,7 +203,7 @@ class Main extends Sprite
 	//End Game slotmachine - Button_end
 	public function onClick_end (event: MouseEvent):Void {
 		this.removeChildren();
-		drawInfopage();
+		drawMenuScreen();
 	}
 	
 	//Registration Button event - button_reg
@@ -224,7 +213,7 @@ class Main extends Sprite
 		var database_availability = InternetConnection.isAvailable();
 			// If internet is connected, check if input fields are filled 
 		if (database_availability == true) {
-				if (fullname.length > 0 && birthdate.length > 0 && mailaddress.length > 0 && selectedpw.length > 0) {
+				if (mailaddress.length > 0 && selectedpw.length > 0) {
 					// Check if mailaddress is already registered, if not register and log-in
 					_mail_address = mailaddress.text;
 					var mail_availability = DatabaseSync.CheckRegistration(_mail_address);
@@ -241,21 +230,26 @@ class Main extends Sprite
 						AppdataJSON.saveLogin();
 						
 						// Send to main menu
-						this.removeChildren();
-						drawInfopage();
+						this.removeChild(registration_screen);
+						drawMenuScreen();
 						
 					} else {
 						
 						// Info field: mail address already registered
-						reg_mail_info = new InfoText ("Diese E-Mail Adresse wurde bereits für ein Konto registriert. Bitte wählen Sie eine andere E-Mail Adresse.", 300, 400);
-						this.addChild(reg_mail_info);
-						reg_mail_info.addEventListener(MouseEvent.CLICK, toggleMessage_mail);
-						
+						reg_mail_info = new InfoText ("Diese E-Mail Adresse wurde bereits für ein Konto registriert.\nBitte wählen Sie eine andere E-Mail Adresse.");
+						var reg_mail_info_button = reg_mail_info.getChildAt(1);
+						reg_mail_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegMail);
+						registration_screen.addChild(reg_mail_info);
+												
 					}
 					
 				} else {
 					
 					// Input fields need to be filled
+					reg_entry_info = new InfoText ("Die Eingaben zu E-Mailadresse und Passwort dürfen nicht leer sein");
+					var reg_entry_info_button = reg_entry_info.getChildAt(1);
+					reg_entry_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegEntry);
+					registration_screen.addChild(reg_entry_info);
 					
 				}
 				
@@ -263,20 +257,25 @@ class Main extends Sprite
 				
 				// Display info text field: Internet Connection is necessary
 				// Info field: mail address already registered
-				reg_inet_info = new InfoText ("Eine Internetverbindung ist zur Registrierung notwendig, wurde aber nicht erkannt. \n Bitte stellen Sie eine Internetverbindung her.", 300, 400);
-				this.addChild(reg_inet_info);
-				reg_inet_info.addEventListener(MouseEvent.CLICK, toggleMessage_inet);
+				reg_inet_info = new InfoText ("Eine Internetverbindung ist zur Registrierung notwendig, wurde aber nicht erkannt.\n Bitte stellen Sie eine Internetverbindung her.");
+				var reg_inet_info_button = reg_inet_info.getChildAt(1);
+				reg_inet_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegInet);
+				registration_screen.addChild(reg_inet_info);
 				
 			}
 		
 	}
 	
-	public function toggleMessage_mail(event: MouseEvent):Void {
-		this.removeChild(reg_mail_info);
+	public function toggleMessageRegMail(event: MouseEvent):Void {
+		registration_screen.removeChild(reg_mail_info);
 	}
 	
-	function toggleMessage_inet(event: MouseEvent):Void {
-		this.removeChild(reg_inet_info);
+	public function toggleMessageRegEntry(event: MouseEvent):Void {
+		registration_screen.removeChild(reg_entry_info);
+	}
+	
+	function toggleMessageRegInet(event: MouseEvent):Void {
+		registration_screen.removeChild(reg_inet_info);
 	}
 						
 	//Leads back to start page from registration
@@ -302,7 +301,7 @@ class Main extends Sprite
 						AppdataJSON.saveLogin();
 						// send to main menu
 						this.removeChildren();
-						drawInfopage();					
+						drawMenuScreen();					
 					} else {
 						
 						// Info field: mail address not yet registered -> send to registration page
@@ -327,7 +326,7 @@ class Main extends Sprite
 	//leads you to Login page
 	public function onClick_log(event: MouseEvent):Void {
 		this.removeChildren();
-		getSetupImage();
+		getLoginScreen();
 	}
 	//leads you to Registration page
 	public function onClick_reg1(event: MouseEvent):Void {
@@ -337,7 +336,7 @@ class Main extends Sprite
 	//Back Button to Infopage
 	public function onClick_back (event: MouseEvent):Void {
 		this.removeChildren();
-		drawInfopage();
+		drawMenuScreen();
 	}
 
 
@@ -347,19 +346,26 @@ class Main extends Sprite
 	//first page that lets you choose between Login and Registration
 	public function log_and_reg(){
 		
-		background_bd = Assets.getBitmapData("img/background_medium.png");
-		background_b = new Bitmap(background_bd);
-		background_b.smoothing = true;
-		this.addChild(background_b);
-		button_log = drawButton("Login",Std.int(NOMINAL_WIDTH / 2),Std.int(NOMINAL_HEIGHT / 2),Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
-		button_reg1 = drawButton("Registration", Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) + (NOMINAL_HEIGHT / 8))),Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
+		login_screen = new Sprite();
+		login_screen.addChild(img_menu_background);
+		
+		button_log = Button.drawButton("Login",NOMINAL_WIDTH / 2, 400, "menu");
+		button_reg1 = Button.drawButton("Registrierung", NOMINAL_WIDTH / 2, 600, "menu");
 		button_log.addEventListener(MouseEvent.CLICK, onClick_log);
 		button_reg1.addEventListener(MouseEvent.CLICK, onClick_reg1);
 		
+		login_screen.addChild(button_log);
+		login_screen.addChild(button_reg1);
+		
+		this.addChild(login_screen);
+		
 	}
 
-	//first SetUp Image with the Log-in data & PW
-	public function getSetupImage(){
+	// draw login screen Log-in data & PW
+	public function getLoginScreen(){
+		
+		login_screen = new Sprite();
+		login_screen.addChild(img_menu_background);
 
 		username = new TextField();
 		username.background = true;
@@ -403,54 +409,17 @@ class Main extends Sprite
 
 		//SHOULD ONLY BE POSSIBLE WHEN TEXT IS INSERTED & MATCHED DATA BASE
 		//draw Log-In button
-		button_login = drawButton("Login",275,350,Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
+		button_login = Button.drawButton("Login",275,350,"menu");
 		button_login.addEventListener(MouseEvent.CLICK, onClick_login);
 	}
 
 
 	//creates the registration page
 	function createRegistration(){
-		//Insertion of the full name
-		fullname = new TextField();
-		fullname.background = true;
-		fullname.width = 400;
-		fullname.height = 50;
-		fullname.x = 200;
-		fullname.y = 50;
-
-		var name1:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
-		//Text is centered
-		name1.align = TextFormatAlign.CENTER;
-		fullname.text = "Name";
-		fullname.defaultTextFormat = name1;
-		fullname.restrict = null;
-		//user can edit the textfield
-		fullname.type = TextFieldType.INPUT;
-		fullname.needsSoftKeyboard = true;
-		fullname.requestSoftKeyboard();
-		this.addChild(fullname);
-
-		//birthdate
-		birthdate = new TextField();
-		birthdate.background = true;
-		birthdate.width = 400;
-		birthdate.height = 50;
-		birthdate.x = 200;
-		birthdate.y = 120;
-
-		var name2:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
-		//Text is centered
-		name2.align = TextFormatAlign.CENTER;
-		//text is restricted to only enter the birthdate
-		birthdate.text = "TT.MM.JJJJ";
-		birthdate.defaultTextFormat = name2;
-		birthdate.restrict = "0-9.TJM";
-		//user can edit the textfield
-		birthdate.type = TextFieldType.INPUT;
-		birthdate.needsSoftKeyboard = true;
-		birthdate.requestSoftKeyboard();
-		this.addChild(birthdate);
-
+		
+		registration_screen = new Sprite();
+		registration_screen.addChild(img_menu_background);
+		
 		//Register with mail address
 		mailaddress = new TextField();
 		mailaddress.background = true;
@@ -492,10 +461,10 @@ class Main extends Sprite
 
 		//Enabled only if text is inserted, internet connection available and mail address is not already in the database
 		//Button for Registration
-		button_reg = drawButton("Registrieren",100,400,Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
+		button_reg = Button.drawButton("Registrieren",100,400,"menu");
 		button_reg.addEventListener(MouseEvent.CLICK, onClick_Reg);
 		
-		button_reg_back = drawButton("Zurück",400,400,Std.int(NOMINAL_WIDTH / 5),Std.int(NOMINAL_HEIGHT / 9));
+		button_reg_back = Button.drawButton("Zurück",400,400,"menu");
 		button_reg_back.addEventListener(MouseEvent.CLICK, onClick_Reg_Back);
 
 	}
@@ -503,31 +472,42 @@ class Main extends Sprite
 
 
 
-	/*draws the Info page where you can choose from new game, About, Instructions, Score and Log-off
+	/*draws the menu screen where you can choose from new game, About, Instructions, Score and Log-off
 	needs text*/
-	public function drawInfopage(){
+	public function drawMenuScreen(){
+		
+		menu_screen = new Sprite();
+		menu_screen.addChild(img_menu_background);
 		
 		//New game button
-        button1 = drawButton("Neues Spiel",Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) - 2.5*(NOMINAL_HEIGHT / 8))), Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
+        button1 = Button.drawButton("Neues Spiel",NOMINAL_WIDTH / 2, 200, "menu");
 		//Anleitung
-		button2 = drawButton("Anleitung",Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) - 1.5*(NOMINAL_HEIGHT / 8))), Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
+		button2 = Button.drawButton("Anleitung",Std.int(NOMINAL_WIDTH / 2), 350, "menu");
 		//Spielstand
-		button3 = drawButton("Spielstand/Galerie",Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) - 0.5*(NOMINAL_HEIGHT / 8))),Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
+		button3 = Button.drawButton("Spielstand/Galerie",Std.int(NOMINAL_WIDTH / 2), 500, "menu");
 		//Über das Spiel
-		button4 = drawButton("Über das Spiel",Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) + 0.5*(NOMINAL_HEIGHT / 8))), Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
+		button4 = Button.drawButton("Über das Spiel",Std.int(NOMINAL_WIDTH / 2), 650, "menu");
 		//Logout
-		button5 = drawButton("Logout", Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) + 1.5*(NOMINAL_HEIGHT / 8))), Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
+		button5 = Button.drawButton("Logout", Std.int(NOMINAL_WIDTH / 2), 800, "menu");
 		// Beenden
-		button6 = drawButton("Beenden", Std.int(NOMINAL_WIDTH / 2), Std.int(((NOMINAL_HEIGHT / 2) + 2.5*(NOMINAL_HEIGHT / 8))), Std.int(NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 7));
+		button6 = Button.drawButton("Beenden", Std.int(NOMINAL_WIDTH / 2), 950, "menu");
 
-
-			
+	
 		button1.addEventListener(MouseEvent.CLICK, onClick1);
 		button2.addEventListener(MouseEvent.CLICK, onClick2);
 		button3.addEventListener(MouseEvent.CLICK, onClick3);
 		button4.addEventListener(MouseEvent.CLICK, onClick4);
 		button5.addEventListener(MouseEvent.CLICK, onClick5);
 		button6.addEventListener(MouseEvent.CLICK, onClick6);
+		
+		menu_screen.addChild(button1);
+		menu_screen.addChild(button2);
+		menu_screen.addChild(button3);
+		menu_screen.addChild(button4);
+		menu_screen.addChild(button5);
+		menu_screen.addChild(button6);
+		
+		this.addChild(menu_screen);
 		
 	
 	}
@@ -542,7 +522,7 @@ class Main extends Sprite
 		currentGameState = Paused;
 		// get time stamp of unfocus event
 		var current_time = Date.now();
-		timestamp_unfocus = current_time.getTime();
+		timestamp_unfocus = current_time.getHours();
 
     }
 	//app back in focus - start last run again
@@ -550,9 +530,9 @@ class Main extends Sprite
    
 		// check if unfocus was longer than 1 hour (= 3600000 milliseconds)
 		var current_time = Date.now();
-		timestamp_refocus = current_time.getTime();
+		timestamp_refocus = current_time.getHours();
 		
-		if (timestamp_refocus - timestamp_unfocus > 3600000) {
+		if (timestamp_refocus - timestamp_unfocus >= 1) {
 		
 			// Set round index to 0 as it will be increased to 1 in the newRound function 
 			_trial_ind = 0;
@@ -562,7 +542,7 @@ class Main extends Sprite
 			
 			// Resume game
 			// start newRound
-			newRound();
+			MainGame();
 			
 		} else {
 			
@@ -576,205 +556,37 @@ class Main extends Sprite
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-//%%%%%%%%%%% SLOT MACHINE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	//function that draws the Slotmachine
-	function drawSlotmachine(){
-	
-		//stops game when not zoned in
-		//insert focus out???
-		stage.addEventListener(Event.DEACTIVATE, pause);
-        stage.addEventListener(Event.ACTIVATE, unpause);
-		
-		//End game Button --> drawInfoPage
-		button_end = drawButton("Zurück",Std.int(NOMINAL_WIDTH),540, Std.int(NOMINAL_WIDTH / 5),Std.int(NOMINAL_HEIGHT / 9));
-		//this.addChild(button_end);
-		button_end.addEventListener(MouseEvent.CLICK, onClick_end);
-		
 
-
-		// Draw slot machines on screen
-		slot_machine_blue = new Machine_blue();
-		//slot_machine_blue.x = 50;
-		//slot_machine_blue.y = 150;
-		slot_machine_blue.x = Std.int(NOMINAL_WIDTH / 2) - Std.int(NOMINAL_WIDTH / 6);
-		slot_machine_blue.y = Std.int(NOMINAL_HEIGHT / 2);
-		this.addChild(slot_machine_blue);
-
-		slot_machine_green = new Machine_green();
-		slot_machine_green.x = Std.int(NOMINAL_WIDTH / 2) + Std.int(NOMINAL_WIDTH / 6);
-		slot_machine_green.y = Std.int(NOMINAL_HEIGHT / 2);
-		this.addChild(slot_machine_green);
-		
-		
-		// Draw selection circle
-		circle_selection = new Selection_Circle(0xc7ccd6);
-		//circle_selection.x = 0;
-		//circle_selection.y = 0;
-		circle_selection.x = Std.int(NOMINAL_WIDTH / 2);
-		circle_selection.y = Std.int(NOMINAL_HEIGHT / 2);
-		this.addChild(circle_selection);
-		
-		// Draw score text field and set starting score points to zero
-		var scoreFormat:TextFormat = new TextFormat("Verdana", 30, 0xbbbbbb, true);
-		scoreFormat.align = TextFormatAlign.LEFT;
-		
-		scoreField = new TextField();
-		addChild(scoreField);
-		scoreField.width = NOMINAL_WIDTH / 2.2;
-		//scoreField.x = 50;
-		scoreField.y = NOMINAL_HEIGHT / 60;
-		scoreField.defaultTextFormat = scoreFormat;
-		scoreField.selectable = false;
-		
-		//_score = 1;
-		scoreField.text = 'Score: $_score';
-		
-		// Draw city text field	
-		var cityFormat:TextFormat = new TextFormat("Verdana", 30, 0xbbbbbb, true);
-		scoreFormat.align = TextFormatAlign.RIGHT;
-		
-		cityField = new TextField();
-		addChild(cityField);
-		cityField.width = NOMINAL_WIDTH / 2.2;
-		//cityField.x = 650;
-		cityField.y = NOMINAL_HEIGHT / 60;
-		cityField.defaultTextFormat = scoreFormat;
-		cityField.selectable = false;
-		
-		cityName = "Tübingen";
-		cityField.text = '$cityName';
-
-		levelFormat = new TextFormat("Verdana", 30, 0xbbbbbb, true);
-		levelFormat.align = TextFormatAlign.RIGHT;
-		
-		levelField = new TextField();
-		addChild(levelField);
-		levelField.width = NOMINAL_WIDTH / 2.2;
-		//cityField.x = 650;
-		levelField.y = NOMINAL_HEIGHT / 20;
-		levelField.defaultTextFormat = levelFormat;
-		levelField.selectable = false;
-		levelField.text = '$_trial_ind';
-		//levelField.text = '$_run_ind';
-
-
-		// Define and format text fields displaying slot machine outcome
-		// blue
-		var scoreFormat_blue:TextFormat = new TextFormat("Verdana", 28, 0xfff61f, true);
-		scoreFormat_blue.align = TextFormatAlign.CENTER;
-
-		scoreField_blue = new TextField();
-		addChild(scoreField_blue);
-		scoreField_blue.width = 50;
-		//scoreField_blue.x = 125;
-		//scoreField_blue.y = 245;
-		scoreField_blue.x = Std.int(NOMINAL_WIDTH / 2) - Std.int(NOMINAL_WIDTH / 6);
-		scoreField_blue.y = Std.int(NOMINAL_HEIGHT / 2);
-		scoreField_blue.defaultTextFormat = scoreFormat_blue;
-		scoreField_blue.selectable = false;
-
-		// green
-		var scoreFormat_green:TextFormat = new TextFormat("Verdana", 28, 0xfff61f, true);
-		scoreFormat_green.align = TextFormatAlign.CENTER;
-
-		scoreField_green = new TextField();
-		addChild(scoreField_green);
-		scoreField_green.width = 50;
-		//scoreField_green.x = 625;
-		//scoreField_green.y = 245;
-		scoreField_green.x = Std.int(NOMINAL_WIDTH / 2) + Std.int(NOMINAL_WIDTH / 6);
-		scoreField_green.y = Std.int(NOMINAL_HEIGHT / 2);
-		scoreField_green.defaultTextFormat = scoreFormat_green;
-		scoreField_green.selectable = false;
+//%%%%%%%%%%Random Walks%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	public function generateRandomWalk():Array<Float> {
 		
 		//Initialise probabilities
 		var step:Float;
 		var probvalueadd:Float;
+		var probabilitiesA:Array<Float> = [0.5];
 		
 		// Generate values for a gaussian random walk and append them to the probability values array
 		for (i in 0...trials-1) {
 			
 			step = NormRandom.floatNormal(0,0.075);
 			
-			while (probArray[i] + step - 0.05 * (probArray[i] - 0.5) < 0 || probArray[i] + step - 0.05 * (probArray[i] - 0.5) > 1) {
+			while (probabilitiesA[i] + step - 0.05 * (probabilitiesA[i] - 0.5) < 0 || probabilitiesA[i] + step - 0.05 * (probabilitiesA[i] - 0.5) > 1) {
 				
 				step = NormRandom.floatNormal(0,0.075);
 				
 			}
 			
-			probvalueadd = probArray[i] + step - 0.05 * (probArray[i] - 0.5);
-			probArray.push(probvalueadd);
+			probvalueadd = probabilitiesA[i] + step - 0.05 * (probabilitiesA[i] - 0.5);
+			probabilitiesA.push(probvalueadd);
 		}
 		
-		// Start game
-		newRound();
+		return probabilitiesA;
 		
-		//reward_prob_A = probArray[0];
-		//reward_prob_B = 1 - reward_prob_A;
-		
-		// DUMMY: Initialize database entries
-		//_p_reward_A = reward_prob_A;
-		//_p_reward_B = reward_prob_B;
-		//_reward_A = A_reward;
-		//_reward_B = B_reward;
-		
-		
-		// Set game state
-		//currentGameState = Playing;		
-		
-		
-		//addChild(inftext, );
-
-			
-		inftext = new InfoText("Bitte efüllen Sie die Aufgabe gewissenhaft.", 100, 400);
-		this.addChild(inftext);
 	}
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 //%%%%%%%%%%PATHOGEN PIC ASSIGNMENT%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%		
-	public function getPathogenAssignment(){
-		//pathogen assignments to the pathogen array
-		pathogenArrayBM[1] = Assets.getBitmapData("img/virus1.png");
-		pathogenArrayBM[2] = Assets.getBitmapData("img/virus2.png");
-		/*pathogenArrayBM[3]
-		pathogenArrayBM[4]
-		pathogenArrayBM[5]
-		pathogenArrayBM[6]
-		pathogenArrayBM[7]
-		pathogenArrayBM[8]
-		pathogenArrayBM[9]
-		pathogenArrayBM[10]
-		pathogenArrayBM[11]
-		pathogenArrayBM[12]
-		pathogenArrayBM[13]
-		pathogenArrayBM[14]
-		pathogenArrayBM[15]
-		pathogenArrayBM[16]
-		pathogenArrayBM[17]
-		pathogenArrayBM[18]
-		pathogenArrayBM[19]
-		pathogenArrayBM[20]
-		pathogenArrayBM[21]
-		pathogenArrayBM[22]
-		pathogenArrayBM[23]
-		pathogenArrayBM[24]
-		pathogenArrayBM[25]
-		pathogenArrayBM[26]
-		pathogenArrayBM[27]
-		pathogenArrayBM[28]
-		pathogenArrayBM[29]
-		pathogenArrayBM[30]
-		pathogenArrayBM[31]
-		*/
-		//3 will be replaced with 31
-		for(i in 1...3){
-			pathogenArray[i] = new Bitmap(pathogenArrayBM[i]);
-		}
-		
-	}
-
-	public function seeGamestatus(_run_ind:Int){
+	public function drawGallery(){
 		/*probably a variable that gets its value from the 
 		data base to represent the level that you reached
 		--> var level: now set to 1 because no data base available
@@ -809,13 +621,13 @@ class Main extends Sprite
 		if (inited) return;
 		inited = true;
 
-		// Set up keys to select option: usually in init function 
+		/*// Set up keys to select option: usually in init function 
 		keys = [];
 		stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-		stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+		stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);*/
 		
 		// Listen for input
-		this.addEventListener(Event.ENTER_FRAME, everyFrame);
+		//this.addEventListener(Event.ENTER_FRAME, everyFrame);
 		
 		// Listen for exit events and attach sync functions to exit handler
 		ExitHandler.setExitHandler(function() {
@@ -829,7 +641,11 @@ class Main extends Sprite
 		});
 		
 		// Load pathogen images into image array
-		getPathogenAssignment();
+		//getPathogenAssignment();
+		AssetPreparation.getBackgrounds();
+		AssetPreparation.getNotepads();
+		AssetPreparation.getSyringes();
+		//AssetPreparation.getButtons();
 		
 		// Set initial values
 		// Set round index to 0 as it will be increased to 1 in the newRound function
@@ -856,7 +672,7 @@ class Main extends Sprite
 			
 			_device_os = Capabilities.os;
 			// Send to main menu
-			drawInfopage();
+			drawMenuScreen();
 			
 		} else {
 			
@@ -866,10 +682,10 @@ class Main extends Sprite
 		}
 		
 		
-		//getSetupImage();
+		//getLoginScreen();
 		//createLogInPage();
-		//drawInfopage();
-		//drawSlotmachine();
+		//drawMenuScreen();
+		//MainGame();
 
 
 		
@@ -928,81 +744,201 @@ class Main extends Sprite
 		
 	}
 
-	// Set keyboard keys actived/deactivated on key press/release
+	/*// Set keyboard keys actived/deactivated on key press/release
 	private function onKeyDown(evt:KeyboardEvent):Void {
 		keys[evt.keyCode] = true;
 	}
 
 	private function onKeyUp(evt:KeyboardEvent):Void {
 		keys[evt.keyCode] = false;
-	}
+	}*/
 
 
 //%%%%%%%%%%%% GAME %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	private function everyFrame(event:Event):Void {
+	//function that draws the Main Game Screen
+	function MainGame(){
+		
+		//stops game when not zoned in and indicates when focus is back
+		stage.addEventListener(Event.DEACTIVATE, pause);
+        stage.addEventListener(Event.ACTIVATE, unpause);
+		
+		this.removeChild(game_screen);
 	
-		// Only execute if the game is currently active to prevent excessive summation of rewards
-		if (currentGameState == Playing) {
+		//End game Button --> drawMenuScreen
+		//button_end = drawButton("Zurück",Std.int(NOMINAL_WIDTH),540, Std.int(NOMINAL_WIDTH / 5),Std.int(NOMINAL_HEIGHT / 9));
+		//this.addChild(button_end);
+		//button_end.addEventListener(MouseEvent.CLICK, onClick_end);
 		
-			if (keys[Keyboard.LEFT]) {
-				// Draw frame indicating choice
-				this.removeChild(frame_choice);
-				frame_choice = new Choice_Frame(0xc7ccd6);
-				frame_choice.x = 0;
-				frame_choice.y = 0;
-				frame_choice_side = 1;
-				
-				/*frame_choice.x = Std.int(NOMINAL_WIDTH / 2) - Std.int(NOMINAL_WIDTH / 9);
-				frame_choice.y = Std.int(NOMINAL_HEIGHT / 2) - Std.int(NOMINAL_HEIGHT / 6);*/
-				frame_choice_side = 1;
-				this.addChild(frame_choice);
-			}
-			
-			if (keys[Keyboard.RIGHT]) {
-				// Draw frame indicating choice
-				this.removeChild(frame_choice);
-				frame_choice = new Choice_Frame(0xc7ccd6);
-				frame_choice.x = Std.int(NOMINAL_WIDTH / 2) + Std.int(NOMINAL_WIDTH / 6);
-				frame_choice.y = Std.int(NOMINAL_HEIGHT / 2);
-				frame_choice_side = 2;
-				this.addChild(frame_choice);
-			}
-			
-			if (this.contains(frame_choice) && frame_choice_side == 1 && keys[Keyboard.ENTER]) {
-				
-				// Halt game for evaluation
-				currentGameState = Evaluate;
-				
-				// Change color of choice frame and call function for evaluation
-				this.removeChild(frame_choice);
-				frame_choice = new Choice_Frame(0x8e8e8e);
-				frame_choice.x = Std.int(NOMINAL_WIDTH / 2) - Std.int(NOMINAL_WIDTH / 6);
-				frame_choice.y = Std.int(NOMINAL_HEIGHT / 2);
-				this.addChild(frame_choice);
-				endRound('A');
-				
-			}
-			
-			if (this.contains(frame_choice) && frame_choice_side == 2 && keys[Keyboard.ENTER]) {
-				
-				// Halt game for evaluation
-				currentGameState = Evaluate;
-				
-				// Change color of choice frame and call function for evaluation
-				this.removeChild(frame_choice);
-				frame_choice = new Choice_Frame(0x8e8e8e);
-				frame_choice.x = Std.int(NOMINAL_WIDTH / 2) + Std.int(NOMINAL_WIDTH / 6);
-				frame_choice.y = Std.int(NOMINAL_HEIGHT / 2);
-				this.addChild(frame_choice);
-				endRound('B');
-				
-			}
+		// get background image associated with level and attach to new sprite
+		game_screen = new MainGameScreen();
 		
-		}
 		
+		// add notepads to game screen
+		NotepadA = new NotepadLeft();
+		NotepadA.x = 350;
+		NotepadA.y = 250;
+		game_screen.addChild(NotepadA);
+		
+		NotepadB = new NotepadRight();
+		NotepadB.x = 1150;
+		NotepadB.y = 250;
+		game_screen.addChild(NotepadB);
+		
+				
+		// add syringes (full) to game screen
+		SyringeA = new Syringe("full", "A");
+		SyringeA.x = 400;
+		SyringeA.y = 600;
+		SyringeA.addEventListener(MouseEvent.CLICK, PostChoiceA);
+		game_screen.addChild(SyringeA);
+		
+		SyringeB = new Syringe("full", "B");
+		SyringeB.x = 1200;
+		SyringeB.y = 600;
+		SyringeB.addEventListener(MouseEvent.CLICK, PostChoiceB);
+		game_screen.addChild(SyringeB);
+	
+
+		/*// Draw slot machines on screen
+		slot_machine_blue = new Machine_blue();
+		//slot_machine_blue.x = 50;
+		//slot_machine_blue.y = 150;
+		slot_machine_blue.x = Std.int(NOMINAL_WIDTH / 2) - Std.int(NOMINAL_WIDTH / 6);
+		slot_machine_blue.y = Std.int(NOMINAL_HEIGHT / 2);
+		this.addChild(slot_machine_blue);
+
+		slot_machine_green = new Machine_green();
+		slot_machine_green.x = Std.int(NOMINAL_WIDTH / 2) + Std.int(NOMINAL_WIDTH / 6);
+		slot_machine_green.y = Std.int(NOMINAL_HEIGHT / 2);
+		this.addChild(slot_machine_green);
+		
+		
+		// Draw selection circle
+		circle_selection = new Selection_Circle(0xc7ccd6);
+		//circle_selection.x = 0;
+		//circle_selection.y = 0;
+		circle_selection.x = Std.int(NOMINAL_WIDTH / 2);
+		circle_selection.y = Std.int(NOMINAL_HEIGHT / 2);
+		this.addChild(circle_selection);*/
+		
+		// Draw score text field and set starting score points to zero
+		var scoreFormat:TextFormat = new TextFormat("Verdana", 30, 0xbbbbbb, true);
+		scoreFormat.align = TextFormatAlign.LEFT;
+		
+		scoreField = new TextField();
+		addChild(scoreField);
+		scoreField.width = NOMINAL_WIDTH / 2.2;
+		//scoreField.x = 50;
+		scoreField.y = NOMINAL_HEIGHT / 60;
+		scoreField.defaultTextFormat = scoreFormat;
+		scoreField.selectable = false;
+		
+		//_score = 1;
+		scoreField.text = 'Score: $_score';
+		
+		/*// Draw city text field	
+		var cityFormat:TextFormat = new TextFormat("Verdana", 30, 0xbbbbbb, true);
+		scoreFormat.align = TextFormatAlign.RIGHT;
+		
+		cityField = new TextField();
+		addChild(cityField);
+		cityField.width = NOMINAL_WIDTH / 2.2;
+		//cityField.x = 650;
+		cityField.y = NOMINAL_HEIGHT / 60;
+		cityField.defaultTextFormat = scoreFormat;
+		cityField.selectable = false;
+		
+		cityName = "Tübingen";
+		cityField.text = '$cityName';*/
+
+		levelFormat = new TextFormat("Verdana", 30, 0xbbbbbb, true);
+		levelFormat.align = TextFormatAlign.RIGHT;
+		
+		levelField = new TextField();
+		addChild(levelField);
+		levelField.width = NOMINAL_WIDTH / 2.2;
+		levelField.y = NOMINAL_HEIGHT / 20;
+		levelField.defaultTextFormat = levelFormat;
+		levelField.selectable = false;
+		//levelField.text = 'Runde: $_trial_ind von $trials';
+		//levelField.text = '$_run_ind';
+
+
+		// Define and format text fields displaying drug outcome
+		// A
+		var scoreFormat_notepads:TextFormat = new TextFormat("Verdana", 50, 0x000000, true);
+		scoreFormat_notepads.align = TextFormatAlign.CENTER;
+
+		scoreField_A = new TextField();
+		game_screen.addChild(scoreField_A);
+		scoreField_A.width = 200;
+		scoreField_A.x = 475;
+		scoreField_A.y = 400;
+		//scoreField_A.x = Std.int(NOMINAL_WIDTH / 2) - Std.int(NOMINAL_WIDTH / 6);
+		//scoreField_A.y = Std.int(NOMINAL_HEIGHT / 2);
+		scoreField_A.defaultTextFormat = scoreFormat_notepads;
+		scoreField_A.selectable = false;
+
+		// B
+		scoreField_B = new TextField();
+		game_screen.addChild(scoreField_B);
+		scoreField_B.width = 200;
+		scoreField_B.x = 1275;
+		scoreField_B.y = 400;
+		//scoreField_B.x = Std.int(NOMINAL_WIDTH / 2) + Std.int(NOMINAL_WIDTH / 6);
+		//scoreField_B.y = Std.int(NOMINAL_HEIGHT / 2);
+		scoreField_B.defaultTextFormat = scoreFormat_notepads;
+		scoreField_B.selectable = false;
+		
+		//Initialise probabilities using a gaussian random walk
+		probA = generateRandomWalk();
+							
+		inftext = new InfoText("Bitte erfüllen Sie die Aufgabe gewissenhaft.");
+		var inftext_button = inftext.getChildAt(1);
+		inftext_button.addEventListener(MouseEvent.CLICK, toggleMessage);
+		//inftext.addChild(textfield_button);
+		//game_screen.addChild(inftext);
+		
+		// Generate properties for new trial
+		newRound();
 	}
 	
 	
+	public function toggleMessage(event: MouseEvent):Void {
+		
+		game_screen.removeChild(inftext);
+		
+	}
+	
+	// handle mouse events from users choice 
+	public function PostChoiceA(event: MouseEvent):Void {
+		
+		// set to empty syringe
+		game_screen.removeChild(SyringeA);
+		SyringeA = new Syringe("empty", "A");
+		SyringeA.x = 400;
+		SyringeA.y = 600;
+		game_screen.addChild(SyringeA);
+		// determine if choice was correct
+		endRound("A");
+		
+	}
+	
+	public function PostChoiceB(event: MouseEvent):Void {
+		
+		// set to empty syringe
+		game_screen.removeChild(SyringeB);
+		SyringeB = new Syringe("empty", "B");
+		SyringeB.x = 1200;
+		SyringeB.y = 600;
+		game_screen.addChild(SyringeB);
+		// determine if choice was correct
+		endRound("B");
+		
+	}
+
+
+	// evaluate the outcome of the trial
 	private function endRound(drug_choice:String):Void {
 		
 		// Get winning machine
@@ -1011,18 +947,21 @@ class Main extends Sprite
 		// Evaluate winning machine and set output accordingly
 		if (prob_draw <= reward_prob_A) {
 			correct_choice = 'A';
-			this.removeChild(circle_selection);
+			/*this.removeChild(circle_selection);
 			circle_selection = new Selection_Circle(0x0066cc);
 			circle_selection.x = Std.int(NOMINAL_WIDTH / 2);
 			circle_selection.y = Std.int(NOMINAL_HEIGHT / 2);
 			this.addChild(circle_selection);
-			trace('$_score');
+			trace('$_score');*/
 			
 			// If the winning option was selected add reward to score and update score field
 			if (drug_choice == 'A') {
 				
 				_score = Std.int(_score + A_reward);
 				scoreField.text = 'Score: $_score';
+				img_feedback_correct.x = 525;
+				img_feedback_correct.y = 475;
+				game_screen.addChild(img_feedback_correct);
 				
 			}
 			
@@ -1031,24 +970,30 @@ class Main extends Sprite
 				
 				_score = Std.int(_score - A_reward);
 				scoreField.text = 'Score: $_score';
+				img_feedback_wrong.x = 1325;
+				img_feedback_wrong.y = 475;
+				game_screen.addChild(img_feedback_wrong);
 				
 			}
 			
 		
 		} else {
 			correct_choice = 'B';
-			this.removeChild(circle_selection);
+			/*this.removeChild(circle_selection);
 			circle_selection = new Selection_Circle(0x1f7c0a);
 			circle_selection.x = Std.int(NOMINAL_WIDTH / 2);
 			circle_selection.y = Std.int(NOMINAL_HEIGHT / 2);
 			this.addChild(circle_selection);
-			trace('$_score');
+			trace('$_score');*/
 						
 			// If the winning option was selected add reward to score and update score field
 			if (drug_choice == 'B') {
 				
 				_score = _score + B_reward;
 				scoreField.text = 'Score: $_score';
+				img_feedback_correct.x = 1325;
+				img_feedback_correct.y = 475;
+				game_screen.addChild(img_feedback_correct);
 				
 			}
 			
@@ -1057,6 +1002,9 @@ class Main extends Sprite
 				
 				_score = _score - B_reward;
 				scoreField.text = 'Score: $_score';
+				img_feedback_wrong.x = 525;
+				img_feedback_wrong.y = 475;
+				game_screen.addChild(img_feedback_wrong);
 				
 			}
 		}
@@ -1087,7 +1035,7 @@ class Main extends Sprite
 		if (_trial_ind < trials)
 		{
 			// call function newRound with delay of 300 ms	
-			haxe.Timer.delay(newRound,300);
+			haxe.Timer.delay(MainGame,500);
 			
 		} else {
 			
@@ -1101,6 +1049,9 @@ class Main extends Sprite
 			_score = 0;
 			// set trial index to 0 as it will be increased to 1 in the newRound function
 			_trial_ind = 0;
+			// set up new probabilities for option A by first clearing the array and writing new values to it
+			untyped probA.length = 0;
+			probA = generateRandomWalk();
 			// save new run info locally
 			AppdataJSON.AppdataSave();
 			// call function for questionnaire items
@@ -1108,17 +1059,18 @@ class Main extends Sprite
 			// save run related info in the database, currently deactivated as not all run entries are available
 			//AppdataEntryLite.writeLiteRunEntry();
 			// call function newRound with delay of 300 ms
-			haxe.Timer.delay(newRound,300);
+			haxe.Timer.delay(MainGame,500);
 		}
 		
 	}
 	
 	
+	// set up properties for new trial
 	private function newRound():Void {
 		
 		// Adapt trial counter
 		_trial_ind = _trial_ind + 1;
-		levelField.text = 'Runde: $_trial_ind';
+		levelField.text = 'Runde: $_trial_ind von $trials';
 		
 		// Set up new rewards
 		A_reward = Math.round(NormRandom.floatNormal(50, 16));
@@ -1135,31 +1087,31 @@ class Main extends Sprite
 		
 		
 		B_reward = 100 - A_reward;
-		scoreField_blue.text = Std.string(A_reward);
-		scoreField_green.text = Std.string(B_reward);
+		scoreField_A.text = '$A_reward %';
+		scoreField_B.text = '$B_reward %';
 		
 		// Grab new reward probabilities
-		reward_prob_A = probArray[_trial_ind-1];
+		reward_prob_A = probA[_trial_ind-1];
 		reward_prob_B = 1 - reward_prob_A;
 		
 		// Reset selection circle
-		this.removeChild(circle_selection);
+		/*this.removeChild(circle_selection);
 		circle_selection = new Selection_Circle(0xc7ccd6);
 		circle_selection.x = Std.int(NOMINAL_WIDTH / 2);
 		circle_selection.y = Std.int(NOMINAL_HEIGHT / 2);
 		this.addChild(circle_selection);
 		
 		// Remove any selection frames
-		this.removeChild(frame_choice);
-		
-		// Remove any selection frames
-		this.removeChild(frame_choice);
+		this.removeChild(frame_choice);*/
 		
 		// Set new values for database
 		_p_reward_A = reward_prob_A;
 		_p_reward_B = reward_prob_B;
 		_reward_A = A_reward;
 		_reward_B = B_reward;
+		
+		// Draw new game screen
+		this.addChild(game_screen);
 		
 		// Resume game
 		//everyframe always active when currentGameState=Playing

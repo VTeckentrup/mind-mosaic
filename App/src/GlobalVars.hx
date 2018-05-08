@@ -3,6 +3,7 @@ package;
 import haxe.io.Path;
 import lime.system.System;
 import openfl.display.Bitmap;
+import openfl.display.Sprite;
 
 class GlobalVars
 {
@@ -103,6 +104,8 @@ class GlobalVars
 	public static var img_run_background: Bitmap;
 	public static var img_menu_background: Bitmap;
 	public static var img_gallery_background: Bitmap;
+	public static var img_feedback_correct: Bitmap;
+	public static var img_feedback_wrong: Bitmap;
 	public static var img_notepad_A: Bitmap;
 	public static var img_notepad_B: Bitmap;
 	public static var img_syringe_full_A: Bitmap;
@@ -111,27 +114,45 @@ class GlobalVars
 	public static var img_syringe_empty_B: Bitmap;
 	public static var img_pathogen: Bitmap;
 	// background array
-	public static var background_array:Array<Bitmap>;
+	public static var background_array:Array<Bitmap> = [];
 	// notepad array
-	public static var notepad_array:Array<Bitmap>;
+	public static var notepad_array_A:Array < Bitmap> = [];
+	public static var notepad_array_B:Array < Bitmap> = [];
 	//pathogen array
-	public static var pathogen_array:Array<Bitmap>;
+	public static var pathogen_array:Array<Bitmap> = [];
+	
+	public static var syringe_full_A_array:Array<Bitmap> = [];
+	public static var syringe_full_B_array:Array<Bitmap> = [];
+	public static var syringe_empty_A_array:Array<Bitmap> = [];
+	public static var syringe_empty_B_array:Array<Bitmap> = [];
 	// syringe array lab 1
-	public static var syringe_1_full_array:Array<Bitmap>;
-	public static var syringe_1_empty_array:Array<Bitmap>;
+	public static var syringe_1_full_array:Array<Bitmap> = [];
+	public static var syringe_1_empty_array:Array<Bitmap> = [];
 	// syringe array lab 2
-	public static var syringe_2_full_array:Array<Bitmap>;
-	public static var syringe_2_empty_array:Array<Bitmap>;
+	public static var syringe_2_full_array:Array<Bitmap> = [];
+	public static var syringe_2_empty_array:Array<Bitmap> = [];
 	// syringe array lab 3
-	public static var syringe_3_full_array:Array<Bitmap>;
-	public static var syringe_3_empty_array:Array<Bitmap>;
+	public static var syringe_3_full_array:Array<Bitmap> = [];
+	public static var syringe_3_empty_array:Array<Bitmap> = [];
 	// syringe array lab 4
-	public static var syringe_4_full_array:Array<Bitmap>;
-	public static var syringe_4_empty_array:Array<Bitmap>;
+	public static var syringe_4_full_array:Array<Bitmap> = [];
+	public static var syringe_4_empty_array:Array<Bitmap> = [];
 	// syringe array lab 5
-	public static var syringe_5_full_array:Array<Bitmap>;
-	public static var syringe_5_empty_array:Array<Bitmap>;
+	public static var syringe_5_full_array:Array<Bitmap> = [];
+	public static var syringe_5_empty_array:Array<Bitmap> = [];
 	// syringes bonus
-	public static var syringe_bonus_full_array:Array<Bitmap>;
-	public static var syringe_bonus_empty_array:Array<Bitmap>;
+	public static var syringe_bonus_full_array:Array<Bitmap> = [];
+	public static var syringe_bonus_empty_array:Array<Bitmap> = [];
+	// syringe counter
+	public static var syringe_counter_A:Int;
+	public static var syringe_counter_B:Int;
+	// button images
+	public static var menu_button_array: Array<Bitmap> = [];
+	
+	// screens
+	public static var game_screen:MainGameScreen;
+	public static var menu_screen:Sprite;
+	public static var start_screen:Sprite;
+	public static var login_screen:Sprite;
+	public static var registration_screen:Sprite;
 }

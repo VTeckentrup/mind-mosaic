@@ -42,15 +42,15 @@ class AppdataEntryLite
 	{
 
 		var app_trial = new AppDataTrial();
-		app_trial.subject_id = _id;
+		app_trial.subject_id_app = _id;
 		app_trial.trial_ind = _trial_ind;
 		app_trial.run_ind = _run_ind;
-		app_trial.p_reward_A = _p_reward_A;
-		app_trial.p_reward_B = _p_reward_B;
+		app_trial.p_reward_a = _p_reward_A;
+		app_trial.p_reward_b = _p_reward_B;
 		app_trial.p_draw = _p_draw;
 		app_trial.drawn_outcome = _drawn_outcome;
-		app_trial.reward_A = _reward_A;
-		app_trial.reward_B = _reward_B;
+		app_trial.reward_a = _reward_A;
+		app_trial.reward_b = _reward_B;
 		app_trial.choice = _choice;
 		app_trial.win = _win;
 		app_trial.score = _score;
@@ -99,7 +99,7 @@ class AppdataEntryLite
 	{
 
 		var app_run = new AppDataRun();
-		app_run.subject_id = _id;
+		app_run.subject_id_app = _id;
 		app_run.run_ind = _run_ind;
 		app_run.global_score = _global_score;
 		app_run.item_1 = _item_1;
@@ -163,7 +163,7 @@ class AppdataEntryLite
 			var entry_time = Date.fromString(entry_item_str_mod2);
 			
 			// Fetch entry from list
-			var app_trial = AppDataTrial.manager.get({subject_id: _id, timestamp: entry_time});
+			var app_trial = AppDataTrial.manager.get({subject_id_app: _id, timestamp: entry_time});
 			
 			// Change run_finished entry
 			app_trial.run_finished = 1;
