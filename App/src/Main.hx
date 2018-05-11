@@ -167,23 +167,26 @@ class Main extends Sprite
 	//Instruction - Button2
 	public function onClick2 (event: MouseEvent):Void {
 		menu_screen.removeChildren();
-		button_back = Button.drawButton("Zurück",300,300,"menu");
+		button_back = Button.drawButton("Zurück",Std.int(NOMINAL_WIDTH -150),50,"back");
 		button_back.addEventListener(MouseEvent.CLICK, onClick_back);
+		menu_screen.addChild(button_back);
 	}
 	//DATENBANKABRUF
 	//Button Game Status - Button3
 	public function onClick3 (event: MouseEvent):Void {
 		this.removeChild(menu_screen);
 		drawGallery();
-		button_back = Button.drawButton("Zurück",300,300,"menu");
+		button_back = Button.drawButton("Zurück",Std.int(NOMINAL_WIDTH -150),50,"back");
 		button_back.addEventListener(MouseEvent.CLICK, onClick_back);	
+		menu_screen.addChild(button_back);
 	}
 	
 	//Button Über das Spiel - Button4
 	public function onClick4 (event: MouseEvent):Void {
 		menu_screen.removeChildren();
-		button_back = Button.drawButton("Zurück",300,300,"menu");
+		button_back = Button.drawButton("Zurück",Std.int(NOMINAL_WIDTH -150),50,"back");
 		button_back.addEventListener(MouseEvent.CLICK, onClick_back);
+		menu_screen.addChild(button_back);
 		//menu_screen.removeChildren();	
 	}
 	
@@ -780,7 +783,8 @@ class Main extends Sprite
 		// get background image associated with level and attach to new sprite
 		game_screen = new MainGameScreen();
 		//button_end = Button.drawButton("Zurück",Std.int(NOMINAL_WIDTH),540, Std.int(NOMINAL_WIDTH / 5),Std.int(NOMINAL_HEIGHT / 9));
-		button_end = Button.drawButton("Zurück", Std.int(2 * NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 9), "back");
+		//button_end = Button.drawButton("Zurück", Std.int(NOMINAL_WIDTH -100),Std.int(NOMINAL_HEIGHT / 13), "back");
+		button_end = Button.drawButton("Zurück", Std.int(NOMINAL_WIDTH -150),50, "back");
 		button_end.addEventListener(MouseEvent.CLICK, onClick_end);
 		game_screen.addChild(button_end);
 		// add notepads to game screen

@@ -114,8 +114,8 @@ class Button extends Sprite
 			
 		} else if (type == "back"){
 
-			width = 500;
-			height = 145;
+			width = 250;
+			height = 72;
 		}
 		
 		button_textfield.background = false;
@@ -128,7 +128,8 @@ class Button extends Sprite
 		} else if (type == "info") {
 			button_textfield.y = -(height / 2) + height / 4;
 		} else if(type == "back"){
-			button_textfield.y = -(height / 2) + height / 3;
+			button_textfield.y = -(height / 2);
+
 		}
 		
 		var button_text:TextFormat = new TextFormat("Arial", 40, 0x000000, true);
