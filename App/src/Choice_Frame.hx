@@ -40,6 +40,7 @@ class Choice_Frame extends Sprite
 		this.graphics.beginFill(color);
 		this.graphics.drawRect(Std.int(NOMINAL_WIDTH/8.7), 0, Std.int(NOMINAL_WIDTH/96), Std.int(NOMINAL_HEIGHT/3.2));
 		this.graphics.endFill();
+		
 
 
 

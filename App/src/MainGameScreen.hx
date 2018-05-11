@@ -7,7 +7,7 @@ class MainGameScreen extends Sprite
 		
 		super();
 		
-		this.addChild( background_array[_run_ind-1] );
+		this.addChild(background_array[_run_ind-1]);
 		
 	}
 	

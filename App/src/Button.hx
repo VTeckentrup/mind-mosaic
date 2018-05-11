@@ -73,6 +73,28 @@ class Button extends Sprite
 				this.addChild( asset_b );		
 			}
 			
+		} else if (type == "back"){	//Zurück Button
+				if (image == "normal") {
+				
+				var asset_bd = Assets.getBitmapData("img/menu_button_normal.png");
+				var asset_b = new Bitmap(asset_bd);
+				asset_b.smoothing = true;
+				asset_b.x = -asset_b.width / 2;
+				asset_b.y = -asset_b.height / 2;
+				
+				this.addChild( asset_b );
+				
+			} else if (image == "pressed") {
+				
+				var asset_bd = Assets.getBitmapData("img/menu_button_pressed.png");
+				var asset_b = new Bitmap(asset_bd);
+				asset_b.smoothing = true;
+				asset_b.x = -asset_b.width / 2;
+				asset_b.y = -asset_b.height / 2;
+				
+				this.addChild( asset_b );		
+			}
+			
 		}
 		
 		
@@ -90,6 +112,10 @@ class Button extends Sprite
 			width = 300;
 			height = 100;
 			
+		} else if (type == "back"){
+
+			width = 500;
+			height = 145;
 		}
 		
 		button_textfield.background = false;
@@ -101,6 +127,8 @@ class Button extends Sprite
 			button_textfield.y = -(height / 2) + height / 3;
 		} else if (type == "info") {
 			button_textfield.y = -(height / 2) + height / 4;
+		} else if(type == "back"){
+			button_textfield.y = -(height / 2) + height / 3;
 		}
 		
 		var button_text:TextFormat = new TextFormat("Arial", 40, 0x000000, true);

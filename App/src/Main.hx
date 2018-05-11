@@ -160,19 +160,20 @@ class Main extends Sprite
 	//DATENBANK ABSPEICHERN
 	//Button: New Game - Button1
 	public function onClick1 (event: MouseEvent):Void {
-		this.removeChildren();
+		//menu_screen.removeChildren();
+		this.removeChild(menu_screen);
 		MainGame();	
 	}
 	//Instruction - Button2
 	public function onClick2 (event: MouseEvent):Void {
-		this.removeChildren();
+		menu_screen.removeChildren();
 		button_back = Button.drawButton("Zurück",300,300,"menu");
 		button_back.addEventListener(MouseEvent.CLICK, onClick_back);
 	}
 	//DATENBANKABRUF
 	//Button Game Status - Button3
 	public function onClick3 (event: MouseEvent):Void {
-		this.removeChildren();
+		this.removeChild(menu_screen);
 		drawGallery();
 		button_back = Button.drawButton("Zurück",300,300,"menu");
 		button_back.addEventListener(MouseEvent.CLICK, onClick_back);	
@@ -180,7 +181,10 @@ class Main extends Sprite
 	
 	//Button Über das Spiel - Button4
 	public function onClick4 (event: MouseEvent):Void {
-		this.removeChildren();	
+		menu_screen.removeChildren();
+		button_back = Button.drawButton("Zurück",300,300,"menu");
+		button_back.addEventListener(MouseEvent.CLICK, onClick_back);
+		//menu_screen.removeChildren();	
 	}
 	
 	//Button Logout - button5
@@ -188,7 +192,7 @@ class Main extends Sprite
 		// Delete logged in cookie
 		AppdataJSON.removeLogin();
 		// clear screen
-		this.removeChildren();
+		this.removeChild(menu_screen);
 		// Send to login & registration page
 		log_and_reg();
 	}
@@ -202,7 +206,7 @@ class Main extends Sprite
 	//DATENBANK - ABSPEICHERN
 	//End Game slotmachine - Button_end
 	public function onClick_end (event: MouseEvent):Void {
-		this.removeChildren();
+		this.removeChild(game_screen);
 		drawMenuScreen();
 	}
 	
@@ -280,7 +284,7 @@ class Main extends Sprite
 						
 	//Leads back to start page from registration
 	public function onClick_Reg_Back (event: MouseEvent):Void {
-		this.removeChildren();
+		this.removeChild(registration_screen);
 		log_and_reg();
 	}
 	
@@ -300,7 +304,7 @@ class Main extends Sprite
 						// set ID as logged in
 						AppdataJSON.saveLogin();
 						// send to main menu
-						this.removeChildren();
+						this.removeChild(login_screen);
 						drawMenuScreen();					
 					} else {
 						
@@ -325,12 +329,12 @@ class Main extends Sprite
 	
 	//leads you to Login page
 	public function onClick_log(event: MouseEvent):Void {
-		this.removeChildren();
+		this.removeChild(login_screen);
 		getLoginScreen();
 	}
 	//leads you to Registration page
 	public function onClick_reg1(event: MouseEvent):Void {
-		this.removeChildren();
+		this.removeChild(login_screen);
 		createRegistration();
 	}
 	//Back Button to Infopage
@@ -345,7 +349,7 @@ class Main extends Sprite
 	//%%%%%%%% REGISTRATION & LOGINS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//first page that lets you choose between Login and Registration
 	public function log_and_reg(){
-		
+		//global var
 		login_screen = new Sprite();
 		login_screen.addChild(img_menu_background);
 		
@@ -385,7 +389,7 @@ class Main extends Sprite
 		username.needsSoftKeyboard = true;
 		username.requestSoftKeyboard();
 		//username.replaceSelectedText("Benutzername"); //LEADS TO CRASH OF NEKO
-		this.addChild(username);
+		login_screen.addChild(username);
 
 
 		//new Textfield for password insertion
@@ -405,12 +409,15 @@ class Main extends Sprite
 		passw.defaultTextFormat = passw_format;
 		passw.needsSoftKeyboard = true;
 		passw.requestSoftKeyboard();
-		this.addChild(passw);
+		login_screen.addChild(passw);
 
 		//SHOULD ONLY BE POSSIBLE WHEN TEXT IS INSERTED & MATCHED DATA BASE
 		//draw Log-In button
 		button_login = Button.drawButton("Login",275,350,"menu");
 		button_login.addEventListener(MouseEvent.CLICK, onClick_login);
+	
+
+		this.addChild(login_screen);	
 	}
 
 
@@ -436,7 +443,7 @@ class Main extends Sprite
 		mailaddress.type = TextFieldType.INPUT;
 		mailaddress.needsSoftKeyboard = true;
 		mailaddress.requestSoftKeyboard();
-		this.addChild(mailaddress);
+		registration_screen.addChild(mailaddress);
 
 
 		//selection of password
@@ -457,7 +464,7 @@ class Main extends Sprite
 		selectedpw.type = TextFieldType.INPUT;
 		selectedpw.needsSoftKeyboard = true;
 		selectedpw.requestSoftKeyboard();
-		this.addChild(selectedpw);
+		registration_screen.addChild(selectedpw);
 
 		//Enabled only if text is inserted, internet connection available and mail address is not already in the database
 		//Button for Registration
@@ -467,6 +474,7 @@ class Main extends Sprite
 		button_reg_back = Button.drawButton("Zurück",400,400,"menu");
 		button_reg_back.addEventListener(MouseEvent.CLICK, onClick_Reg_Back);
 
+		this.addChild(registration_screen);
 	}
 
 
@@ -771,8 +779,10 @@ class Main extends Sprite
 		
 		// get background image associated with level and attach to new sprite
 		game_screen = new MainGameScreen();
-		
-		
+		//button_end = Button.drawButton("Zurück",Std.int(NOMINAL_WIDTH),540, Std.int(NOMINAL_WIDTH / 5),Std.int(NOMINAL_HEIGHT / 9));
+		button_end = Button.drawButton("Zurück", Std.int(2 * NOMINAL_WIDTH / 3),Std.int(NOMINAL_HEIGHT / 9), "back");
+		button_end.addEventListener(MouseEvent.CLICK, onClick_end);
+		game_screen.addChild(button_end);
 		// add notepads to game screen
 		NotepadA = new NotepadLeft();
 		NotepadA.x = 350;
@@ -826,7 +836,7 @@ class Main extends Sprite
 		scoreFormat.align = TextFormatAlign.LEFT;
 		
 		scoreField = new TextField();
-		addChild(scoreField);
+		game_screen.addChild(scoreField);
 		scoreField.width = NOMINAL_WIDTH / 2.2;
 		//scoreField.x = 50;
 		scoreField.y = NOMINAL_HEIGHT / 60;
@@ -855,7 +865,7 @@ class Main extends Sprite
 		levelFormat.align = TextFormatAlign.RIGHT;
 		
 		levelField = new TextField();
-		addChild(levelField);
+		game_screen.addChild(levelField);
 		levelField.width = NOMINAL_WIDTH / 2.2;
 		levelField.y = NOMINAL_HEIGHT / 20;
 		levelField.defaultTextFormat = levelFormat;
