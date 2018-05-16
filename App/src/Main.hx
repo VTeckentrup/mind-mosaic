@@ -4,6 +4,7 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
 import flash.text.TextField;
+import haxe.ui.containers.VBox;
 import openfl.text.TextFieldType;
 import openfl.system.Capabilities;
 import flash.text.TextFormat;
@@ -20,6 +21,12 @@ import openfl.display.BitmapData;
 import openfl.display.Bitmap;
 import sys.FileSystem;
 import haxe.io.Path;
+import haxe.ui.Toolkit;
+import haxe.ui.core.Component;
+import haxe.ui.core.Screen;
+import haxe.ui.macros.ComponentMacros;
+import haxe.ui.components.CheckBox;
+import haxe.ui.components.HSlider;
 //using layout.LayoutCreator;
 //using layout.LayoutPreserver;
 
@@ -209,7 +216,7 @@ class Main extends Sprite
 	//DATENBANK - ABSPEICHERN
 	//End Game slotmachine - Button_end
 	public function onClick_end (event: MouseEvent):Void {
-		this.removeChild(game_screen);
+		this.removeChildren();
 		drawMenuScreen();
 	}
 	
@@ -287,7 +294,8 @@ class Main extends Sprite
 						
 	//Leads back to start page from registration
 	public function onClick_Reg_Back (event: MouseEvent):Void {
-		this.removeChild(registration_screen);
+		this.removeChildren();
+		//Screen.instance.removeComponent(box_container);
 		log_and_reg();
 	}
 	
@@ -433,10 +441,10 @@ class Main extends Sprite
 		//Register with mail address
 		mailaddress = new TextField();
 		mailaddress.background = true;
-		mailaddress.width = 400;
+		mailaddress.width = 600;
 		mailaddress.height = 50;
-		mailaddress.x = 200;
-		mailaddress.y = 190;
+		mailaddress.x = (NOMINAL_WIDTH - mailaddress.width) / 2;
+		mailaddress.y = 200;
 
 		var name2:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
 		//Text is centered
@@ -452,15 +460,14 @@ class Main extends Sprite
 		//selection of password
 		selectedpw = new TextField();
 		selectedpw.background = true;
-		selectedpw.width = 400;
+		selectedpw.width = 600;
 		selectedpw.height = 50;
-		selectedpw.x = 200;
-		selectedpw.y = 260;
+		selectedpw.x = (NOMINAL_WIDTH - selectedpw.width) / 2;
+		selectedpw.y = 400;
 
 		var name2:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
 		//Text is centered
 		name2.align = TextFormatAlign.CENTER;
-		//text is restricted to only enter the birthdate
 		selectedpw.text = "Passwort";
 		selectedpw.defaultTextFormat = name2;
 		selectedpw.restrict = null;
@@ -468,14 +475,42 @@ class Main extends Sprite
 		selectedpw.needsSoftKeyboard = true;
 		selectedpw.requestSoftKeyboard();
 		registration_screen.addChild(selectedpw);
+		
+		var box_container = new VBox();
+		box_container.x = 470;
+		box_container.y = 470;
+				
+		var reg_checkbox_consent = new CheckBox();
+		reg_checkbox_consent.id = "consent_cb";
+		reg_checkbox_consent.selected = false;
+		reg_checkbox_consent.text = "Ich bin einverstanden, an der Studie teilzunehmen.";
+		
+		box_container.addComponent(reg_checkbox_consent);
+		
+		
+		var test_slider = new HSlider();
+		test_slider.resizeComponent(500, 50);
+		test_slider.x = (NOMINAL_WIDTH - test_slider.width) / 2;
+		test_slider.y = 550;
+		test_slider.max = 100;
+		test_slider.min = 0;
+		
+		box_container.addComponent(test_slider);
+		
+		Screen.instance.addComponent(box_container);
+		//registration_screen.addChild(box_container);
+		
 
 		//Enabled only if text is inserted, internet connection available and mail address is not already in the database
 		//Button for Registration
-		button_reg = Button.drawButton("Registrieren",100,400,"menu");
+		button_reg = Button.drawButton("Registrieren",NOMINAL_WIDTH / 2,750,"menu");
 		button_reg.addEventListener(MouseEvent.CLICK, onClick_Reg);
 		
-		button_reg_back = Button.drawButton("Zurück",400,400,"menu");
+		button_reg_back = Button.drawButton("Zurück",NOMINAL_WIDTH / 2,900,"menu");
 		button_reg_back.addEventListener(MouseEvent.CLICK, onClick_Reg_Back);
+		
+		registration_screen.addChild(button_reg);
+		registration_screen.addChild(button_reg_back);
 
 		this.addChild(registration_screen);
 	}
@@ -521,6 +556,15 @@ class Main extends Sprite
 		this.addChild(menu_screen);
 		
 	
+	}
+	
+	
+	//draws the screen for questionnaire items
+	public function drawQuestionnaireScreen(){
+		
+		questionnaire_screen = new Sprite();
+		questionnaire_screen.addChild(input_background);
+		
 	}
 	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -598,29 +642,79 @@ class Main extends Sprite
 
 //%%%%%%%%%%PATHOGEN PIC ASSIGNMENT%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%		
 	public function drawGallery(){
-		/*probably a variable that gets its value from the 
-		data base to represent the level that you reached
-		--> var level: now set to 1 because no data base available
-		*/
-		/*add = 100;
-		// only count to run_ind - 1 as the current pathogen has not been beaten yet
-		for(i in 1..._run_ind-1){
-			pathogen_array[i].x = 0;
-			pathogen_array[i].y = add;
-			addChild(pathogen_array[i]);
-			add = add + 50;
-
 		
-		 //if we have 30 different pathogen we need to build in 
-		 //for loops to make coloumns to present them
+		// Set up screen for gallery
+		gallery_screen = new Sprite();
+		gallery_screen.addChild(img_gallery_background);
+		
+		// Add button to get back to main menu
+		button_end = Button.drawButton("Zurück", Std.int(NOMINAL_WIDTH -150),50, "back");
+		button_end.addEventListener(MouseEvent.CLICK, onClick_end);
+		gallery_screen.addChild(button_end);
+		
+		add = 280;
+		// only count to run_ind - 1 as the current pathogen has not been beaten yet
+		for (i in 1..._run_ind){
+			
+			if (i >= 1 && i <= 8) {
+			
+				pathogen_array[i-1].x = add;
+				pathogen_array[i-1].y = 230;
+			
+				gallery_screen.addChild(pathogen_array[i-1]);
+			
+				add = add + 180;
+				
+			}
+			
+			else if (i >= 9 && i <= 16) {
+				
+				if (i == 9) {
+					add = 280;
+				}
+				
+				pathogen_array[i-1].x = add;
+				pathogen_array[i-1].y = 410;
+			
+				gallery_screen.addChild(pathogen_array[i-1]);
+			
+				add = add + 180;
+				
+			}
+			
+			else if (i >= 17 && i <= 24) {
+				
+				if (i == 17) {
+					add = 280;
+				}
+				
+				pathogen_array[i-1].x = add;
+				pathogen_array[i-1].y = 590;
+			
+				gallery_screen.addChild(pathogen_array[i-1]);
+			
+				add = add + 180;
+				
+			}
+			
+			else if (i >= 25 && i <= 31) {
+				
+				if (i == 25) {
+					add = 280;
+				}
+				
+				pathogen_array[i-1].x = add;
+				pathogen_array[i-1].y = 770;
+			
+				gallery_screen.addChild(pathogen_array[i-1]);
+			
+				add = add + 180;
+				
+			}
 		 
-		}*/
-
-	/**
-	 *   bd = Assets.getBitmapData("img/logo.png");
-		b = new Bitmap(bd);
-        addChild(b);
-	 */
+		}
+		
+		this.addChild(gallery_screen);
 	}
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -651,12 +745,18 @@ class Main extends Sprite
 			
 		});
 		
-		// Load pathogen images into image array
-		//getPathogenAssignment();
+		// Prepare assets
+		AssetPreparation.getPathogens();
 		AssetPreparation.getBackgrounds();
 		AssetPreparation.getNotepads();
 		AssetPreparation.getSyringes();
-		//AssetPreparation.getButtons();
+		
+		
+		// Initialize screens
+		
+		
+		// Initialize HaxeUI toolkit
+		Toolkit.init();
 		
 		// Set initial values
 		// Set round index to 0 as it will be increased to 1 in the newRound function
@@ -835,17 +935,16 @@ class Main extends Sprite
 		circle_selection.y = Std.int(NOMINAL_HEIGHT / 2);
 		this.addChild(circle_selection);*/
 		
-		// Draw score text field and set starting score points to zero
-		var scoreFormat:TextFormat = new TextFormat("Verdana", 30, 0xbbbbbb, true);
+		// Draw score text field
+		var scoreFormat:TextFormat = new TextFormat("Verdana", 30, 0x000000, true);
 		scoreFormat.align = TextFormatAlign.LEFT;
 		
 		scoreField = new TextField();
-		game_screen.addChild(scoreField);
-		scoreField.width = NOMINAL_WIDTH / 2.2;
-		//scoreField.x = 50;
+		scoreField.width = 600;
 		scoreField.y = NOMINAL_HEIGHT / 60;
 		scoreField.defaultTextFormat = scoreFormat;
-		scoreField.selectable = false;
+		scoreField.selectable = false;		
+		game_screen.addChild(scoreField);
 		
 		//_score = 1;
 		scoreField.text = 'Score: $_score';
@@ -865,17 +964,16 @@ class Main extends Sprite
 		cityName = "Tübingen";
 		cityField.text = '$cityName';*/
 
-		levelFormat = new TextFormat("Verdana", 30, 0xbbbbbb, true);
-		levelFormat.align = TextFormatAlign.RIGHT;
+		levelFormat = new TextFormat("Verdana", 30, 0x000000, true);
+		levelFormat.align = TextFormatAlign.LEFT;
 		
 		levelField = new TextField();
-		game_screen.addChild(levelField);
-		levelField.width = NOMINAL_WIDTH / 2.2;
+		levelField.width = 600;
 		levelField.y = NOMINAL_HEIGHT / 20;
 		levelField.defaultTextFormat = levelFormat;
 		levelField.selectable = false;
-		//levelField.text = 'Runde: $_trial_ind von $trials';
-		//levelField.text = '$_run_ind';
+		levelField.text = 'Runde: $_trial_ind von $trials';	
+		game_screen.addChild(levelField);
 
 
 		// Define and format text fields displaying drug outcome

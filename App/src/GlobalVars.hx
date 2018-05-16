@@ -104,6 +104,7 @@ class GlobalVars
 	public static var img_run_background: Bitmap;
 	public static var img_menu_background: Bitmap;
 	public static var img_gallery_background: Bitmap;
+	public static var input_background: Bitmap;
 	public static var img_feedback_correct: Bitmap;
 	public static var img_feedback_wrong: Bitmap;
 	public static var img_notepad_A: Bitmap;
@@ -155,4 +156,6 @@ class GlobalVars
 	public static var start_screen:Sprite;
 	public static var login_screen:Sprite;
 	public static var registration_screen:Sprite;
+	public static var questionnaire_screen:Sprite;
+	public static var gallery_screen:Sprite;
 }

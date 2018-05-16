@@ -20,17 +20,17 @@ import haxe.macro.Expr;
 	
 	public static function main () {
 		
-		var projectName = "AppSlotMachine";
+		var projectName = "Influenca";
 		
 		var config = {
 			
-			build: "60",
-			company: "Vanessa Teckentrup",
-			file: "AppSlotMachine",
+			build: "305",
+			company: "neuroMADLAB",
+			file: "Influenca",
 			fps: 60,
-			name: "App_SlotMachine",
+			name: "Influenca_App",
 			orientation: "",
-			packageName: "AppSlotMachine",
+			packageName: "com.neuroMADLAB.Influenca",
 			version: "1.0.0",
 			windows: [
 				
@@ -52,7 +52,7 @@ import haxe.macro.Expr;
 					parameters: {},
 					resizable: true,
 					stencilBuffer: true,
-					title: "App_SlotMachine",
+					title: "Influenca_App",
 					vsync: false,
 					width: 1920,
 					x: null,
@@ -63,6 +63,10 @@ import haxe.macro.Expr;
 		};
 		
 		lime.system.System.__registerEntryPoint (projectName, create, config);
+		
+		#if sys
+		lime.system.System.__parseArguments (config);
+		#end
 		
 		#if (hxtelemetry && !macro)
 		var telemetry = new hxtelemetry.HxTelemetry.Config ();

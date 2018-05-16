@@ -20,7 +20,7 @@ class AssetPreparation {
 		
 		for (i in 0...runs-1) {
 			
-			var imgpath_str = "img/pathogen_" + Std.string(i) + ".png";
+			var imgpath_str = "img/pathogen_" + Std.string(i+1) + ".png";
 			pathogen_array[i] = AssetPreparation.loadImage(imgpath_str);
 			
 		}
@@ -42,6 +42,9 @@ class AssetPreparation {
 		
 		var imgpath_str = "img/gallery_background.png";
 		img_gallery_background = AssetPreparation.loadImage(imgpath_str);
+		
+		var imgpath_str = "img/input_background.png";
+		input_background = AssetPreparation.loadImage(imgpath_str);
 		
 		var imgpath_str = "img/correct.png";
 		img_feedback_correct = AssetPreparation.loadImage(imgpath_str);
