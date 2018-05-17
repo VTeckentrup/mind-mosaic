@@ -3,10 +3,10 @@
 	<!-- NMML reference: https://gist.github.com/1763850 -->
 	
 	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
-	<meta title="App_SlotMachine" package="AppSlotMachine" version="1.0.0" company="Vanessa Teckentrup" />
+	<meta title="Influenca" package="com.neuroMADLAB.Influenca" version="1.0.0" company="neuroMADLAB" />
 	
 	<!-- output -->
-	<app main="Main" file="AppSlotMachine" path="bin" />
+	<app main="Main" file="Influenca" path="bin" />
 	
 	<window background="#000000" fps="60" />
 	<!-- <window width="1600" height="900" unless="mobile" /> -->
@@ -20,13 +20,13 @@
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
 	<haxelib name="record-macros" />
+	<haxelib name="haxeui-core" />
+	<haxelib name="haxeui-openfl" />
 	
 	<!-- assets -->
 	<icon path="assets/openfl.svg" />
 	
-	<!--loads an asset image from your img folder that i created -->
+	<!-- load and embed assets from img folder -->
 	<assets path="assets/img" rename="img" embed="true" />
-	<!-- optimize output
-	<haxeflag name="-dce full" /> -->
 	
 </project>

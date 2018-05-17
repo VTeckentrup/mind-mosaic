@@ -74,6 +74,7 @@ class Button extends Sprite
 			}
 			
 		} else if (type == "back"){	//Zurück Button
+			
 				if (image == "normal") {
 				
 				var asset_bd = Assets.getBitmapData("img/menu_button_normal.png");

@@ -4,7 +4,10 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
 import flash.text.TextField;
+import haxe.ui.components.OptionBox;
+import haxe.ui.containers.HBox;
 import haxe.ui.containers.VBox;
+import haxe.ui.core.UIEvent;
 import openfl.text.TextFieldType;
 import openfl.system.Capabilities;
 import flash.text.TextFormat;
@@ -105,6 +108,10 @@ class Main extends Sprite
 	public var reg_mail_info:InfoText;
 	public var reg_inet_info:InfoText;
 	public var reg_entry_info:InfoText;
+	
+	// questionnaire item text field
+	private var item_text:TextField;
+	private var item_counter:Int;
 
 	//Button variables for multiple buttons
 	public var button1:SimpleButton;
@@ -120,6 +127,7 @@ class Main extends Sprite
 	public var button_log:SimpleButton;
 	public var button_reg1:SimpleButton;
 	private var button_back:SimpleButton;
+	private var button_quest:SimpleButton;
 
 
 	private var change:Bool = false;
@@ -133,8 +141,6 @@ class Main extends Sprite
 	//purpose - needs to be drawn from sheet
 	//private var level:Int=1;
 	//represents an array (length 30) with all pathogens
-	private var pathogenArrayBM:Array<BitmapData> = [];
-	private var pathogenArray:Array<Bitmap> = [];
 	private var add:Int;
 	
 	// Setup background graphic
@@ -168,8 +174,9 @@ class Main extends Sprite
 	//Button: New Game - Button1
 	public function onClick1 (event: MouseEvent):Void {
 		//menu_screen.removeChildren();
-		this.removeChild(menu_screen);
-		MainGame();	
+		this.removeChildren();
+		//MainGame();
+		drawQuestionnaireScreen("scale");
 	}
 	//Instruction - Button2
 	public function onClick2 (event: MouseEvent):Void {
@@ -476,7 +483,7 @@ class Main extends Sprite
 		selectedpw.requestSoftKeyboard();
 		registration_screen.addChild(selectedpw);
 		
-		var box_container = new VBox();
+		box_container = new HBox();
 		box_container.x = 470;
 		box_container.y = 470;
 				
@@ -560,12 +567,179 @@ class Main extends Sprite
 	
 	
 	//draws the screen for questionnaire items
-	public function drawQuestionnaireScreen(){
+	public function drawQuestionnaireScreen(type:String){
 		
-		questionnaire_screen = new Sprite();
-		questionnaire_screen.addChild(input_background);
+		if (type == "scale") {
+		
+			questionnaire_screen = new Sprite();
+			
+			// item text
+			var itemFormat:TextFormat = new TextFormat("Verdana", 60, 0xFFFFFF, true);
+			itemFormat.align = TextFormatAlign.CENTER;
+			
+			item_text = new TextField();
+			item_text.width = 1920;
+			item_text.height = 200;
+			item_text.y = 200;
+			item_text.x = 0;
+			item_text.defaultTextFormat = itemFormat;
+			item_text.text = questionnaire_items[item_counter];
+			item_text.multiline = true;
+			questionnaire_screen.addChild(item_text);
+			
+			// UI elements
+			box_container = new HBox();
+			box_container.x = 390;
+			box_container.y = 450;
+			
+			var rbFormat:TextFormat = new TextFormat("Verdana", 40, 0xFFFFFF, true);
+			rbFormat.align = TextFormatAlign.LEFT;
+			
+			var anchor_left = new TextField();
+			anchor_left.width = 200;
+			anchor_left.height = 200;
+			anchor_left.y = 575;
+			anchor_left.x = 250;
+			anchor_left.defaultTextFormat = rbFormat;
+			anchor_left.text = "gar nicht";
+			questionnaire_screen.addChild(anchor_left);
+			
+			var anchor_right = new TextField();
+			anchor_right.width = 200;
+			anchor_right.height = 200;
+			anchor_right.y = 575;
+			anchor_right.x = 1500;
+			anchor_right.defaultTextFormat = rbFormat;
+			anchor_right.text = "sehr";
+			questionnaire_screen.addChild(anchor_right);
+			
+			var quest_slider = new HSlider();
+			quest_slider.resizeComponent(600, 100);
+			quest_slider.x = (NOMINAL_WIDTH - quest_slider.width) / 2;
+			quest_slider.y = 550;
+			quest_slider.max = 100;
+			quest_slider.min = 0;
+			
+			quest_slider.addEventListener(MouseEvent.CLICK, activateButton);
+			
+			box_container.addComponent(quest_slider);
+			
+			Screen.instance.addComponent(box_container);
+			
+			// Forward button
+			button_quest = Button.drawButton("OK", NOMINAL_WIDTH / 2, 950, "info");
+			button_quest.visible = false;
+			
+			button_quest.addEventListener(MouseEvent.CLICK, QuestPagefinished);
+			
+			questionnaire_screen.addChild(button_quest);
+			
+			this.addChild(questionnaire_screen);
+			
+		}
+		
+		else if (type == "options") {
+			
+			questionnaire_screen = new Sprite();
+			
+			// item text
+			var itemFormat:TextFormat = new TextFormat("Verdana", 60, 0xFFFFFF, true);
+			itemFormat.align = TextFormatAlign.CENTER;
+			
+			item_text = new TextField();
+			item_text.width = 1920;
+			item_text.height = 200;
+			item_text.y = 200;
+			item_text.x = 0;
+			item_text.defaultTextFormat = itemFormat;
+			item_text.text = questionnaire_items[item_counter];
+			item_text.multiline = true;
+			questionnaire_screen.addChild(item_text);
+			
+			// UI elements
+			box_container = new HBox();
+			box_container.x = 500;
+			box_container.y = 470;
+			
+			var rbFormat:TextFormat = new TextFormat("Verdana", 40, 0xFFFFFF, true);
+			rbFormat.align = TextFormatAlign.LEFT;
+			
+			var rb_text_yes = new TextField();
+			rb_text_yes.width = 200;
+			rb_text_yes.height = 200;
+			rb_text_yes.y = 570;
+			rb_text_yes.x = 750;
+			rb_text_yes.defaultTextFormat = rbFormat;
+			rb_text_yes.text = "Ja";
+			questionnaire_screen.addChild(rb_text_yes);
+			
+			var rb_text_no = new TextField();
+			rb_text_no.width = 200;
+			rb_text_no.height = 200;
+			rb_text_no.y = 570;
+			rb_text_no.x = 1170;
+			rb_text_no.defaultTextFormat = rbFormat;
+			rb_text_no.text = "Nein";
+			questionnaire_screen.addChild(rb_text_no);
+			
+			var yes_rb = new OptionBox();
+			yes_rb.groupName = "questRBs";
+			yes_rb.height = 50;
+			yes_rb.width = 300;
+			
+			var no_rb = new OptionBox();
+			no_rb.groupName = "questRBs";
+			no_rb.height = 50;
+			no_rb.width = 300;
+			
+			box_container.addEventListener(MouseEvent.CLICK, activateButton);
+			box_container.addComponent(yes_rb);
+			box_container.addComponent(no_rb);
+			
+			Screen.instance.addComponent(box_container);
+			
+			// Forward button
+			button_quest = Button.drawButton("OK", NOMINAL_WIDTH / 2, 950, "info");
+			button_quest.visible = false;
+			
+			button_quest.addEventListener(MouseEvent.CLICK, QuestPagefinished);
+			
+			questionnaire_screen.addChild(button_quest);
+			
+			this.addChild(questionnaire_screen);
+			
+		}
+		
+		
 		
 	}
+	
+	// activate the forward button after player has interacted with the slider
+	public function activateButton(event: MouseEvent):Void {
+		button_quest.visible = true;
+	}
+	
+	// refresh the screen with the next questionnaire item
+	public function QuestPagefinished(event: MouseEvent):Void {
+		this.removeChildren();
+		Screen.instance.removeComponent(box_container);
+		
+		if (item_counter <= 12) {
+			item_counter = item_counter + 1;
+			
+			if (item_counter == 5 || item_counter == 6 || item_counter == 13) {
+				drawQuestionnaireScreen("options");
+			} else {
+				drawQuestionnaireScreen("scale");
+			}
+		} else {
+			MainGame();
+		}
+		
+		
+		
+	}
+	
 	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 	//%%%%%%%%%OUT OF FOCUS FUNCTIONS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -586,8 +760,9 @@ class Main extends Sprite
 		// check if unfocus was longer than 1 hour (= 3600000 milliseconds)
 		var current_time = Date.now();
 		timestamp_refocus = current_time.getHours();
+		var delta = timestamp_refocus - timestamp_unfocus;
 		
-		if (timestamp_refocus - timestamp_unfocus >= 1) {
+		if (delta >= 1) {
 		
 			// Set round index to 0 as it will be increased to 1 in the newRound function 
 			_trial_ind = 0;
@@ -746,13 +921,11 @@ class Main extends Sprite
 		});
 		
 		// Prepare assets
+		AssetPreparation.getQuestionnaireItems();
 		AssetPreparation.getPathogens();
 		AssetPreparation.getBackgrounds();
 		AssetPreparation.getNotepads();
 		AssetPreparation.getSyringes();
-		
-		
-		// Initialize screens
 		
 		
 		// Initialize HaxeUI toolkit
@@ -765,6 +938,8 @@ class Main extends Sprite
 		_score = 0;
 		// Initialize run finished marker
 		_run_finished = 0;
+		// Initialize questionnaire item counter
+		item_counter = 1;
 			
 		// Check if user is logged in and retrieve ID
 		login_savepath = Path.join([save_path, login_file]);

@@ -1,6 +1,7 @@
 package;
 
 import haxe.io.Path;
+import haxe.ui.containers.HBox;
 import lime.system.System;
 import openfl.display.Bitmap;
 import openfl.display.Sprite;
@@ -150,6 +151,9 @@ class GlobalVars
 	// button images
 	public static var menu_button_array: Array<Bitmap> = [];
 	
+	// questionnaire item texts
+	public static var questionnaire_items:Array<String> = [];
+	
 	// screens
 	public static var game_screen:MainGameScreen;
 	public static var menu_screen:Sprite;
@@ -157,5 +161,6 @@ class GlobalVars
 	public static var login_screen:Sprite;
 	public static var registration_screen:Sprite;
 	public static var questionnaire_screen:Sprite;
+	public static var box_container:HBox;
 	public static var gallery_screen:Sprite;
 }
