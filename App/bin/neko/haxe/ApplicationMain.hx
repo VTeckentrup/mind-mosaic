@@ -24,11 +24,11 @@ import haxe.macro.Expr;
 		
 		var config = {
 			
-			build: "305",
+			build: "64",
 			company: "neuroMADLAB",
 			file: "Influenca",
 			fps: 60,
-			name: "Influenca_App",
+			name: "Influenca",
 			orientation: "",
 			packageName: "com.neuroMADLAB.Influenca",
 			version: "1.0.0",
@@ -52,7 +52,7 @@ import haxe.macro.Expr;
 					parameters: {},
 					resizable: true,
 					stencilBuffer: true,
-					title: "Influenca_App",
+					title: "Influenca",
 					vsync: false,
 					width: 1920,
 					x: null,
@@ -63,10 +63,6 @@ import haxe.macro.Expr;
 		};
 		
 		lime.system.System.__registerEntryPoint (projectName, create, config);
-		
-		#if sys
-		lime.system.System.__parseArguments (config);
-		#end
 		
 		#if (hxtelemetry && !macro)
 		var telemetry = new hxtelemetry.HxTelemetry.Config ();

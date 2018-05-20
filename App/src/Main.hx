@@ -6,16 +6,10 @@ import flash.Lib;
 import flash.text.TextField;
 import haxe.ui.components.OptionBox;
 import haxe.ui.containers.HBox;
-import haxe.ui.containers.VBox;
-import haxe.ui.core.UIEvent;
 import openfl.text.TextFieldType;
 import openfl.system.Capabilities;
 import flash.text.TextFormat;
-import flash.text.Font;
-import flash.text.FontStyle;
 import flash.text.TextFormatAlign;
-import flash.events.KeyboardEvent;
-import flash.ui.Keyboard;
 import openfl.display.SimpleButton;
 import openfl.events.MouseEvent;
 import Math.random;
@@ -25,13 +19,9 @@ import openfl.display.Bitmap;
 import sys.FileSystem;
 import haxe.io.Path;
 import haxe.ui.Toolkit;
-import haxe.ui.core.Component;
 import haxe.ui.core.Screen;
-import haxe.ui.macros.ComponentMacros;
 import haxe.ui.components.CheckBox;
 import haxe.ui.components.HSlider;
-//using layout.LayoutCreator;
-//using layout.LayoutPreserver;
 
 enum GameState {
 	
@@ -395,7 +385,7 @@ class Main extends Sprite
 		username.height = 50;
 		username.x = 300;
 		username.y = 210;
-		var name:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
+		var name:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 16, 0xbbbbbb, true);
 		//Text is centered
 		name.align = TextFormatAlign.CENTER;
 		username.text = "E-Mail";
@@ -422,7 +412,7 @@ class Main extends Sprite
 		passw.restrict = null;
 		//user can edit the textfield
 		passw.type = TextFieldType.INPUT;
-		var passw_format:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
+		var passw_format:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 16, 0xbbbbbb, true);
 		passw_format.align = TextFormatAlign.CENTER;
 		passw.defaultTextFormat = passw_format;
 		passw.needsSoftKeyboard = true;
@@ -453,7 +443,7 @@ class Main extends Sprite
 		mailaddress.x = (NOMINAL_WIDTH - mailaddress.width) / 2;
 		mailaddress.y = 200;
 
-		var name2:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
+		var name2:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 16, 0xbbbbbb, true);
 		//Text is centered
 		mailaddress.text = "E-Mail";
 		mailaddress.defaultTextFormat = name2;
@@ -472,7 +462,7 @@ class Main extends Sprite
 		selectedpw.x = (NOMINAL_WIDTH - selectedpw.width) / 2;
 		selectedpw.y = 400;
 
-		var name2:TextFormat = new TextFormat("Verdana", 16, 0xbbbbbb, true);
+		var name2:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 16, 0xbbbbbb, true);
 		//Text is centered
 		name2.align = TextFormatAlign.CENTER;
 		selectedpw.text = "Passwort";
@@ -574,7 +564,7 @@ class Main extends Sprite
 			questionnaire_screen = new Sprite();
 			
 			// item text
-			var itemFormat:TextFormat = new TextFormat("Verdana", 60, 0xFFFFFF, true);
+			var itemFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 60, 0xFFFFFF, true);
 			itemFormat.align = TextFormatAlign.CENTER;
 			
 			item_text = new TextField();
@@ -592,13 +582,13 @@ class Main extends Sprite
 			box_container.x = 390;
 			box_container.y = 450;
 			
-			var rbFormat:TextFormat = new TextFormat("Verdana", 40, 0xFFFFFF, true);
+			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 40, 0xFFFFFF, true);
 			rbFormat.align = TextFormatAlign.LEFT;
 			
 			var anchor_left = new TextField();
 			anchor_left.width = 200;
 			anchor_left.height = 200;
-			anchor_left.y = 575;
+			anchor_left.y = 570;
 			anchor_left.x = 250;
 			anchor_left.defaultTextFormat = rbFormat;
 			anchor_left.text = "gar nicht";
@@ -607,7 +597,7 @@ class Main extends Sprite
 			var anchor_right = new TextField();
 			anchor_right.width = 200;
 			anchor_right.height = 200;
-			anchor_right.y = 575;
+			anchor_right.y = 570;
 			anchor_right.x = 1500;
 			anchor_right.defaultTextFormat = rbFormat;
 			anchor_right.text = "sehr";
@@ -643,7 +633,7 @@ class Main extends Sprite
 			questionnaire_screen = new Sprite();
 			
 			// item text
-			var itemFormat:TextFormat = new TextFormat("Verdana", 60, 0xFFFFFF, true);
+			var itemFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 60, 0xFFFFFF, true);
 			itemFormat.align = TextFormatAlign.CENTER;
 			
 			item_text = new TextField();
@@ -661,7 +651,7 @@ class Main extends Sprite
 			box_container.x = 500;
 			box_container.y = 470;
 			
-			var rbFormat:TextFormat = new TextFormat("Verdana", 40, 0xFFFFFF, true);
+			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 40, 0xFFFFFF, true);
 			rbFormat.align = TextFormatAlign.LEFT;
 			
 			var rb_text_yes = new TextField();
@@ -1111,7 +1101,7 @@ class Main extends Sprite
 		this.addChild(circle_selection);*/
 		
 		// Draw score text field
-		var scoreFormat:TextFormat = new TextFormat("Verdana", 30, 0x000000, true);
+		var scoreFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 30, 0x000000, true);
 		scoreFormat.align = TextFormatAlign.LEFT;
 		
 		scoreField = new TextField();
@@ -1125,7 +1115,7 @@ class Main extends Sprite
 		scoreField.text = 'Score: $_score';
 		
 		/*// Draw city text field	
-		var cityFormat:TextFormat = new TextFormat("Verdana", 30, 0xbbbbbb, true);
+		var cityFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 30, 0xbbbbbb, true);
 		scoreFormat.align = TextFormatAlign.RIGHT;
 		
 		cityField = new TextField();
@@ -1139,7 +1129,7 @@ class Main extends Sprite
 		cityName = "Tübingen";
 		cityField.text = '$cityName';*/
 
-		levelFormat = new TextFormat("Verdana", 30, 0x000000, true);
+		levelFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 30, 0x000000, true);
 		levelFormat.align = TextFormatAlign.LEFT;
 		
 		levelField = new TextField();
@@ -1153,7 +1143,7 @@ class Main extends Sprite
 
 		// Define and format text fields displaying drug outcome
 		// A
-		var scoreFormat_notepads:TextFormat = new TextFormat("Verdana", 50, 0x000000, true);
+		var scoreFormat_notepads:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 50, 0x000000, true);
 		scoreFormat_notepads.align = TextFormatAlign.CENTER;
 
 		scoreField_A = new TextField();
