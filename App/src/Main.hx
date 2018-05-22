@@ -352,6 +352,15 @@ class Main extends Sprite
 	}
 
 
+	public function onClick_MainGame(event: MouseEvent):Void {
+		/*When you want to continue your game, you first see the gallerie of obtained rewards,
+		then the level you're in, then the current reward with short introduction, then the questionaires &
+		then the Main Game starts
+		*/
+		menu_screen.removeChildren();
+		drawGallery_temp();
+
+	}
 	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 	//%%%%%%%% REGISTRATION & LOGINS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -536,7 +545,7 @@ class Main extends Sprite
 		button6 = Button.drawButton("Beenden", Std.int(NOMINAL_WIDTH / 2), 950, "menu");
 
 	
-		button1.addEventListener(MouseEvent.CLICK, onClick1);
+		button1.addEventListener(MouseEvent.CLICK, onClick_MainGame);
 		button2.addEventListener(MouseEvent.CLICK, onClick2);
 		button3.addEventListener(MouseEvent.CLICK, onClick3);
 		button4.addEventListener(MouseEvent.CLICK, onClick4);
@@ -804,8 +813,7 @@ class Main extends Sprite
 		
 	}
 
-
-//%%%%%%%%%%PATHOGEN PIC ASSIGNMENT%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%		
+	//Gallery
 	public function drawGallery(){
 		
 		// Set up screen for gallery
@@ -880,10 +888,120 @@ class Main extends Sprite
 		}
 		
 		this.addChild(gallery_screen);
+	
+	}
+
+
+//%%%%%%%%%% Functions preceeding MainGame %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%		
+	
+	/**
+	 *  function that is used for temporarily showing the gallery before the main game starts
+	 */
+	public function drawGallery_temp(){
+		
+		// Set up screen for gallery
+		gallery_screen = new Sprite();
+		gallery_screen.addChild(img_gallery_background);
+		
+		// Add button to get back to main menu
+		button_end = Button.drawButton("Zurück", Std.int(NOMINAL_WIDTH -150),50, "back");
+		button_end.addEventListener(MouseEvent.CLICK, onClick_end);
+		gallery_screen.addChild(button_end);
+		
+		add = 280;
+		// only count to run_ind - 1 as the current pathogen has not been beaten yet
+		for (i in 1..._run_ind){
+			
+			if (i >= 1 && i <= 8) {
+			
+				pathogen_array[i-1].x = add;
+				pathogen_array[i-1].y = 230;
+			
+				gallery_screen.addChild(pathogen_array[i-1]);
+			
+				add = add + 180;
+				
+			}
+			
+			else if (i >= 9 && i <= 16) {
+				
+				if (i == 9) {
+					add = 280;
+				}
+				
+				pathogen_array[i-1].x = add;
+				pathogen_array[i-1].y = 410;
+			
+				gallery_screen.addChild(pathogen_array[i-1]);
+			
+				add = add + 180;
+				
+			}
+			
+			else if (i >= 17 && i <= 24) {
+				
+				if (i == 17) {
+					add = 280;
+				}
+				
+				pathogen_array[i-1].x = add;
+				pathogen_array[i-1].y = 590;
+			
+				gallery_screen.addChild(pathogen_array[i-1]);
+			
+				add = add + 180;
+				
+			}
+			
+			else if (i >= 25 && i <= 31) {
+				
+				if (i == 25) {
+					add = 280;
+				}
+				
+				pathogen_array[i-1].x = add;
+				pathogen_array[i-1].y = 770;
+			
+				gallery_screen.addChild(pathogen_array[i-1]);
+			
+				add = add + 180;
+				
+			}
+		 
+		}
+		
+		this.addChild(gallery_screen);
+		haxe.Timer.delay(DrawLevelscreen,1000);
+		//DrawLevelscreen();
+	}
+
+
+	function DrawLevelscreen(){
+
+		this.removeChild(gallery_screen);
+		level_screen = new Sprite();
+		level_screen.addChild(img_alternative_screen2);
+		this.addChild(level_screen);
+		
+		//haxe.Timer.delay(pathogenText,1000);
+
+	}
+
+	function pathogenText(){
+
+		haxe.Timer.delay(afterPathogen,1000);
+	}
+
+	function afterPathogen(){
+		drawQuestionnaireScreen("scale");
 	}
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 //%%%%%%%%%%INITIATION FUNCTION%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	
+
+
 
 	function init() 
 	{

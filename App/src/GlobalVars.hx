@@ -115,6 +115,7 @@ class GlobalVars
 	public static var img_syringe_full_B: Bitmap;
 	public static var img_syringe_empty_B: Bitmap;
 	public static var img_pathogen: Bitmap;
+	public static var img_alternative_screen2: Bitmap;
 	// background array
 	public static var background_array:Array<Bitmap> = [];
 	// notepad array
@@ -163,4 +164,5 @@ class GlobalVars
 	public static var questionnaire_screen:Sprite;
 	public static var box_container:HBox;
 	public static var gallery_screen:Sprite;
+	public static var level_screen:Sprite;
 }

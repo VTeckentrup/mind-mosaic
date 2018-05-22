@@ -77,7 +77,7 @@ class Button extends Sprite
 			
 				if (image == "normal") {
 				
-				var asset_bd = Assets.getBitmapData("img/menu_button_normal.png");
+				var asset_bd = Assets.getBitmapData("img/back_button.png");
 				var asset_b = new Bitmap(asset_bd);
 				asset_b.smoothing = true;
 				asset_b.x = -asset_b.width / 2;
@@ -87,7 +87,7 @@ class Button extends Sprite
 				
 			} else if (image == "pressed") {
 				
-				var asset_bd = Assets.getBitmapData("img/menu_button_pressed.png");
+				var asset_bd = Assets.getBitmapData("img/back_button_pressed.png");
 				var asset_b = new Bitmap(asset_bd);
 				asset_b.smoothing = true;
 				asset_b.x = -asset_b.width / 2;
@@ -116,7 +116,7 @@ class Button extends Sprite
 		} else if (type == "back"){
 
 			width = 250;
-			height = 72;
+			height = 83;
 		}
 		
 		button_textfield.background = false;

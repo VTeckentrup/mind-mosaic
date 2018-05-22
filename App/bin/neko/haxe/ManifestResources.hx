@@ -79,6 +79,10 @@ import sys.FileSystem;
 @:keep @:bind #if display private #end class __ASSET__fonts_roboto_regular_ttf extends null { }
 @:keep @:bind #if display private #end class __ASSET__fonts_roboto_regular_woff extends null { }
 @:keep @:bind #if display private #end class __ASSET__fonts_roboto_regular_woff2 extends null { }
+@:keep @:bind #if display private #end class __ASSET__img_alternative_screen_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__img_alternative_screen2_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__img_back_button_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__img_back_button_pressed_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__img_correct_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__img_gallery_background_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__img_info_button_normal_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
@@ -155,6 +159,9 @@ import sys.FileSystem;
 @:keep @:bind #if display private #end class __ASSET__img_pathogen_7_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__img_pathogen_8_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__img_pathogen_9_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__img_screen_diff_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__img_screen_x1_4k_300dpi_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__img_screen_x1_v2_4k_300dpi_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__img_syringe_bonus_empty_1_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__img_syringe_bonus_empty_2_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
 @:keep @:bind #if display private #end class __ASSET__img_syringe_bonus_full_1_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
