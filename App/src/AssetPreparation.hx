@@ -69,6 +69,9 @@ class AssetPreparation {
 		
 		var imgpath_str = "img/wrong.png";
 		img_feedback_wrong = AssetPreparation.loadImage(imgpath_str);
+
+		var imgpath_str = "img/alternative_screen2.png";
+		img_alternative_screen2 = AssetPreparation.loadImage(imgpath_str);
 		
 	}
 	

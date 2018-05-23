@@ -160,6 +160,13 @@ class Main extends Sprite
 	
 	//onClick functions for the multiple buttons
 	
+	/**
+	 * In gallery when you click continue game -> leads you to levelscreen 
+	 */
+	public function onClick_cont(event: MouseEvent):Void{
+		DrawLevelscreen();
+	}
+
 	//DATENBANK ABSPEICHERN
 	//Button: New Game - Button1
 	public function onClick1 (event: MouseEvent):Void {
@@ -568,10 +575,11 @@ class Main extends Sprite
 	//draws the screen for questionnaire items
 	public function drawQuestionnaireScreen(type:String){
 		
+		this.removeChild(img_alternative_screen2);
 		if (type == "scale") {
 		
 			questionnaire_screen = new Sprite();
-			
+			//this.addChild(questionnaire_screen);
 			// item text
 			var itemFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 60, 0xFFFFFF, true);
 			itemFormat.align = TextFormatAlign.CENTER;
@@ -813,6 +821,7 @@ class Main extends Sprite
 		
 	}
 
+
 	//Gallery
 	public function drawGallery(){
 		
@@ -821,9 +830,13 @@ class Main extends Sprite
 		gallery_screen.addChild(img_gallery_background);
 		
 		// Add button to get back to main menu
-		button_end = Button.drawButton("Zurück", Std.int(NOMINAL_WIDTH -150),50, "back");
+		button_end = Button.drawButton("Zurück", Std.int(NOMINAL_WIDTH -150),150, "back");
 		button_end.addEventListener(MouseEvent.CLICK, onClick_end);
 		gallery_screen.addChild(button_end);
+
+		var button_continue = Button.drawButton("Spielen", Std.int(NOMINAL_WIDTH -150),50, "back");
+		button_continue.addEventListener(MouseEvent.CLICK, onClick_cont);
+		gallery_screen.addChild(button_continue);
 		
 		add = 280;
 		// only count to run_ind - 1 as the current pathogen has not been beaten yet
@@ -971,7 +984,7 @@ class Main extends Sprite
 		}
 		
 		this.addChild(gallery_screen);
-		haxe.Timer.delay(DrawLevelscreen,1000);
+		haxe.Timer.delay(DrawLevelscreen,2000);
 		//DrawLevelscreen();
 	}
 
@@ -980,18 +993,36 @@ class Main extends Sprite
 
 		this.removeChild(gallery_screen);
 		level_screen = new Sprite();
+		//new background for showing level
 		level_screen.addChild(img_alternative_screen2);
 		this.addChild(level_screen);
 		
-		//haxe.Timer.delay(pathogenText,1000);
+		var level_display = new TextField();
+		level_display.background = false;
+		level_display.width = 600;
+		level_display.height = 200;
+		level_display.x = (NOMINAL_WIDTH/2)-300;
+		level_display.y = (NOMINAL_HEIGHT/2)-100;
+		level_display.selectable = false;
+
+		var level_text:TextFormat = new TextFormat("Arial", 50, 0x000000, true);
+		level_text.align = TextFormatAlign.CENTER;
+		var curr_trial= _trial_ind + 1;
+		level_display.text = 'Sie sind in Level $curr_trial';
+		level_screen.addChild(level_display);
+		
+		level_display.defaultTextFormat = level_text;
+
+		haxe.Timer.delay(pathogenText,1000);
 
 	}
-
+	//insert pathogen information to display
 	function pathogenText(){
-
+		this.removeChildren();
 		haxe.Timer.delay(afterPathogen,1000);
 	}
-
+	// you need this function because in the Timer.delay the inserted
+	//function need to be void but drawQuestionnaireScreen is not void
 	function afterPathogen(){
 		drawQuestionnaireScreen("scale");
 	}
