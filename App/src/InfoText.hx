@@ -16,7 +16,9 @@ class InfoText extends Sprite {
 		info_textfield.backgroundColor = 0xFFFFFF;
 		info_textfield.border = true;
 		info_textfield.borderColor = 0x000000;
-		
+		info_textfield.multiline=true;
+		info_textfield.wordWrap=true;
+		info_textfield.scrollV+=1;
 
 		var info_text:TextFormat = new TextFormat("Arial", 45, 0x000000, true);
 		info_text.align = TextFormatAlign.CENTER;

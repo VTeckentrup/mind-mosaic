@@ -178,9 +178,25 @@ class Main extends Sprite
 	//Instruction - Button2
 	public function onClick2 (event: MouseEvent):Void {
 		menu_screen.removeChildren();
+
+		level_screen = new Sprite();
+		level_screen.addChild(img_alternative_screen2);
+		this.addChild(level_screen);
+		var instructive_text = new Instruction();
+		//var instructive_text = new Instruction();
+		this.addChild(instructive_text);
+		//var instruction_text = new InfoText("");
+		//this.addChild(instruction_text);
+
+		// add button to info textfield
+		var ww = NOMINAL_WIDTH / 3;
+		var textfield_button:SimpleButton = Button.drawButton("OK", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
+		textfield_button.addEventListener(MouseEvent.CLICK, onClick_back);
+        addChild(textfield_button);
+
 		button_back = Button.drawButton("Zurück",Std.int(NOMINAL_WIDTH -150),50,"back");
 		button_back.addEventListener(MouseEvent.CLICK, onClick_back);
-		menu_screen.addChild(button_back);
+		level_screen.addChild(button_back);
 	}
 	//DATENBANKABRUF
 	//Button Game Status - Button3
@@ -690,6 +706,7 @@ class Main extends Sprite
 			questionnaire_screen.addChild(rb_text_no);
 			
 			var yes_rb = new OptionBox();
+			trace(yes_rb);
 			yes_rb.groupName = "questRBs";
 			yes_rb.height = 50;
 			yes_rb.width = 300;
@@ -704,7 +721,9 @@ class Main extends Sprite
 			box_container.addComponent(no_rb);
 			
 			Screen.instance.addComponent(box_container);
-			
+
+			//yes_rb.addEventListener(MouseEvent.CLICK, clickYes);
+			//no_rb.addEventListener(MouseEvent.CLICK, clickNo);
 			// Forward button
 			button_quest = Button.drawButton("OK", NOMINAL_WIDTH / 2, 950, "info");
 			button_quest.visible = false;
@@ -988,7 +1007,9 @@ class Main extends Sprite
 		//DrawLevelscreen();
 	}
 
-
+	/*
+	*draws Level screen when you continue playing
+	*/
 	function DrawLevelscreen(){
 
 		this.removeChild(gallery_screen);
@@ -1016,7 +1037,7 @@ class Main extends Sprite
 		haxe.Timer.delay(pathogenText,1000);
 
 	}
-	//insert pathogen information to display
+	//insert pathogen information to display but only if 
 	function pathogenText(){
 		this.removeChildren();
 		haxe.Timer.delay(afterPathogen,1000);
