@@ -190,13 +190,17 @@ class Main extends Sprite
 
 		// add button to info textfield
 		var ww = NOMINAL_WIDTH / 3;
-		var textfield_button:SimpleButton = Button.drawButton("OK", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
+		var textfield_button:SimpleButton = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 175, "info");
 		textfield_button.addEventListener(MouseEvent.CLICK, onClick_back);
         addChild(textfield_button);
 
-		button_back = Button.drawButton("Zurück",Std.int(NOMINAL_WIDTH -150),50,"back");
+		var playgame_button:SimpleButton = Button.drawButton("Spielen", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
+		playgame_button.addEventListener(MouseEvent.CLICK, onClick_cont);
+        addChild(playgame_button);
+
+		/*button_back = Button.drawButton("Zurück",Std.int(NOMINAL_WIDTH -150),50,"back");
 		button_back.addEventListener(MouseEvent.CLICK, onClick_back);
-		level_screen.addChild(button_back);
+		level_screen.addChild(button_back);*/
 	}
 	//DATENBANKABRUF
 	//Button Game Status - Button3
@@ -386,7 +390,7 @@ class Main extends Sprite
 	}
 	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-	//%%%%%%%% REGISTRATION & LOGINS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	//%%%%%%%% REGISTRATION & LOGINS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//first page that lets you choose between Login and Registration
 	public function log_and_reg(){
 		//global var
