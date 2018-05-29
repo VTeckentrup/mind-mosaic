@@ -20,15 +20,15 @@ class AssetPreparation {
 		questionnaire_items[1] = "Wie hungrig sind Sie im Moment?";
 		questionnaire_items[2] = "Wie satt sind Sie im Moment?";
 		questionnaire_items[3] = "Wie durstig sind Sie im Moment?";
-		questionnaire_items[4] = "Wann haben Sie letzte Mahlzeit gegessen?";
+		questionnaire_items[4] = "Wann haben Sie die letzte Mahlzeit gegessen?";
 		questionnaire_items[5] = "Haben Sie seit der letzten Mahlzeit noch genascht?";
 		questionnaire_items[6] = "Haben Sie in den letzten 2h koffeinhaltige Getränke \n wie Kaffee getrunken?";
 		questionnaire_items[7] = "Wie wach fühlen Sie sich im Moment?";
 		questionnaire_items[8] = "Wie zufrieden fühlen Sie sich im Moment?";
 		questionnaire_items[9] = "Wie niedergeschlagen fühlen Sie sich im Moment?";
 		questionnaire_items[10] = "Wie gestresst fühlen Sie sich im Moment?";
-		questionnaire_items[11] = "Wie stark fühlen Sie sich momentan durch Ihre Umgebung abgelenkt?";
-		questionnaire_items[12] = "Wie stark fühlen Sie sich momentan durch Ihre Gedanken abgelenkt?";
+		questionnaire_items[11] = "Wie stark fühlen Sie sich momentan durch Ihre \n Umgebung abgelenkt?";
+		questionnaire_items[12] = "Wie stark fühlen Sie sich momentan durch Ihre \n Gedanken abgelenkt?";
 		questionnaire_items[13] = "Hatten Sie seit der letzten Spielrunde einen Essanfall?";
 		
 	}

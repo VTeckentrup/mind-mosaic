@@ -384,8 +384,8 @@ class Main extends Sprite
 		then the level you're in, then the current reward with short introduction, then the questionaires &
 		then the Main Game starts
 		*/
-		menu_screen.removeChildren();
-		drawGallery_temp();
+		this.removeChildren();
+		DrawLevelscreen();
 
 	}
 	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -616,8 +616,8 @@ class Main extends Sprite
 			
 			// UI elements
 			box_container = new HBox();
-			box_container.x = 390;
-			box_container.y = 450;
+			box_container.x = stageScaleX*550;
+			box_container.y = stageScaleY*550;
 			
 			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 40, 0xFFFFFF, true);
 			rbFormat.align = TextFormatAlign.LEFT;
@@ -641,9 +641,7 @@ class Main extends Sprite
 			questionnaire_screen.addChild(anchor_right);
 			
 			var quest_slider = new HSlider();
-			quest_slider.resizeComponent(600, 100);
-			quest_slider.x = (NOMINAL_WIDTH - quest_slider.width) / 2;
-			quest_slider.y = 550;
+			quest_slider.resizeComponent(stageScale*800, stageScale*100);
 			quest_slider.max = 100;
 			quest_slider.min = 0;
 			
@@ -685,8 +683,8 @@ class Main extends Sprite
 			
 			// UI elements
 			box_container = new HBox();
-			box_container.x = 500;
-			box_container.y = 470;
+			box_container.x = stageScaleX*690;
+			box_container.y = stageScaleY*570;
 			
 			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 40, 0xFFFFFF, true);
 			rbFormat.align = TextFormatAlign.LEFT;
@@ -694,7 +692,7 @@ class Main extends Sprite
 			var rb_text_yes = new TextField();
 			rb_text_yes.width = 200;
 			rb_text_yes.height = 200;
-			rb_text_yes.y = 570;
+			rb_text_yes.y = 565;
 			rb_text_yes.x = 750;
 			rb_text_yes.defaultTextFormat = rbFormat;
 			rb_text_yes.text = "Ja";
@@ -703,22 +701,21 @@ class Main extends Sprite
 			var rb_text_no = new TextField();
 			rb_text_no.width = 200;
 			rb_text_no.height = 200;
-			rb_text_no.y = 570;
+			rb_text_no.y = 565;
 			rb_text_no.x = 1170;
 			rb_text_no.defaultTextFormat = rbFormat;
 			rb_text_no.text = "Nein";
 			questionnaire_screen.addChild(rb_text_no);
 			
 			var yes_rb = new OptionBox();
-			trace(yes_rb);
 			yes_rb.groupName = "questRBs";
-			yes_rb.height = 50;
-			yes_rb.width = 300;
+			yes_rb.height = stageScale*50;
+			yes_rb.width = stageScale*420;
 			
 			var no_rb = new OptionBox();
 			no_rb.groupName = "questRBs";
-			no_rb.height = 50;
-			no_rb.width = 300;
+			no_rb.height = stageScale*50;
+			no_rb.width = stageScale*420;
 			
 			box_container.addEventListener(MouseEvent.CLICK, activateButton);
 			box_container.addComponent(yes_rb);
@@ -726,8 +723,6 @@ class Main extends Sprite
 			
 			Screen.instance.addComponent(box_container);
 
-			//yes_rb.addEventListener(MouseEvent.CLICK, clickYes);
-			//no_rb.addEventListener(MouseEvent.CLICK, clickNo);
 			// Forward button
 			button_quest = Button.drawButton("OK", NOMINAL_WIDTH / 2, 950, "info");
 			button_quest.visible = false;
@@ -751,9 +746,10 @@ class Main extends Sprite
 	
 	// refresh the screen with the next questionnaire item
 	public function QuestPagefinished(event: MouseEvent):Void {
-		this.removeChildren();
-		Screen.instance.removeComponent(box_container);
 		
+		Screen.instance.removeComponent(box_container);
+		this.removeChildren();
+				
 		if (item_counter <= 12) {
 			item_counter = item_counter + 1;
 			
@@ -763,6 +759,7 @@ class Main extends Sprite
 				drawQuestionnaireScreen("scale");
 			}
 		} else {
+			item_counter = 1;
 			MainGame();
 		}
 		
@@ -933,7 +930,7 @@ class Main extends Sprite
 	/**
 	 *  function that is used for temporarily showing the gallery before the main game starts
 	 */
-	public function drawGallery_temp(){
+/*	public function drawGallery_temp(){
 		
 		// Set up screen for gallery
 		gallery_screen = new Sprite();
@@ -1009,14 +1006,14 @@ class Main extends Sprite
 		this.addChild(gallery_screen);
 		haxe.Timer.delay(DrawLevelscreen,2000);
 		//DrawLevelscreen();
-	}
+	}*/
 
 	/*
 	*draws Level screen when you continue playing
 	*/
 	function DrawLevelscreen(){
 
-		this.removeChild(gallery_screen);
+		this.removeChildren();
 		level_screen = new Sprite();
 		//new background for showing level
 		level_screen.addChild(img_alternative_screen2);
@@ -1030,27 +1027,27 @@ class Main extends Sprite
 		level_display.y = (NOMINAL_HEIGHT/2)-100;
 		level_display.selectable = false;
 
-		var level_text:TextFormat = new TextFormat("Arial", 50, 0x000000, true);
+		var level_text:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 70, 0x000000, true);
 		level_text.align = TextFormatAlign.CENTER;
 		var curr_trial= _trial_ind + 1;
-		level_display.text = 'Sie sind in Level $curr_trial';
+		level_display.text = 'Level $curr_trial';
 		level_screen.addChild(level_display);
 		
 		level_display.defaultTextFormat = level_text;
 
-		haxe.Timer.delay(pathogenText,1000);
+		haxe.Timer.delay(pathogenText,3000);
 
 	}
 	//insert pathogen information to display but only if 
 	function pathogenText(){
 		this.removeChildren();
-		haxe.Timer.delay(afterPathogen,1000);
+		haxe.Timer.delay(function() {drawQuestionnaireScreen("scale");},1000);
 	}
 	// you need this function because in the Timer.delay the inserted
 	//function need to be void but drawQuestionnaireScreen is not void
-	function afterPathogen(){
-		drawQuestionnaireScreen("scale");
-	}
+	//function afterPathogen(){
+	//	drawQuestionnaireScreen("scale");
+	//}
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 //%%%%%%%%%%INITIATION FUNCTION%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1510,7 +1507,8 @@ class Main extends Sprite
 			// save run related info in the database, currently deactivated as not all run entries are available
 			//AppdataEntryLite.writeLiteRunEntry();
 			// call function newRound with delay of 300 ms
-			haxe.Timer.delay(MainGame,500);
+			this.removeChild(game_screen);
+			haxe.Timer.delay(function() {drawQuestionnaireScreen("scale");}, 500);
 		}
 		
 	}
