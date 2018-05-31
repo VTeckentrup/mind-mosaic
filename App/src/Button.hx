@@ -122,18 +122,22 @@ class Button extends Sprite
 		button_textfield.background = false;
 		button_textfield.width = width;
 		button_textfield.height = height;
-		button_textfield.x = -(width / 2) + width/12;
+		button_textfield.x = -(width / 2) + width / 12;
+		
+		var button_text:TextFormat = null;
 		
 		if (type == "menu") {
 			button_textfield.y = -(height / 2) + height / 3.5;
+			button_text = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 38, 0x000000, true);
 		} else if (type == "info") {
 			button_textfield.y = -(height / 2) + height / 4.5;
+			button_text = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 38, 0x000000, true);
 		} else if(type == "back"){
-			button_textfield.y = -(height / 2);
+			button_textfield.y = -(height / 2) + height / 4.5;
+			button_text = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 30, 0x000000, true);
 
 		}
 		
-		var button_text:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 38, 0x000000, true);
 		button_text.align = TextFormatAlign.CENTER;
 		button_textfield.defaultTextFormat = button_text;
 		button_textfield.text = s;

@@ -17,6 +17,8 @@
 --macro openfl._internal.utils.ExtraParams.include()
 -cp C:/HaxeToolkit/haxe/lib/openfl/8,1,1/src
 -D openfl=8.1.1
+-cp C:/HaxeToolkit/haxe/lib/random/1,4,1/src
+-D random=1.4.1
 -cp src
 -cp assets
 -D lime-openal

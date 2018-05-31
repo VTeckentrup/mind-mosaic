@@ -23,6 +23,7 @@
     <class path="C:\HaxeToolkit\haxe\lib\haxeui-core\git" />
     <class path="C:\HaxeToolkit\haxe\lib\hscript\2,2,0" />
     <class path="C:\HaxeToolkit\haxe\lib\openfl\8,1,1\src" />
+    <class path="C:\HaxeToolkit\haxe\lib\random\1,4,1\src" />
     <class path="src" />
     <class path="assets" />
     <class path="C:\HaxeToolkit\haxe\lib\openfl\8,1,1\src\externs\core\openfl" />
@@ -31,7 +32,7 @@
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="lime=6.3.1&#xA;actuate=1.8.7&#xA;record-macros=1.0.0-alpha&#xA;haxeui-openfl=0.0.2&#xA;haxeui-core=0.0.4&#xA;hscript=2.2.0&#xA;openfl=8.1.1&#xA;tools=6.3.1&#xA;no-compilation&#xA;native&#xA;lime-native&#xA;lime-vorbis&#xA;openfl-native&#xA;lime-cffi&#xA;windows&#xA;desktop&#xA;display" />
+    <option directives="lime=6.3.1&#xA;actuate=1.8.7&#xA;record-macros=1.0.0-alpha&#xA;haxeui-openfl=0.0.2&#xA;haxeui-core=0.0.4&#xA;hscript=2.2.0&#xA;openfl=8.1.1&#xA;random=1.4.1&#xA;tools=6.3.1&#xA;no-compilation&#xA;native&#xA;lime-native&#xA;lime-vorbis&#xA;openfl-native&#xA;lime-cffi&#xA;windows&#xA;desktop&#xA;display" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />

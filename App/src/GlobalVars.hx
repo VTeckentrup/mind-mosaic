@@ -2,6 +2,7 @@ package;
 
 import haxe.io.Path;
 import haxe.ui.containers.HBox;
+import haxe.ui.containers.VBox;
 import lime.system.System;
 import openfl.display.Bitmap;
 import openfl.display.Sprite;
@@ -163,6 +164,7 @@ class GlobalVars
 	public static var registration_screen:Sprite;
 	public static var questionnaire_screen:Sprite;
 	public static var box_container:HBox;
+	public static var vbox_container:VBox;
 	public static var gallery_screen:Sprite;
 	public static var level_screen:Sprite;
 }

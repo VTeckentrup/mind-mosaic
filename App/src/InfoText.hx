@@ -3,6 +3,7 @@ package;
 import flash.display.Sprite;
 import openfl.text.*;
 import openfl.display.SimpleButton;
+import openfl.Assets;
 
 class InfoText extends Sprite {
 	
@@ -20,7 +21,7 @@ class InfoText extends Sprite {
 		info_textfield.wordWrap=true;
 		info_textfield.scrollV+=1;
 
-		var info_text:TextFormat = new TextFormat("Arial", 45, 0x000000, true);
+		var info_text:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 45, 0x000000, true);
 		info_text.align = TextFormatAlign.CENTER;
 
 		info_textfield.defaultTextFormat = info_text;

@@ -22,6 +22,7 @@
 	<haxelib name="record-macros" />
 	<haxelib name="haxeui-core" />
 	<haxelib name="haxeui-openfl" />
+	<haxelib name="random" />
 	
 	<!-- assets -->
 	<icon path="assets/openfl.svg" />
