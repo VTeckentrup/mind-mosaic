@@ -12,7 +12,7 @@ class AppUserInfo extends Object {
 	public var password : SString<30>;
 	public var cb_consent : STinyUInt;
 	public var cb_contact : STinyUInt;
-	public var timestamp : SDateTime;
+	public var timestamp : SFloat;
 	public var keycode : SInt;
 	
 }

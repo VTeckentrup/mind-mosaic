@@ -34,6 +34,75 @@ class AssetPreparation {
 	}
 	
 	
+	static public function getCircleColors() {
+		
+		circle_colors_A[1] = 0xffe700;
+		circle_colors_A[2] = 0xffc707;
+		circle_colors_A[3] = 0xe56c25;
+		circle_colors_A[4] = 0x00a8e9;
+		circle_colors_A[5] = 0x00a993;
+		circle_colors_A[6] = 0x009a4e;
+		circle_colors_A[7] = 0xfff200;
+		circle_colors_A[8] = 0xef9d3c;
+		circle_colors_A[9] = 0x00aaad;
+		circle_colors_A[10] = 0xf15a22;
+		circle_colors_A[11] = 0xff0000;
+		circle_colors_A[12] = 0xec008c;
+		circle_colors_A[13] = 0xfff200;
+		circle_colors_A[14] = 0x00ffff;
+		circle_colors_A[15] = 0xe65293;
+		circle_colors_A[16] = 0x00ff00;
+		circle_colors_A[17] = 0xb2d90a;
+		circle_colors_A[18] = 0xa2dcab;
+		circle_colors_A[19] = 0xef5061;
+		circle_colors_A[20] = 0x00a04f;
+		circle_colors_A[21] = 0xffeb00;
+		circle_colors_A[22] = 0xb9da89;
+		circle_colors_A[23] = 0x8d3f97;
+		circle_colors_A[24] = 0x6b67ae;
+		circle_colors_A[25] = 0xffff00;
+		circle_colors_A[26] = 0xf8d155;
+		circle_colors_A[27] = 0xde7c6d;
+		circle_colors_A[28] = 0xf70a42;
+		circle_colors_A[29] = 0x48f88a;
+		circle_colors_A[30] = 0x34c400;
+		circle_colors_A[31] = 0xe20052;
+		
+		circle_colors_B[1] = 0xba1a8d;
+		circle_colors_B[2] = 0x863894;
+		circle_colors_B[3] = 0x5c56a5;
+		circle_colors_B[4] = 0x93c75e;
+		circle_colors_B[5] = 0xe61e25;
+		circle_colors_B[6] = 0xe62f50;
+		circle_colors_B[7] = 0xab4a9c;
+		circle_colors_B[8] = 0x79db2a;
+		circle_colors_B[9] = 0xff3366;
+		circle_colors_B[10] = 0xb2d235;
+		circle_colors_B[11] = 0x149353;
+		circle_colors_B[12] = 0x27e1ff;
+		circle_colors_B[13] = 0xff00ff;
+		circle_colors_B[14] = 0xf7941e;
+		circle_colors_B[15] = 0xaadff1;
+		circle_colors_B[16] = 0xed1c24;
+		circle_colors_B[17] = 0xf15a22;
+		circle_colors_B[18] = 0x00aeef;
+		circle_colors_B[19] = 0x0ab3ef;
+		circle_colors_B[20] = 0xf37a28;
+		circle_colors_B[21] = 0xc81d8f;
+		circle_colors_B[22] = 0xed2c2d;
+		circle_colors_B[23] = 0xfec508;
+		circle_colors_B[24] = 0x59c7ba;
+		circle_colors_B[25] = 0xa674c4;
+		circle_colors_B[26] = 0x91248b;
+		circle_colors_B[27] = 0x6da6de;
+		circle_colors_B[28] = 0x7cde62;
+		circle_colors_B[29] = 0x0048ff;
+		circle_colors_B[30] = 0x4ef6fd;
+		circle_colors_B[31] = 0x00ed11;
+		
+	}
+	
+	
 	static public function getPathogens() {
 		
 		for (i in 0...runs-1) {

@@ -130,7 +130,7 @@ class Button extends Sprite
 			button_textfield.y = -(height / 2) + height / 3.5;
 			button_text = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 38, 0x000000, true);
 		} else if (type == "info") {
-			button_textfield.y = -(height / 2) + height / 4.5;
+			button_textfield.y = -(height / 2) + height / 4.8;
 			button_text = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 38, 0x000000, true);
 		} else if(type == "back"){
 			button_textfield.y = -(height / 2) + height / 4.5;

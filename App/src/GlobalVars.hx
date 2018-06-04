@@ -1,6 +1,7 @@
 package;
 
 import haxe.io.Path;
+import haxe.ui.components.HSlider;
 import haxe.ui.containers.HBox;
 import haxe.ui.containers.VBox;
 import lime.system.System;
@@ -153,8 +154,13 @@ class GlobalVars
 	// button images
 	public static var menu_button_array: Array<Bitmap> = [];
 	
-	// questionnaire item texts
+	// color code array for feedback circle
+	public static var circle_colors_A: Array<Int> = [];
+	public static var circle_colors_B: Array<Int> = [];
+	
+	// questionnaire items
 	public static var questionnaire_items:Array<String> = [];
+	public static var quest_slider:HSlider;
 	
 	// screens
 	public static var game_screen:MainGameScreen;

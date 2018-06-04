@@ -9,7 +9,7 @@ class AppDataRun extends Object {
 	
 	public var subject_id_app : SUInt;
 	public var run_ind : SUInt;
-	public var global_score : SUInt;
+	public var global_score : SInt;
 	public var item_1 : SUInt;
 	public var item_2 : SUInt;
 	public var item_3 : SUInt;
@@ -23,7 +23,7 @@ class AppDataRun extends Object {
 	public var item_11 : SUInt;
 	public var item_12 : SUInt;
 	public var item_13 : SUInt;
-	public var item_14 : SUInt;
+	/*public var item_14 : SUInt;
 	public var item_15 : SUInt;
 	public var item_16 : SUInt;
 	public var item_17 : SUInt;
@@ -39,8 +39,8 @@ class AppDataRun extends Object {
 	public var item_27 : SUInt;
 	public var item_28 : SUInt;
 	public var item_29 : SUInt;
-	public var item_30 : SUInt;
+	public var item_30 : SUInt;*/
 	public var app_version : SString<8>;
-	public var timestamp : SDateTime;
+	public var timestamp : SFloat;
 	
 }

@@ -14,7 +14,8 @@ class AppdataEntryLite
             FileSystem.createDirectory(database_path);
         }
 		
-		var litecnx = sys.db.Sqlite.open(Path.join([database_path,"./app_data_trial.db"]));
+		var database_name = "./" + _id + "_app_data_trial.db";
+		var litecnx = sys.db.Sqlite.open(Path.join([database_path,database_name]));
         
         // set connection as current manager
         sys.db.Manager.cnx = litecnx;
@@ -47,7 +48,7 @@ class AppdataEntryLite
 		app_trial.run_ind = _run_ind;
 		app_trial.p_reward_a = _p_reward_A;
 		app_trial.p_reward_b = _p_reward_B;
-		app_trial.p_draw = _p_draw;
+		app_trial.p_draw_a = _p_draw;
 		app_trial.drawn_outcome = _drawn_outcome;
 		app_trial.reward_a = _reward_A;
 		app_trial.reward_b = _reward_B;
@@ -71,7 +72,8 @@ class AppdataEntryLite
             FileSystem.createDirectory(database_path);
         }
 		
-		var litecnx = sys.db.Sqlite.open(Path.join([database_path,"./app_data_run.db"]));
+		var database_name = "./" + _id + "_app_data_run.db";
+		var litecnx = sys.db.Sqlite.open(Path.join([database_path,database_name]));
         
         // set connection as current manager
         sys.db.Manager.cnx = litecnx;
@@ -115,7 +117,7 @@ class AppdataEntryLite
 		app_run.item_11 = _item_11;
 		app_run.item_12 = _item_12;
 		app_run.item_13 = _item_13;
-		app_run.item_14 = _item_14;
+		/*app_run.item_14 = _item_14;
 		app_run.item_15 = _item_15;
 		app_run.item_16 = _item_16;
 		app_run.item_17 = _item_17;
@@ -131,20 +133,22 @@ class AppdataEntryLite
 		app_run.item_27 = _item_27;
 		app_run.item_28 = _item_28;
 		app_run.item_29 = _item_29;
-		app_run.item_30 = _item_30;
+		app_run.item_30 = _item_30;*/
 		app_run.app_version = _app_version;
-		app_run.timestamp = Date.now();
+		//app_run.timestamp = Date.now();
+		app_run.timestamp = Sys.time() * 1000.0;
 		return app_run;
     
 	}
 	
 	
 	
-	static public function modifyLiteTrialEntry ()
+	static public function modifyLiteTrialEntry (mod_time:Float)
 	{
 		
 		// Generate SQLite connection
-		var litecnx = sys.db.Sqlite.open(Path.join([database_path, "./app_data_trial.db"]));
+		var database_name = "./" + _id + "_app_data_trial.db";
+		var litecnx = sys.db.Sqlite.open(Path.join([database_path, database_name]));
 			
 		// Connect and initialize manager
 		sys.db.Manager.cnx = litecnx;
@@ -158,18 +162,23 @@ class AppdataEntryLite
 			// Retrieve SQLite entry from generated list and convert back to date
 			var entry_item = trial_entry_list.pop();
 			var entry_item_str = entry_item.toString();
-			var entry_item_str_mod = StringTools.replace(entry_item_str, "app_data_trial(subject_id:" + _id + ",timestamp:", "");
+			var entry_item_str_mod = StringTools.replace(entry_item_str, "app_data_trial(subject_id_app:" + _id + ",timestamp:", "");
 			var entry_item_str_mod2 = StringTools.replace(entry_item_str_mod, ")", "");
-			var entry_time = Date.fromString(entry_item_str_mod2);
+			var entry_time = Std.parseFloat(entry_item_str_mod2);
+			//var entry_time = Date.fromString(entry_item_str_mod2);
 			
-			// Fetch entry from list
-			var app_trial = AppDataTrial.manager.get({subject_id_app: _id, timestamp: entry_time});
+			if (entry_time >= mod_time){
 			
-			// Change run_finished entry
-			app_trial.run_finished = 1;
-			
-			// Update entry in SQLite database
-			app_trial.update();
+				// Fetch entry from list
+				var app_trial = AppDataTrial.manager.get({subject_id_app: _id, timestamp: entry_time});
+				
+				// Change run_finished entry
+				app_trial.run_finished = 1;
+				
+				// Update entry in SQLite database
+				app_trial.update();
+				
+			}
 			
 		}
 			

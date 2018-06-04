@@ -3,6 +3,7 @@ package ;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
+import haxe.ui.core.UIEvent;
 import openfl.text.TextField;
 import haxe.ui.components.OptionBox;
 import haxe.ui.containers.HBox;
@@ -143,6 +144,20 @@ class Main extends Sprite
 	
 	public var timestamp_unfocus:Int = 0;
 	public var timestamp_refocus:Int = 0;
+	
+	//radio buttons
+	private var yes_rb:OptionBox;
+	private var no_rb:OptionBox;
+	
+	private var Likert_1_rb:OptionBox;
+	private var Likert_2_rb:OptionBox;
+	private var Likert_3_rb:OptionBox;
+	private var Likert_4_rb:OptionBox;
+	private var Likert_5_rb:OptionBox;
+	private var Likert_6_rb:OptionBox;
+	
+	// database
+	private var modification_start:Float;
 
 	
 	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -170,15 +185,15 @@ class Main extends Sprite
 
 	//DATENBANK ABSPEICHERN
 	//Button: New Game - Button1
-	public function onClick1 (event: MouseEvent):Void {
+	/*public function onClick1 (event: MouseEvent):Void {
 		//menu_screen.removeChildren();
 		this.removeChildren();
 		//MainGame();
 		drawQuestionnaireScreen("scale");
-	}
+	}*/
 	//Instruction - Button2
 	public function onClick2 (event: MouseEvent):Void {
-		menu_screen.removeChildren();
+		this.removeChildren();
 
 		level_screen = new Sprite();
 		level_screen.addChild(img_alternative_screen2);
@@ -198,10 +213,6 @@ class Main extends Sprite
 		var playgame_button:SimpleButton = Button.drawButton("Spielen", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
 		playgame_button.addEventListener(MouseEvent.CLICK, onClick_cont);
         addChild(playgame_button);
-
-		/*button_back = Button.drawButton("Zurück",Std.int(NOMINAL_WIDTH -150),50,"back");
-		button_back.addEventListener(MouseEvent.CLICK, onClick_back);
-		level_screen.addChild(button_back);*/
 	}
 	//DATENBANKABRUF
 	//Button Game Status - Button3
@@ -241,6 +252,7 @@ class Main extends Sprite
 	//DATENBANK - ABSPEICHERN
 	//End Game slotmachine - Button_end
 	public function onClick_end (event: MouseEvent):Void {
+		Lib.current.stage.removeChild(circle_selection);
 		this.removeChildren();
 		drawMenuScreen();
 	}
@@ -272,7 +284,7 @@ class Main extends Sprite
 								AppdataJSON.saveLogin();
 								
 								// Send to main menu
-								this.removeChildren;
+								this.removeChildren();
 								drawMenuScreen();
 								
 							} else {
@@ -390,6 +402,7 @@ class Main extends Sprite
 		*/
 		this.removeChildren();
 		DrawLevelscreen();
+		//MainGame();
 
 	}
 	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -566,7 +579,7 @@ class Main extends Sprite
 		menu_screen.addChild(img_menu_background);
 		
 		//New game button
-        button1 = Button.drawButton("Neues Spiel",NOMINAL_WIDTH / 2, 200, "menu");
+        button1 = Button.drawButton("Spielen",NOMINAL_WIDTH / 2, 200, "menu");
 		//Anleitung
 		button2 = Button.drawButton("Anleitung",Std.int(NOMINAL_WIDTH / 2), 350, "menu");
 		//Spielstand
@@ -602,11 +615,14 @@ class Main extends Sprite
 	//draws the screen for questionnaire items
 	public function drawQuestionnaireScreen(type:String){
 		
-		this.removeChild(img_alternative_screen2);
+		// remove old content
+		this.removeChildren();
+		
+		// set up questionnaire items according to answer format
 		if (type == "scale") {
 		
 			questionnaire_screen = new Sprite();
-			//this.addChild(questionnaire_screen);
+			
 			// item text
 			var itemFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 60, 0xFFFFFF, true);
 			itemFormat.align = TextFormatAlign.CENTER;
@@ -647,14 +663,154 @@ class Main extends Sprite
 			anchor_right.text = "sehr";
 			questionnaire_screen.addChild(anchor_right);
 			
-			var quest_slider = new HSlider();
+			quest_slider = new HSlider();
 			quest_slider.resizeComponent(stageScale*800, stageScale*100);
 			quest_slider.max = 100;
 			quest_slider.min = 0;
 			
-			quest_slider.addEventListener(MouseEvent.CLICK, activateButton);
+			quest_slider.registerEvent(UIEvent.CHANGE,activateButton);
+			//quest_slider.addEventListener(MouseEvent.CLICK, activateButton);
+			// Implement separate event setup: Slider change event attached to slider to prevent ghost moving without event fired to activate the button
 			
 			box_container.addComponent(quest_slider);
+			
+			Screen.instance.addComponent(box_container);
+			
+			// Forward button
+			button_quest = Button.drawButton("OK", NOMINAL_WIDTH / 2, 950, "info");
+			button_quest.visible = false;
+			
+			button_quest.addEventListener(MouseEvent.CLICK, QuestPagefinished);
+			questionnaire_screen.addChild(button_quest);
+			
+			this.addChild(questionnaire_screen);
+			
+		}
+		
+		else if (type == "Likert") {
+			
+			questionnaire_screen = new Sprite();
+			
+			// item text
+			var itemFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 60, 0xFFFFFF, true);
+			itemFormat.align = TextFormatAlign.CENTER;
+			
+			item_text = new TextField();
+			item_text.width = 1920;
+			item_text.height = 200;
+			item_text.y = 200;
+			item_text.x = 0;
+			item_text.defaultTextFormat = itemFormat;
+			item_text.text = questionnaire_items[item_counter];
+			item_text.multiline = true;
+			questionnaire_screen.addChild(item_text);
+			
+			// UI elements
+			box_container = new HBox();
+			box_container.x = stageScaleX*50;
+			box_container.y = stageScaleY * 570;
+			
+			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 40, 0xFFFFFF, true);
+			rbFormat.align = TextFormatAlign.LEFT;
+			
+			var rb_Likert_Text_1 = new TextField();
+			rb_Likert_Text_1.width = 300;
+			rb_Likert_Text_1.height = 200;
+			rb_Likert_Text_1.y = 565;
+			rb_Likert_Text_1.x = 100;
+			rb_Likert_Text_1.defaultTextFormat = rbFormat;
+			rb_Likert_Text_1.text = "Vor mehr\nals 3h";
+			questionnaire_screen.addChild(rb_Likert_Text_1);
+						
+			var rb_Likert_Text_2 = new TextField();
+			rb_Likert_Text_2.width = 300;
+			rb_Likert_Text_2.height = 200;
+			rb_Likert_Text_2.y = 565;
+			rb_Likert_Text_2.x = 400;
+			rb_Likert_Text_2.defaultTextFormat = rbFormat;
+			rb_Likert_Text_2.text = "Vor etwa\n2,5h";
+			questionnaire_screen.addChild(rb_Likert_Text_2);
+			
+			var rb_Likert_Text_3 = new TextField();
+			rb_Likert_Text_3.width = 300;
+			rb_Likert_Text_3.height = 200;
+			rb_Likert_Text_3.y = 565;
+			rb_Likert_Text_3.x = 700;
+			rb_Likert_Text_3.defaultTextFormat = rbFormat;
+			rb_Likert_Text_3.text = "Vor etwa\n2h";
+			questionnaire_screen.addChild(rb_Likert_Text_3);
+			
+			var rb_Likert_Text_4 = new TextField();
+			rb_Likert_Text_4.width = 300;
+			rb_Likert_Text_4.height = 200;
+			rb_Likert_Text_4.y = 565;
+			rb_Likert_Text_4.x = 1000;
+			rb_Likert_Text_4.defaultTextFormat = rbFormat;
+			rb_Likert_Text_4.text = "Vor etwa\n1,5h";
+			questionnaire_screen.addChild(rb_Likert_Text_4);
+			
+			var rb_Likert_Text_5 = new TextField();
+			rb_Likert_Text_5.width = 300;
+			rb_Likert_Text_5.height = 200;
+			rb_Likert_Text_5.y = 565;
+			rb_Likert_Text_5.x = 1300;
+			rb_Likert_Text_5.defaultTextFormat = rbFormat;
+			rb_Likert_Text_5.text = "Vor etwa\n1h";
+			questionnaire_screen.addChild(rb_Likert_Text_5);
+			
+			var rb_Likert_Text_6 = new TextField();
+			rb_Likert_Text_6.width = 300;
+			rb_Likert_Text_6.height = 200;
+			rb_Likert_Text_6.y = 565;
+			rb_Likert_Text_6.x = 1600;
+			rb_Likert_Text_6.defaultTextFormat = rbFormat;
+			rb_Likert_Text_6.text = "Vor weniger\nals 0,5h";
+			questionnaire_screen.addChild(rb_Likert_Text_6);
+			
+			Likert_1_rb = new OptionBox();
+			Likert_1_rb.groupName = "LikertRBs";
+			Likert_1_rb.height = stageScaleY*80;
+			Likert_1_rb.width = stageScaleX * 295;
+			
+			Likert_2_rb = new OptionBox();
+			Likert_2_rb.groupName = "LikertRBs";
+			Likert_2_rb.height = stageScaleY*80;
+			Likert_2_rb.width = stageScaleX * 295;
+			
+			Likert_3_rb = new OptionBox();
+			Likert_3_rb.groupName = "LikertRBs";
+			Likert_3_rb.height = stageScaleY*80;
+			Likert_3_rb.width = stageScaleX * 295;
+			
+			Likert_4_rb = new OptionBox();
+			Likert_4_rb.groupName = "LikertRBs";
+			Likert_4_rb.height = stageScaleY*80;
+			Likert_4_rb.width = stageScaleX * 295;
+			
+			Likert_5_rb = new OptionBox();
+			Likert_5_rb.groupName = "LikertRBs";
+			Likert_5_rb.height = stageScaleY*80;
+			Likert_5_rb.width = stageScaleX * 295;
+			
+			Likert_6_rb = new OptionBox();
+			Likert_6_rb.groupName = "LikertRBs";
+			Likert_6_rb.height = stageScaleY*80;
+			Likert_6_rb.width = stageScaleX * 295;
+			
+			/*Likert_1_rb.registerEvent(UIEvent.CHANGE, activateButton);
+			Likert_2_rb.registerEvent(UIEvent.CHANGE, activateButton);
+			Likert_3_rb.registerEvent(UIEvent.CHANGE, activateButton);
+			Likert_4_rb.registerEvent(UIEvent.CHANGE, activateButton);
+			Likert_5_rb.registerEvent(UIEvent.CHANGE, activateButton);
+			Likert_6_rb.registerEvent(UIEvent.CHANGE, activateButton);*/
+			box_container.addEventListener(MouseEvent.CLICK, activateButtonClick);
+			
+			box_container.addComponent(Likert_1_rb);
+			box_container.addComponent(Likert_2_rb);
+			box_container.addComponent(Likert_3_rb);
+			box_container.addComponent(Likert_4_rb);
+			box_container.addComponent(Likert_5_rb);
+			box_container.addComponent(Likert_6_rb);
 			
 			Screen.instance.addComponent(box_container);
 			
@@ -714,22 +870,26 @@ class Main extends Sprite
 			rb_text_no.text = "Nein";
 			questionnaire_screen.addChild(rb_text_no);
 			
-			var yes_rb = new OptionBox();
+			yes_rb = new OptionBox();
 			yes_rb.groupName = "questRBs";
-			yes_rb.height = stageScale*50;
-			yes_rb.width = stageScale*420;
+			yes_rb.height = stageScaleY*50;
+			yes_rb.width = stageScaleX*420;
 			
-			var no_rb = new OptionBox();
+			no_rb = new OptionBox();
 			no_rb.groupName = "questRBs";
-			no_rb.height = stageScale*50;
-			no_rb.width = stageScale*420;
+			no_rb.height = stageScaleY*50;
+			no_rb.width = stageScaleX*420;
 			
-			box_container.addEventListener(MouseEvent.CLICK, activateButton);
+			/*yes_rb.registerEvent(UIEvent.CHANGE, activateButton);
+			no_rb.registerEvent(UIEvent.CHANGE, activateButton);*/
+			
+			box_container.addEventListener(MouseEvent.CLICK, activateButtonClick);
+			
 			box_container.addComponent(yes_rb);
 			box_container.addComponent(no_rb);
 			
 			Screen.instance.addComponent(box_container);
-
+			
 			// Forward button
 			button_quest = Button.drawButton("OK", NOMINAL_WIDTH / 2, 950, "info");
 			button_quest.visible = false;
@@ -747,20 +907,88 @@ class Main extends Sprite
 	}
 	
 	// activate the forward button after player has interacted with the slider
-	public function activateButton(event: MouseEvent):Void {
+	public function activateButtonClick(event: MouseEvent):Void {
 		button_quest.visible = true;
 	}
 	
-	// refresh the screen with the next questionnaire item
+	public function activateButton(event: UIEvent):Void {
+		button_quest.visible = true;
+	}
+	
+	// refresh the screen with the next questionnaire item or go on to main game
 	public function QuestPagefinished(event: MouseEvent):Void {
 		
+		// write out value from questionnaire item
+		if (item_counter == 1) {
+			_item_1 = quest_slider.value;
+			trace(_item_1);
+		} else if (item_counter == 2) {
+			_item_2 = quest_slider.value;
+		} else if (item_counter == 3) {
+			_item_3 = quest_slider.value;
+		} else if (item_counter == 4) {
+			// check which radiobutton is activated
+			if (Likert_1_rb.selected == true){
+				_item_4 = 1;
+			} else if (Likert_2_rb.selected == true){
+				_item_4 = 2;
+			} else if (Likert_3_rb.selected == true){
+				_item_4 = 3;
+			} else if (Likert_4_rb.selected == true){
+				_item_4 = 4;
+			} else if (Likert_5_rb.selected == true){
+				_item_4 = 5;
+			} else if (Likert_6_rb.selected == true){
+				_item_4 = 6;
+			}
+		} else if (item_counter == 5) {
+			// check which radiobutton is activated
+			if (yes_rb.selected == true){
+				_item_5 = 1;
+			} else if (no_rb.selected == true){
+				_item_5 = 0;
+			}		
+		} else if (item_counter == 6) {
+			// check which radiobutton is activated
+			if (yes_rb.selected == true){
+				_item_6 = 1;
+			} else if (no_rb.selected == true){
+				_item_6 = 0;
+			}
+		} else if (item_counter == 7) {
+			_item_7 = quest_slider.value;
+		} else if (item_counter == 8) {
+			_item_8 = quest_slider.value;
+		} else if (item_counter == 9) {
+			_item_9 = quest_slider.value;
+		} else if (item_counter == 10) {
+			_item_10 = quest_slider.value;
+		} else if (item_counter == 11) {
+			_item_11 = quest_slider.value;
+		} else if (item_counter == 12) {
+			_item_12 = quest_slider.value;
+		} else if (item_counter == 13) {
+			// check which radiobutton is activated
+			if (yes_rb.selected == true){
+				_item_13 = 1;
+			} else if (no_rb.selected == true){
+				_item_13 = 0;
+			}
+		}
+		
+		// remove old content
 		Screen.instance.removeComponent(box_container);
 		this.removeChildren();
-				
+		
+		
+		
 		if (item_counter <= 12) {
 			item_counter = item_counter + 1;
 			
-			if (item_counter == 5 || item_counter == 6 || item_counter == 13) {
+			if (item_counter == 4) {
+				drawQuestionnaireScreen("Likert");
+			}
+			else if (item_counter == 5 || item_counter == 6 || item_counter == 13) {
 				drawQuestionnaireScreen("options");
 			} else {
 				drawQuestionnaireScreen("scale");
@@ -800,6 +1028,9 @@ class Main extends Sprite
 		
 			// Set round index to 0 as it will be increased to 1 in the newRound function 
 			_trial_ind = 0;
+			
+			// remove circle from screen
+			Lib.current.stage.removeChild(circle_selection);
 			
 			// restart score for reset run
 			_score = 0;
@@ -856,14 +1087,33 @@ class Main extends Sprite
 		gallery_screen = new Sprite();
 		gallery_screen.addChild(img_gallery_background);
 		
+		// Add globalscore
+		var globalscore_display = new TextField();
+		globalscore_display.background = false;
+		globalscore_display.width = 1920;
+		globalscore_display.height = 200;
+		globalscore_display.x = 0;
+		globalscore_display.y = 50;
+		globalscore_display.text = 'Gesamtscore: $_global_score';
+
+		var globalscore_text:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 60, 0xFFFFFF, true);
+		globalscore_text.align = TextFormatAlign.CENTER;
+		
+		globalscore_display.defaultTextFormat = globalscore_text;
+		
+		gallery_screen.addChild(globalscore_display);		
+		
 		// Add button to get back to main menu
-		button_end = Button.drawButton("Zurück", Std.int(NOMINAL_WIDTH -150),150, "back");
+		button_end = Button.drawButton("Zurück", Std.int(NOMINAL_WIDTH -150),100, "back");
 		button_end.addEventListener(MouseEvent.CLICK, onClick_end);
 		gallery_screen.addChild(button_end);
 
-		var button_continue = Button.drawButton("Spielen", Std.int(NOMINAL_WIDTH -150),50, "back");
+		var button_continue = Button.drawButton("Spielen", Std.int(NOMINAL_WIDTH/2), 1000, "info");
 		button_continue.addEventListener(MouseEvent.CLICK, onClick_cont);
 		gallery_screen.addChild(button_continue);
+		
+		
+
 		
 		add = 280;
 		// only count to run_ind - 1 as the current pathogen has not been beaten yet
@@ -934,87 +1184,6 @@ class Main extends Sprite
 
 //%%%%%%%%%% Functions preceeding MainGame %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%		
 	
-	/**
-	 *  function that is used for temporarily showing the gallery before the main game starts
-	 */
-/*	public function drawGallery_temp(){
-		
-		// Set up screen for gallery
-		gallery_screen = new Sprite();
-		gallery_screen.addChild(img_gallery_background);
-		
-		// Add button to get back to main menu
-		button_end = Button.drawButton("Zurück", Std.int(NOMINAL_WIDTH -150),50, "back");
-		button_end.addEventListener(MouseEvent.CLICK, onClick_end);
-		gallery_screen.addChild(button_end);
-		
-		add = 280;
-		// only count to run_ind - 1 as the current pathogen has not been beaten yet
-		for (i in 1..._run_ind){
-			
-			if (i >= 1 && i <= 8) {
-			
-				pathogen_array[i-1].x = add;
-				pathogen_array[i-1].y = 230;
-			
-				gallery_screen.addChild(pathogen_array[i-1]);
-			
-				add = add + 180;
-				
-			}
-			
-			else if (i >= 9 && i <= 16) {
-				
-				if (i == 9) {
-					add = 280;
-				}
-				
-				pathogen_array[i-1].x = add;
-				pathogen_array[i-1].y = 410;
-			
-				gallery_screen.addChild(pathogen_array[i-1]);
-			
-				add = add + 180;
-				
-			}
-			
-			else if (i >= 17 && i <= 24) {
-				
-				if (i == 17) {
-					add = 280;
-				}
-				
-				pathogen_array[i-1].x = add;
-				pathogen_array[i-1].y = 590;
-			
-				gallery_screen.addChild(pathogen_array[i-1]);
-			
-				add = add + 180;
-				
-			}
-			
-			else if (i >= 25 && i <= 31) {
-				
-				if (i == 25) {
-					add = 280;
-				}
-				
-				pathogen_array[i-1].x = add;
-				pathogen_array[i-1].y = 770;
-			
-				gallery_screen.addChild(pathogen_array[i-1]);
-			
-				add = add + 180;
-				
-			}
-		 
-		}
-		
-		this.addChild(gallery_screen);
-		haxe.Timer.delay(DrawLevelscreen,2000);
-		//DrawLevelscreen();
-	}*/
-
 	/*
 	*draws Level screen when you continue playing
 	*/
@@ -1036,13 +1205,12 @@ class Main extends Sprite
 
 		var level_text:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 70, 0x000000, true);
 		level_text.align = TextFormatAlign.CENTER;
-		var curr_trial= _trial_ind + 1;
-		level_display.text = 'Level $curr_trial';
+		level_display.text = 'Level $_run_ind';
 		level_screen.addChild(level_display);
 		
 		level_display.defaultTextFormat = level_text;
 
-		haxe.Timer.delay(pathogenText,3000);
+		haxe.Timer.delay(pathogenText,2000);
 
 	}
 	//insert pathogen information to display but only if 
@@ -1083,7 +1251,19 @@ class Main extends Sprite
 			var database_availability = InternetConnection.isAvailable();
 			// Move data from local SQLite database to MariaDB if internet connection is available
 			if (database_availability == true) {
-				//DatabaseSync.loadSQLite();
+				/*var transaction_finished = DatabaseSync.DBSync();
+				
+				if (transaction_finished == true){
+					var database_name_trial = "./" + _id + "_app_data_trial.db";					
+					if (FileSystem.exists(Path.join([database_path, database_name_trial]))) {
+						FileSystem.deleteFile(Path.join([database_path, database_name_trial]));
+					}
+					
+					var database_name_run = "./" + _id + "_app_data_run.db";
+					if (FileSystem.exists(Path.join([database_path, database_name_run]))) {
+						FileSystem.deleteFile(Path.join([database_path, database_name_run]));
+					}
+				}*/
 			}
 			
 		});
@@ -1094,6 +1274,7 @@ class Main extends Sprite
 		AssetPreparation.getBackgrounds();
 		AssetPreparation.getNotepads();
 		AssetPreparation.getSyringes();
+		AssetPreparation.getCircleColors();
 		
 		
 		// Initialize HaxeUI toolkit
@@ -1167,7 +1348,7 @@ class Main extends Sprite
     	#else
         stage.addEventListener(Event.RESIZE, onResize);
 		Lib.current.stage.displayState = openfl.display.StageDisplayState.FULL_SCREEN_INTERACTIVE;
-        //onResize(null);
+        onResize(null);
 		#end
 
 		#if ios
@@ -1241,42 +1422,6 @@ class Main extends Sprite
 		NotepadB.y = 250;
 		game_screen.addChild(NotepadB);
 		
-				
-		// add syringes (full) to game screen
-		SyringeA = new Syringe("full", "A");
-		SyringeA.x = 400;
-		SyringeA.y = 600;
-		SyringeA.addEventListener(MouseEvent.CLICK, PostChoiceA);
-		game_screen.addChild(SyringeA);
-		
-		SyringeB = new Syringe("full", "B");
-		SyringeB.x = 1200;
-		SyringeB.y = 600;
-		SyringeB.addEventListener(MouseEvent.CLICK, PostChoiceB);
-		game_screen.addChild(SyringeB);
-	
-
-		/*// Draw slot machines on screen
-		slot_machine_blue = new Machine_blue();
-		//slot_machine_blue.x = 50;
-		//slot_machine_blue.y = 150;
-		slot_machine_blue.x = Std.int(NOMINAL_WIDTH / 2) - Std.int(NOMINAL_WIDTH / 6);
-		slot_machine_blue.y = Std.int(NOMINAL_HEIGHT / 2);
-		this.addChild(slot_machine_blue);
-
-		slot_machine_green = new Machine_green();
-		slot_machine_green.x = Std.int(NOMINAL_WIDTH / 2) + Std.int(NOMINAL_WIDTH / 6);
-		slot_machine_green.y = Std.int(NOMINAL_HEIGHT / 2);
-		this.addChild(slot_machine_green);
-		
-		
-		// Draw selection circle
-		circle_selection = new Selection_Circle(0xc7ccd6);
-		//circle_selection.x = 0;
-		//circle_selection.y = 0;
-		circle_selection.x = Std.int(NOMINAL_WIDTH / 2);
-		circle_selection.y = Std.int(NOMINAL_HEIGHT / 2);
-		this.addChild(circle_selection);*/
 		
 		// Draw score text field
 		var scoreFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 30, 0x000000, true);
@@ -1327,8 +1472,10 @@ class Main extends Sprite
 		scoreField_A = new TextField();
 		game_screen.addChild(scoreField_A);
 		scoreField_A.width = 200;
+		scoreField_A.height = 200;
 		scoreField_A.x = 475;
 		scoreField_A.y = 400;
+		scoreField_A.multiline = true;
 		//scoreField_A.x = Std.int(NOMINAL_WIDTH / 2) - Std.int(NOMINAL_WIDTH / 6);
 		//scoreField_A.y = Std.int(NOMINAL_HEIGHT / 2);
 		scoreField_A.defaultTextFormat = scoreFormat_notepads;
@@ -1338,32 +1485,52 @@ class Main extends Sprite
 		scoreField_B = new TextField();
 		game_screen.addChild(scoreField_B);
 		scoreField_B.width = 200;
+		scoreField_B.height = 200;
 		scoreField_B.x = 1275;
 		scoreField_B.y = 400;
+		scoreField_B.multiline = true;
 		//scoreField_B.x = Std.int(NOMINAL_WIDTH / 2) + Std.int(NOMINAL_WIDTH / 6);
 		//scoreField_B.y = Std.int(NOMINAL_HEIGHT / 2);
 		scoreField_B.defaultTextFormat = scoreFormat_notepads;
 		scoreField_B.selectable = false;
 		
+		// add syringes (full) to game screen
+		SyringeA = new Syringe("full", "A");
+		SyringeA.x = 400;
+		SyringeA.y = 600;
+		SyringeA.addEventListener(MouseEvent.CLICK, PostChoiceA);
+		game_screen.addChild(SyringeA);
+		
+		SyringeB = new Syringe("full", "B");
+		SyringeB.x = 1200;
+		SyringeB.y = 600;
+		SyringeB.addEventListener(MouseEvent.CLICK, PostChoiceB);
+		game_screen.addChild(SyringeB);
+		
+		// draw color circle indicating winning color of last round
+		if (_trial_ind != 0) {
+			if (_drawn_outcome == 'A'){
+				Lib.current.stage.removeChild(circle_selection);
+				circle_selection = new Selection_Circle(circle_colors_A[_run_ind]);
+				circle_selection.x = stageScaleX*Std.int(NOMINAL_WIDTH / 2);
+				circle_selection.y = stageScaleY*Std.int(NOMINAL_HEIGHT / 2);
+				Lib.current.stage.addChild(circle_selection);
+			} else {
+				Lib.current.stage.removeChild(circle_selection);
+				circle_selection = new Selection_Circle(circle_colors_B[_run_ind]);
+				circle_selection.x = stageScaleX*Std.int(NOMINAL_WIDTH / 2);
+				circle_selection.y = stageScaleY*Std.int(NOMINAL_HEIGHT / 2);
+				Lib.current.stage.addChild(circle_selection);
+			}
+		}
+		
 		//Initialise probabilities using a gaussian random walk
 		probA = generateRandomWalk();
 							
-		inftext = new InfoText("Bitte erfüllen Sie die Aufgabe gewissenhaft.");
-		var inftext_button = inftext.getChildAt(1);
-		inftext_button.addEventListener(MouseEvent.CLICK, toggleMessage);
-		//inftext.addChild(textfield_button);
-		//game_screen.addChild(inftext);
-		
 		// Generate properties for new trial
 		newRound();
 	}
-	
-	
-	public function toggleMessage(event: MouseEvent):Void {
-		
-		game_screen.removeChild(inftext);
-		
-	}
+
 	
 	// handle mouse events from users choice 
 	public function PostChoiceA(event: MouseEvent):Void {
@@ -1374,6 +1541,14 @@ class Main extends Sprite
 		SyringeA.x = 400;
 		SyringeA.y = 600;
 		game_screen.addChild(SyringeA);
+				
+		// Shortly change circle color to grey to make evaluation visible
+		Lib.current.stage.removeChild(circle_selection);
+		circle_selection = new Selection_Circle(0xbdbdbd);
+		circle_selection.x = stageScaleX*Std.int(NOMINAL_WIDTH / 2);
+		circle_selection.y = stageScaleY*Std.int(NOMINAL_HEIGHT / 2);
+		Lib.current.stage.addChild(circle_selection);
+		
 		// determine if choice was correct
 		endRound("A");
 		
@@ -1387,6 +1562,14 @@ class Main extends Sprite
 		SyringeB.x = 1200;
 		SyringeB.y = 600;
 		game_screen.addChild(SyringeB);
+				
+		// Shortly change circle color to grey to make evaluation visible
+		Lib.current.stage.removeChild(circle_selection);
+		circle_selection = new Selection_Circle(0xbdbdbd);
+		circle_selection.x = stageScaleX*Std.int(NOMINAL_WIDTH / 2);
+		circle_selection.y = stageScaleY*Std.int(NOMINAL_HEIGHT / 2);
+		Lib.current.stage.addChild(circle_selection);
+		
 		// determine if choice was correct
 		endRound("B");
 		
@@ -1402,18 +1585,21 @@ class Main extends Sprite
 		// Evaluate winning machine and set output accordingly
 		if (prob_draw <= reward_prob_A) {
 			correct_choice = 'A';
-			/*this.removeChild(circle_selection);
-			circle_selection = new Selection_Circle(0x0066cc);
-			circle_selection.x = Std.int(NOMINAL_WIDTH / 2);
-			circle_selection.y = Std.int(NOMINAL_HEIGHT / 2);
-			this.addChild(circle_selection);
-			trace('$_score');*/
+						
+			/*//this.removeChild(circle_selection);
+			Lib.current.stage.removeChild(circle_selection);
+			circle_selection = new Selection_Circle(circle_colors_A[_run_ind]);
+			circle_selection.x = stageScaleX*Std.int(NOMINAL_WIDTH / 2);
+			circle_selection.y = stageScaleY*Std.int(NOMINAL_HEIGHT / 2);
+			Lib.current.stage.addChild(circle_selection);
+			//this.addChild(circle_selection);*/
 			
 			// If the winning option was selected add reward to score and update score field
 			if (drug_choice == 'A') {
 				
 				_score = Std.int(_score + A_reward);
 				scoreField.text = 'Score: $_score';
+
 				img_feedback_correct.x = 525;
 				img_feedback_correct.y = 475;
 				game_screen.addChild(img_feedback_correct);
@@ -1425,6 +1611,7 @@ class Main extends Sprite
 				
 				_score = Std.int(_score - A_reward);
 				scoreField.text = 'Score: $_score';
+				
 				img_feedback_wrong.x = 1325;
 				img_feedback_wrong.y = 475;
 				game_screen.addChild(img_feedback_wrong);
@@ -1434,18 +1621,21 @@ class Main extends Sprite
 		
 		} else {
 			correct_choice = 'B';
-			/*this.removeChild(circle_selection);
-			circle_selection = new Selection_Circle(0x1f7c0a);
-			circle_selection.x = Std.int(NOMINAL_WIDTH / 2);
-			circle_selection.y = Std.int(NOMINAL_HEIGHT / 2);
-			this.addChild(circle_selection);
-			trace('$_score');*/
+			
+			/*//this.removeChild(circle_selection);
+			Lib.current.stage.removeChild(circle_selection);
+			circle_selection = new Selection_Circle(circle_colors_B[_run_ind]);
+			circle_selection.x = stageScaleX*Std.int(NOMINAL_WIDTH / 2);
+			circle_selection.y = stageScaleY*Std.int(NOMINAL_HEIGHT / 2);
+			//this.addChild(circle_selection);
+			Lib.current.stage.addChild(circle_selection);*/
 						
 			// If the winning option was selected add reward to score and update score field
 			if (drug_choice == 'B') {
 				
 				_score = _score + B_reward;
 				scoreField.text = 'Score: $_score';
+				
 				img_feedback_correct.x = 1325;
 				img_feedback_correct.y = 475;
 				game_screen.addChild(img_feedback_correct);
@@ -1457,6 +1647,7 @@ class Main extends Sprite
 				
 				_score = _score - B_reward;
 				scoreField.text = 'Score: $_score';
+				
 				img_feedback_wrong.x = 525;
 				img_feedback_wrong.y = 475;
 				game_screen.addChild(img_feedback_wrong);
@@ -1473,7 +1664,16 @@ class Main extends Sprite
 		} else {
 			_win = 0;
 		}
-		_timestamp = Date.now();
+		
+		// Second precision
+		//_timestamp = Date.now();
+		// Milisecond precision
+		_timestamp = Sys.time() * 1000.0;
+		
+		// Save timestamp value of first trial to later modify the run_finished column
+		if (_trial_ind == 1){
+			modification_start = _timestamp;
+		}
 
 		// Write to database
 		AppdataEntryLite.writeLiteTrialEntry();
@@ -1494,28 +1694,41 @@ class Main extends Sprite
 			
 		} else {
 			
-			// modify run_finished entry as run is now finalized
-			AppdataEntryLite.modifyLiteTrialEntry();
-			// increase run index by 1
-			_run_ind = _run_ind + 1;
-			// update global score
-			_global_score = _global_score + _score;
-			// restart score for new run
-			_score = 0;
-			// set trial index to 0 as it will be increased to 1 in the newRound function
-			_trial_ind = 0;
-			// set up new probabilities for option A by first clearing the array and writing new values to it
-			untyped probA.length = 0;
-			probA = generateRandomWalk();
-			// save new run info locally
-			AppdataJSON.AppdataSave();
-			// call function for questionnaire items
+			// Call entry field for questionnaire code
+			if (_run_ind == 9) {
+				
+				
 			
-			// save run related info in the database, currently deactivated as not all run entries are available
-			//AppdataEntryLite.writeLiteRunEntry();
-			// call function newRound with delay of 300 ms
-			this.removeChild(game_screen);
-			haxe.Timer.delay(function() {drawQuestionnaireScreen("scale");}, 500);
+				
+			} 
+			
+			// Call new level
+			else {
+			
+				// modify run_finished entry as run is now finalized
+				AppdataEntryLite.modifyLiteTrialEntry(modification_start);
+				// update global score
+				_global_score = _global_score + _score;
+				// save run related info in the database
+				AppdataEntryLite.writeLiteRunEntry();
+				// increase run index by 1
+				_run_ind = _run_ind + 1;
+				// restart score for new run
+				_score = 0;
+				// set trial index to 0 as it will be increased to 1 in the newRound function
+				_trial_ind = 0;
+				// prepare new probabilities for option A by clearing the array (new values will be generated in MainGame()
+				untyped probA.length = 0;
+				// save new run info locally
+				AppdataJSON.AppdataSave();
+				// remove circle from stage
+				Lib.current.stage.removeChild(circle_selection);
+				// remove old game screen
+				this.removeChild(game_screen);
+				// start new level by calling level screen 
+				haxe.Timer.delay(function() {DrawLevelscreen(); }, 500);
+				
+			}
 		}
 		
 	}
@@ -1543,8 +1756,8 @@ class Main extends Sprite
 		
 		
 		B_reward = 100 - A_reward;
-		scoreField_A.text = '$A_reward %';
-		scoreField_B.text = '$B_reward %';
+		scoreField_A.text = '$A_reward';
+		scoreField_B.text = '$B_reward';
 		
 		// Grab new reward probabilities
 		reward_prob_A = probA[_trial_ind-1];
@@ -1555,10 +1768,7 @@ class Main extends Sprite
 		circle_selection = new Selection_Circle(0xc7ccd6);
 		circle_selection.x = Std.int(NOMINAL_WIDTH / 2);
 		circle_selection.y = Std.int(NOMINAL_HEIGHT / 2);
-		this.addChild(circle_selection);
-		
-		// Remove any selection frames
-		this.removeChild(frame_choice);*/
+		this.addChild(circle_selection);*/
 		
 		// Set new values for database
 		_p_reward_A = reward_prob_A;
