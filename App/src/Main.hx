@@ -100,6 +100,12 @@ class Main extends Sprite
 	public var reg_mail_info:InfoText;
 	public var reg_inet_info:InfoText;
 	public var reg_entry_info:InfoText;
+	public var reg_consent_info: InfoText;
+	
+	public var log_mail_info:InfoText;
+	public var log_password_info:InfoText;
+	public var log_inet_info:InfoText;
+	public var log_entry_info:InfoText;
 	
 	// questionnaire item text field
 	private var item_text:TextField;
@@ -117,6 +123,7 @@ class Main extends Sprite
 	public var button_end:SimpleButton;
 	public var button_login:SimpleButton;
 	public var button_log:SimpleButton;
+	public var button_login_back:SimpleButton;
 	public var button_reg1:SimpleButton;
 	private var button_back:SimpleButton;
 	private var button_quest:SimpleButton;
@@ -158,6 +165,10 @@ class Main extends Sprite
 	
 	// database
 	private var modification_start:Float;
+	
+	// registration
+	private var reg_checkbox_consent:CheckBox;
+	private var reg_checkbox_contact:CheckBox;
 
 	
 	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -261,23 +272,42 @@ class Main extends Sprite
 	// Query database for registration process
 	public function onClick_Reg (event: MouseEvent):Void {
 		
-		// Check if consent was given through checkbox
+		// Check internet connection
+		var database_availability = InternetConnection.isAvailable();
+		if (database_availability == true) {
 		
-			// Check internet connection
-			var database_availability = InternetConnection.isAvailable();
+			// Check if consent was given through checkbox			
+			if (reg_checkbox_consent.selected == true){
+				
 				// If internet is connected, check if input fields are filled 
-				if (database_availability == true) {
 						if (mailaddress.length > 0 && selectedpw.length > 0) {
+							
 							// Check if mailaddress is already registered, if not register and log-in
 							_mail_address = mailaddress.text;
-							var mail_availability = DatabaseSync.CheckRegistration(_mail_address);
-							if (mail_availability == false){ // mail address is not registered yet
+							_password = selectedpw.text;
+							var mail_availability = DatabaseSync.CheckRegistration(_mail_address,_password,false);
+							if (mail_availability == 0){ // mail address is not registered yet
+								// Read out entries for registration
+								if (reg_checkbox_consent.selected == true){
+									_cb_consent = 1;
+								} else {
+									_cb_consent = 0;
+								}
+								
+								if (reg_checkbox_contact.selected == true){
+									_cb_contact = 1;
+								} else {
+									_cb_contact = 0;
+								}
+								
 								// Register user in database
 								DatabaseSync.UserRegistration();
 								// Get new user ID from database
 								DatabaseSync.GetUserID(_mail_address);
 								// Set initial run value for appdata
 								_run_ind = 1;
+								// Set initial value for global score
+								_global_score = 0;
 								// Save local JSON userdata
 								AppdataJSON.AppdataSave();
 								// Set user as logged in
@@ -285,10 +315,12 @@ class Main extends Sprite
 								
 								// Send to main menu
 								this.removeChildren();
+								Screen.instance.removeComponent(vbox_container);
 								drawMenuScreen();
 								
 							} else {
 								
+								Screen.instance.removeComponent(vbox_container);
 								// Info field: mail address already registered
 								reg_mail_info = new InfoText ("Diese E-Mail Adresse wurde bereits für ein Konto registriert.\nBitte wählen Sie eine andere E-Mail Adresse.");
 								var reg_mail_info_button = reg_mail_info.getChildAt(1);
@@ -299,8 +331,9 @@ class Main extends Sprite
 							
 						} else {
 							
+							Screen.instance.removeComponent(vbox_container);
 							// Input fields need to be filled
-							reg_entry_info = new InfoText ("Die Eingaben zu E-Mailadresse und Passwort dürfen nicht leer sein");
+							reg_entry_info = new InfoText ("Die Eingaben zu E-Mailadresse und Passwort dürfen nicht leer sein.");
 							var reg_entry_info_button = reg_entry_info.getChildAt(1);
 							reg_entry_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegEntry);
 							registration_screen.addChild(reg_entry_info);
@@ -309,33 +342,57 @@ class Main extends Sprite
 						
 					} else {
 						
-						// Display info text field: Internet Connection is necessary
-						// Info field: mail address already registered
-						reg_inet_info = new InfoText ("Eine Internetverbindung ist zur Registrierung notwendig, wurde aber nicht erkannt.\n Bitte stellen Sie eine Internetverbindung her.");
-						var reg_inet_info_button = reg_inet_info.getChildAt(1);
-						reg_inet_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegInet);
-						registration_screen.addChild(reg_inet_info);
+						Screen.instance.removeComponent(vbox_container);
+						// Display info text field: consent needs to be given
+						reg_consent_info = new InfoText ("Sie haben im Auswahlkästchen kein Einverständnis\n für Ihre Teilnahme an der Studie gegeben.\n\n Ohne Ihr Einverständnis ist eine Nutzung\n der App leider nicht möglich.");
+						var reg_consent_info_button = reg_consent_info.getChildAt(1);
+						reg_consent_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegConsent);
+						registration_screen.addChild(reg_consent_info);
 						
 					}
+					
+		} else {
+			
+			Screen.instance.removeComponent(vbox_container);
+			// Display info text field: Internet Connection is necessary
+			reg_inet_info = new InfoText ("Eine Internetverbindung ist zur Registrierung notwendig,\n wurde aber nicht erkannt.\n\n Bitte stellen Sie eine Internetverbindung her.");
+			var reg_inet_info_button = reg_inet_info.getChildAt(1);
+			reg_inet_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegInet);
+			registration_screen.addChild(reg_inet_info);
+			
+		}
 		
 	}
 	
 	public function toggleMessageRegMail(event: MouseEvent):Void {
 		registration_screen.removeChild(reg_mail_info);
+		Screen.instance.addComponent(vbox_container);
 	}
 	
 	public function toggleMessageRegEntry(event: MouseEvent):Void {
 		registration_screen.removeChild(reg_entry_info);
+		Screen.instance.addComponent(vbox_container);
 	}
 	
 	function toggleMessageRegInet(event: MouseEvent):Void {
 		registration_screen.removeChild(reg_inet_info);
+		Screen.instance.addComponent(vbox_container);
+	}
+	
+	function toggleMessageRegConsent(event: MouseEvent):Void {
+		registration_screen.removeChild(reg_consent_info);
+		Screen.instance.addComponent(vbox_container);
 	}
 						
 	//Leads back to start page from registration
 	public function onClick_Reg_Back (event: MouseEvent):Void {
 		this.removeChildren();
 		Screen.instance.removeComponent(vbox_container);
+		log_and_reg();
+	}
+	
+	public function onClick_Log_Back (event: MouseEvent):Void {
+		this.removeChildren();
 		log_and_reg();
 	}
 	
@@ -348,35 +405,79 @@ class Main extends Sprite
 				if (username.length > 0 && passw.length > 0) {
 					// Check if mailaddress is already registered, if yes log-in
 					_mail_address = username.text;
-					var mail_availability = DatabaseSync.CheckRegistration(_mail_address);
-					if (mail_availability == true){ // mail address is registered
-						// retrieve ID
-						DatabaseSync.GetUserID(_mail_address);
+					_password = passw.text;
+					var mail_availability = DatabaseSync.CheckRegistration(_mail_address,_password,true);
+					if (mail_availability == 2){ // mail address is registered and password fits -> ID is already retrieved from database
+						
+						// check if appdata.json exists, if not, retrieve data from database and save
+						var savepath_id = "./" + Std.string(_id) + "_appdata.json";
+						if (!FileSystem.exists(Path.join([save_path, savepath_id]))) {
+							
+						}
+						
 						// set ID as logged in
 						AppdataJSON.saveLogin();
 						// send to main menu
 						this.removeChild(login_screen);
 						drawMenuScreen();					
-					} else {
+					} else  if (mail_availability == 0){
 						
 						// Info field: mail address not yet registered -> send to registration page
+						log_mail_info = new InfoText ("Ein Nutzerkonto mit dieser E-Mail Adresse wurde noch nicht registriert.\nBitte registrieren Sie sich zunächst für ein Konto.");
+						var log_mail_info_button = log_mail_info.getChildAt(1);
+						log_mail_info_button.addEventListener(MouseEvent.CLICK, onClick_reg1);
+						login_screen.addChild(log_mail_info);
+						
+					} else if (mail_availability == 1) {
+						
+						// Info field: mail address registered, but password incorrect
+						log_password_info = new InfoText ("Das eingegebene Passwort passt nicht zur registrierten E-Mail Adresse.\n");
+						var log_password_info_button = log_password_info.getChildAt(1);
+						log_password_info_button.addEventListener(MouseEvent.CLICK, toggleMessageLogPassw);
+						login_screen.addChild(log_password_info);
 						
 					}
 					
 				} else {
 					
 					// Input fields need to be filled
+					log_entry_info = new InfoText ("Die Eingaben zu E-Mailadresse und Passwort dürfen nicht leer sein");
+					var log_entry_info_button = log_entry_info.getChildAt(1);
+					log_entry_info_button.addEventListener(MouseEvent.CLICK, toggleMessageLogEntry);
+					login_screen.addChild(log_entry_info);
 					
 				}
 				
 			} else {
 				
 				// Display info text field: Internet Connection is necessary
+				log_inet_info = new InfoText ("Eine Internetverbindung ist für den Login notwendig, wurde aber nicht erkannt.\n Bitte stellen Sie eine Internetverbindung her.");
+				var log_inet_info_button = log_inet_info.getChildAt(1);
+				log_inet_info_button.addEventListener(MouseEvent.CLICK, toggleMessageLogInet);
+				login_screen.addChild(log_inet_info);
 				
 			}
 		
 		
 	}
+	
+	/*public function toggleMessageLogMail(event: MouseEvent):Void {
+		login_screen.removeChild(log_mail_info);
+	}*/
+	
+	public function toggleMessageLogEntry(event: MouseEvent):Void {
+		login_screen.removeChild(log_entry_info);
+	}
+	
+	function toggleMessageLogInet(event: MouseEvent):Void {
+		login_screen.removeChild(log_inet_info);
+	}
+	
+	function toggleMessageLogPassw(event: MouseEvent):Void {
+		login_screen.removeChild(log_password_info);
+	}
+	
+	
 	
 	//leads you to Login page
 	public function onClick_log(event: MouseEvent):Void {
@@ -431,20 +532,44 @@ class Main extends Sprite
 		
 		login_screen = new Sprite();
 		login_screen.addChild(input_background);
+		
+		// set up formats
+		var logformat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 50, 0x000000, true);
+		logformat.align = TextFormatAlign.LEFT;
+		
+		var inputformat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 40, 0x000000, true);
+		inputformat.align = TextFormatAlign.LEFT;
+		
+		// set up info text fields
+		var username_info = new TextField();
+		username_info.background = false;
+		username_info.width = 900;
+		username_info.height = 80;
+		username_info.x = (NOMINAL_WIDTH - username_info.width) / 2;
+		username_info.y = 120;
+		username_info.text = "E-Mail:";
+		username_info.defaultTextFormat = logformat;
+		login_screen.addChild(username_info);
+		
+		var passw_info = new TextField();
+		passw_info.background = false;
+		passw_info.width = 900;
+		passw_info.height = 80;
+		passw_info.x = (NOMINAL_WIDTH - passw_info.width) / 2;
+		passw_info.y = 420;
+		passw_info.text = "Passwort:";
+		passw_info.defaultTextFormat = logformat;
+		login_screen.addChild(passw_info);
 
+		// set up input fields
 		username = new TextField();
 		username.background = true;
-		username.width = 200;
-		username.height = 50;
-		username.x = 300;
-		username.y = 210;
-		var name:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 20, 0xbbbbbb, true);
-		//Text is centered
-		name.align = TextFormatAlign.LEFT;
-		username.text = "E-Mail";
-		username.defaultTextFormat = name;
-		username.restrict = null;
-		//user can edit the textfield
+		username.width = 900;
+		username.height = 60;
+		username.x = (NOMINAL_WIDTH - username.width) / 2;
+		username.y = 200;
+		username.defaultTextFormat = inputformat;
+		username.restrict = "0-9A-Za-z@._/-";
 		username.type = TextFieldType.INPUT;
 		// Request software keyboard on devices without hardware keyboard
 		username.needsSoftKeyboard = true;
@@ -458,25 +583,27 @@ class Main extends Sprite
 		//edited text is displayed as a password
 		passw.displayAsPassword = true;
 		passw.background = true;
-		passw.width = 200;
-		passw.height = 50;
-		passw.x = 300;
-		passw.y = 270;
+		passw.width = 900;
+		passw.height = 60;
+		passw.x = (NOMINAL_WIDTH - passw.width) / 2;
+		passw.y = 500;
 		passw.restrict = null;
 		//user can edit the textfield
 		passw.type = TextFieldType.INPUT;
-		var passw_format:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 20, 0xbbbbbb, true);
-		passw_format.align = TextFormatAlign.LEFT;
-		passw.defaultTextFormat = passw_format;
+		passw.defaultTextFormat = inputformat;
 		passw.needsSoftKeyboard = true;
 		passw.requestSoftKeyboard();
 		login_screen.addChild(passw);
 
-		//SHOULD ONLY BE POSSIBLE WHEN TEXT IS INSERTED & MATCHED DATA BASE
-		//draw Log-In button
-		button_login = Button.drawButton("Login",275,350,"menu");
+		//login button
+		button_login = Button.drawButton("Login", NOMINAL_WIDTH / 2, 800, "menu");		
 		button_login.addEventListener(MouseEvent.CLICK, onClick_login);
-	
+		login_screen.addChild(button_login);
+		
+		//back button
+		button_login_back = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, 950, "menu");		
+		button_login_back.addEventListener(MouseEvent.CLICK, onClick_Log_Back);
+		login_screen.addChild(button_login_back);
 
 		this.addChild(login_screen);	
 	}
@@ -488,13 +615,14 @@ class Main extends Sprite
 		registration_screen = new Sprite();
 		registration_screen.addChild(input_background);
 		
-		//Register with mail address
+		// set up formats
 		var name2:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 40, 0x000000, true);
 		name2.align = TextFormatAlign.LEFT;
 		
 		var infoformat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 50, 0x000000, true);
 		infoformat.align = TextFormatAlign.LEFT;
 		
+		// set up info text fields
 		var mailaddress_info = new TextField();
 		mailaddress_info.background = false;
 		mailaddress_info.width = 900;
@@ -505,6 +633,17 @@ class Main extends Sprite
 		mailaddress_info.defaultTextFormat = infoformat;
 		registration_screen.addChild(mailaddress_info);		
 		
+		var selectedpw_info = new TextField();
+		selectedpw_info.background = false;
+		selectedpw_info.width = 900;
+		selectedpw_info.height = 80;
+		selectedpw_info.x = (NOMINAL_WIDTH - selectedpw_info.width) / 2;
+		selectedpw_info.y = 320;
+		selectedpw_info.text = "Passwort:";
+		selectedpw_info.defaultTextFormat = infoformat;
+		registration_screen.addChild(selectedpw_info);	
+		
+		// set up input fields
 		mailaddress = new TextField();
 		mailaddress.background = true;
 		mailaddress.width = 900;
@@ -518,34 +657,36 @@ class Main extends Sprite
 		mailaddress.requestSoftKeyboard();
 		registration_screen.addChild(mailaddress);
 
-
-		//selection of password
 		selectedpw = new TextField();
 		selectedpw.background = true;
 		selectedpw.width = 900;
 		selectedpw.height = 60;
 		selectedpw.x = (NOMINAL_WIDTH - selectedpw.width) / 2;
 		selectedpw.y = 400;
-		selectedpw.text = "Passwort";
 		selectedpw.defaultTextFormat = name2;
 		selectedpw.restrict = null;
 		selectedpw.type = TextFieldType.INPUT;
+		selectedpw.displayAsPassword = true;
 		selectedpw.needsSoftKeyboard = true;
 		selectedpw.requestSoftKeyboard();
 		registration_screen.addChild(selectedpw);
 		
 		vbox_container = new VBox();
-		vbox_container.x = stageScaleX*470;
-		vbox_container.y = stageScaleY*470;
+		vbox_container.x = stageScaleX*((NOMINAL_WIDTH - 900) / 2);
+		vbox_container.y = stageScaleY*500;
 				
-		var reg_checkbox_consent = new CheckBox();
+		reg_checkbox_consent = new CheckBox();
 		reg_checkbox_consent.id = "consent_cb";
 		reg_checkbox_consent.selected = false;
+		reg_checkbox_consent.height = stageScaleY*80;
+		reg_checkbox_consent.width = stageScaleX * 800;
 		reg_checkbox_consent.text = "Ich bin damit einverstanden, an der Studie teilzunehmen.";
 		
-		var reg_checkbox_contact = new CheckBox();
+		reg_checkbox_contact = new CheckBox();
 		reg_checkbox_contact.id = "contact_cb";
 		reg_checkbox_contact.selected = false;
+		reg_checkbox_contact.height = stageScaleY*80;
+		reg_checkbox_contact.width = stageScaleX * 800;
 		reg_checkbox_contact.text = "Ich bin damit einverstanden, für weitere Studien über meine Emailadresse kontaktiert zu werden.";
 		
 		vbox_container.addComponent(reg_checkbox_consent);
@@ -556,10 +697,10 @@ class Main extends Sprite
 
 		//Enabled only if text is inserted, internet connection available and mail address is not already in the database
 		//Button for Registration
-		button_reg = Button.drawButton("Registrieren",NOMINAL_WIDTH / 2,750,"menu");
+		button_reg = Button.drawButton("Registrieren",NOMINAL_WIDTH / 2,800,"menu");
 		button_reg.addEventListener(MouseEvent.CLICK, onClick_Reg);
 		
-		button_reg_back = Button.drawButton("Zurück",NOMINAL_WIDTH / 2,900,"menu");
+		button_reg_back = Button.drawButton("Zurück",NOMINAL_WIDTH / 2,950,"menu");
 		button_reg_back.addEventListener(MouseEvent.CLICK, onClick_Reg_Back);
 		
 		registration_screen.addChild(button_reg);
@@ -1226,11 +1367,6 @@ class Main extends Sprite
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 //%%%%%%%%%%INITIATION FUNCTION%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-	
-
-
-
 	function init() 
 	{
 
