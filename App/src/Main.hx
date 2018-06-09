@@ -303,7 +303,7 @@ class Main extends Sprite
 								// Register user in database
 								DatabaseSync.UserRegistration();
 								// Get new user ID from database
-								DatabaseSync.GetUserID(_mail_address);
+								DatabaseSync.CheckRegistration(_mail_address,_password,true);
 								// Set initial run value for appdata
 								_run_ind = 1;
 								// Set initial value for global score
@@ -413,6 +413,7 @@ class Main extends Sprite
 						var savepath_id = "./" + Std.string(_id) + "_appdata.json";
 						if (!FileSystem.exists(Path.join([save_path, savepath_id]))) {
 							
+							AppdataJSON.AppdataSave();
 						}
 						
 						// set ID as logged in
