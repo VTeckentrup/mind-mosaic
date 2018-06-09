@@ -6,6 +6,7 @@ import flash.Lib;
 import flash.text.TextField;
 import haxe.ui.components.OptionBox;
 import haxe.ui.containers.HBox;
+import haxe.ui.core.UIEvent;
 import openfl.text.TextFieldType;
 import openfl.system.Capabilities;
 import openfl.Assets;
@@ -630,7 +631,8 @@ class Main extends Sprite
 			quest_slider.max = 100;
 			quest_slider.min = 0;
 			
-			quest_slider.addEventListener(MouseEvent.CLICK, activateButton);
+			quest_slider.registerEvent(UIEvent.CHANGE,activateButtonSlider);
+			//quest_slider.addEventListener(MouseEvent.CLICK, activateButton);
 			
 			box_container.addComponent(quest_slider);
 			
@@ -858,6 +860,10 @@ class Main extends Sprite
 	
 	// activate the forward button after player has interacted with the slider
 	public function activateButton(event: MouseEvent):Void {
+		button_quest.visible = true;
+	}
+	
+	public function activateButtonSlider(event: UIEvent):Void {
 		button_quest.visible = true;
 	}
 	
@@ -1455,7 +1461,7 @@ class Main extends Sprite
 		} else {
 			
 			// modify run_finished entry as run is now finalized
-			AppdataEntryLite.modifyLiteTrialEntry();
+			//AppdataEntryLite.modifyLiteTrialEntry();
 			// increase run index by 1
 			_run_ind = _run_ind + 1;
 			// update global score
