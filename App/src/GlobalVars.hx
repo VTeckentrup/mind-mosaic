@@ -118,6 +118,9 @@ class GlobalVars
 	public static var img_syringe_empty_B: Bitmap;
 	public static var img_pathogen: Bitmap;
 	public static var img_alternative_screen2: Bitmap;
+	public static var img_instruction_1: Bitmap;
+	public static var img_instruction_2: Bitmap;
+	public static var img_instruction_gallery: Bitmap;
 	// background array
 	public static var background_array:Array<Bitmap> = [];
 	// notepad array
@@ -153,6 +156,8 @@ class GlobalVars
 	public static var syringe_counter_B:Int;
 	// button images
 	public static var menu_button_array: Array<Bitmap> = [];
+
+
 	
 	// color code array for feedback circle
 	public static var circle_colors_A: Array<Int> = [];
@@ -173,4 +178,6 @@ class GlobalVars
 	public static var vbox_container:VBox;
 	public static var gallery_screen:Sprite;
 	public static var level_screen:Sprite;
+
+
 }

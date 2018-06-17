@@ -141,6 +141,16 @@ class AssetPreparation {
 
 		var imgpath_str = "img/alternative_screen2.png";
 		img_alternative_screen2 = AssetPreparation.loadImage(imgpath_str);
+
+		var imgpath_str = "img/Instruction_1.png";
+		img_instruction_1 = AssetPreparation.loadImage(imgpath_str);
+
+		var imgpath_str = "img/Instruction_2.png";
+		img_instruction_2 = AssetPreparation.loadImage(imgpath_str);
+
+		var imgpath_str = "img/Instruction_gallery.png";
+		img_instruction_gallery = AssetPreparation.loadImage(imgpath_str);
+
 		
 	}
 	
