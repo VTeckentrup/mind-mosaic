@@ -506,11 +506,11 @@ class Main extends Sprite
 					if (mail_availability == 2){ // mail address is registered and password fits -> ID is already retrieved from database
 						
 						// check if appdata.json exists, if not, retrieve data from database and save
-						var savepath_id = "./" + Std.string(_id) + "_appdata.json";
+						/*var savepath_id = "./" + Std.string(_id) + "_appdata.json";
 						if (!FileSystem.exists(Path.join([save_path, savepath_id]))) {
 							
 							AppdataJSON.AppdataSave();
-						}
+						}*/
 						
 						// set ID as logged in
 						AppdataJSON.saveLogin();
@@ -1942,7 +1942,7 @@ class Main extends Sprite
 			// call function newRound with delay of 300 ms	
 			haxe.Timer.delay(MainGame,500);
 			
-		} else {
+		} /*else {
 			
 			// Call entry field for questionnaire code
 			if (_run_ind == 9) {
@@ -1950,7 +1950,7 @@ class Main extends Sprite
 				
 			
 				
-			} 
+			}*/
 			
 			// Call new level
 			else {
@@ -1979,7 +1979,7 @@ class Main extends Sprite
 				haxe.Timer.delay(function() {DrawLevelscreen(); }, 500);
 				
 			}
-		}
+		//}
 		
 	}
 	
