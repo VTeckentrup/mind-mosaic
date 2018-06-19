@@ -24,7 +24,7 @@ import haxe.macro.Expr;
 		
 		var config = {
 			
-			build: "78",
+			build: "81",
 			company: "neuroMADLAB",
 			file: "Influenca",
 			fps: 60,
@@ -63,10 +63,6 @@ import haxe.macro.Expr;
 		};
 		
 		lime.system.System.__registerEntryPoint (projectName, create, config);
-		
-		#if sys
-		lime.system.System.__parseArguments (config);
-		#end
 		
 		#if (hxtelemetry && !macro)
 		var telemetry = new hxtelemetry.HxTelemetry.Config ();

@@ -306,8 +306,8 @@ import sys.FileSystem;
 
 #else
 
-@:keep @:expose('__ASSET__fonts_roboto_regular_ttf') #if display private #end class __ASSET__fonts_roboto_regular_ttf extends lime.text.Font { public function new () { #if !html5 __fontPath = "fonts/Roboto-Regular.ttf"; #else ascender = null; descender = null; height = null; numGlyphs = null; underlinePosition = null; underlineThickness = null; unitsPerEM = null; #end name = "Roboto"; super (); }}
-@:keep @:expose('__ASSET__fonts_opensans_regular_ttf') #if display private #end class __ASSET__fonts_opensans_regular_ttf extends lime.text.Font { public function new () { #if !html5 __fontPath = "fonts/OpenSans-Regular.ttf"; #else ascender = null; descender = null; height = null; numGlyphs = null; underlinePosition = null; underlineThickness = null; unitsPerEM = null; #end name = "Open Sans Regular"; super (); }}
+@:keep @:expose('__ASSET__fonts_roboto_regular_ttf') #if display private #end class __ASSET__fonts_roboto_regular_ttf extends lime.text.Font { public function new () { #if !html5 __fontPath = "fonts/Roboto-Regular.ttf"; #end name = "Roboto"; super (); }}
+@:keep @:expose('__ASSET__fonts_opensans_regular_ttf') #if display private #end class __ASSET__fonts_opensans_regular_ttf extends lime.text.Font { public function new () { #if !html5 __fontPath = "fonts/OpenSans-Regular.ttf"; #end name = "Open Sans Regular"; super (); }}
 
 
 #end
