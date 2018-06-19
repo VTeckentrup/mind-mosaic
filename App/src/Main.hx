@@ -560,11 +560,11 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 					if (mail_availability == 2){ // mail address is registered and password fits -> ID is already retrieved from database
 						
 						// check if appdata.json exists, if not, retrieve data from database and save
-						var savepath_id = "./" + Std.string(_id) + "_appdata.json";
+						/*var savepath_id = "./" + Std.string(_id) + "_appdata.json";
 						if (!FileSystem.exists(Path.join([save_path, savepath_id]))) {
 							
 							AppdataJSON.AppdataSave();
-						}
+						}*/
 						
 						// set ID as logged in
 						AppdataJSON.saveLogin();
@@ -2003,7 +2003,7 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 			// call function newRound with delay of 300 ms	
 			haxe.Timer.delay(MainGame,500);
 			
-		} else {
+		} /*else {
 			
 			// Call entry field for questionnaire code
 			if (_run_ind == 9) {
@@ -2011,7 +2011,7 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 				
 			
 				
-			} 
+			}*/
 			
 			// Call new level
 			else {
@@ -2040,7 +2040,7 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 				haxe.Timer.delay(function() {DrawLevelscreen(); }, 500);
 				
 			}
-		}
+		//}
 		
 	}
 	
