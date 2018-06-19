@@ -239,45 +239,38 @@ class Main extends Sprite
 		level_screen.addChild(img_alternative_screen2);
 		this.addChild(level_screen);
 
-		var instructiontext2:String = "Das gesamte Spiel besteht aus 30 aufeinander aufbauenden Level. In jedem Level bekämpfen Sie einen weiteren fiesen Krankheitserreger mit neu entwickelten Medikamenten. Das Ziel ist herauszufinden, welches Medikament aktuell besser wirkt, also mehr Menschen tatsächlich rettet bzw. weniger Menschen tatsächlich schadet.\n Jedes Level beginnt mit der Vorstellung des fiesen Krankheitserregers, gegen den Sie nun das Medikament finden sollen. Nach der Beantwortung einiger für unsere Forschung interessanter Fragen beginnt das eigentliche Spiel. Die erfolgreiche Beendigung jedes Levels dauert etwa 15 Minuten. Bitte versuchen Sie, sich in dieser Zeit nur auf das Spiel zu konzentrieren. Wenn Sie ein Level mittendrin unterbrechen, müssen Sie beim nächsten Start dieses Level wieder neu beginnen und auch die Fragen vom Anfang wieder neu beantworten.";
+		var instructiontext2:String = "Das gesamte Spiel besteht aus 30 aufeinander aufbauenden Level. In jedem Level bekämpfen Sie einen weiteren fiesen Krankheitserreger mit neu entwickelten Medikamenten. Das Ziel ist, möglichst viele Menschen durch den Einsatz geeigneter Medikamente zu retten. Dafür müssen Sie herausfinden, welches Medikament aktuell gegen die Krankheitserreger wirkt. Mit der Anzahl geheilter Menschen - im Vergleich zu den erfolglos behandelten Menschen - steigt auch ihr Gesamtscore. Mit der Zunahme Ihres Gesamtscores erhalten Sie über die Zeit nicht nur Ruhm und Ehre als erfolgreicher Wissenschaftler, sondern auch fortschrittlicheres Equipment und ein besser ausgestattetes Labor. Das ist auch dringend notwendig, denn die Krankheitserreger entwickeln sich stetig weiter! ";
 		var instructive_text = new Instruction(instructiontext2);
 		this.addChild(instructive_text);
 		var ww = NOMINAL_WIDTH / 3;
+		var textfield_button:SimpleButton = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 175, "info");
+		textfield_button.addEventListener(MouseEvent.CLICK, onClick2);
+        addChild(textfield_button);
 		var continue_button:SimpleButton = Button.drawButton("Weiter", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
 		continue_button.addEventListener(MouseEvent.CLICK, onInstruction2);
         addChild(continue_button);	
 	}
-	//first Instruction picture
+	
+	//third instruction text
 	public function onInstruction2(event: MouseEvent):Void{
 		this.removeChildren();
 		level_screen = new Sprite();
 		level_screen.addChild(img_alternative_screen2);
 		this.addChild(level_screen);
-
-		level_screen.addChild(img_instruction_1);
+		var instructiontext3:String = "Jedes Level beginnt mit der Vorstellung eines neuen fiesen Krankheitserregers. Nach der Beantwortung einiger Fragen zu Ihrem aktuellen Befinden startet das eigentliche Spiel. Ein Level durch zu spielen dauert etwa 5 Minuten. Bitte versuchen Sie, sich in dieser Zeit nur auf das Spiel zu konzentrieren. Wenn Sie ein Level nicht direkt beenden und die App für zu lange Zeit in den Hintergrund schieben, müssen Sie beim nächsten Start dieses Level wieder neu beginnen und auch die Fragen neu beantworten.Innerhalb eines Levels spielen Sie 150 Durchgänge. In jedem Durchgang werden ihnen zwei verschiedene Medikamente zur Auswahl angeboten. Sie sind als Spritzen dargestellt. Die jeweilige Wirksamkeit zur Bekämpfung des Krankheitserregers ändert sich in jedem Durchgang und wird Ihnen als Zahl auf einem Notizblock eingeblendet, der über dem jeweiligen Medikament angezeigt wird.";
+		var instructive_text = new Instruction(instructiontext3);
+		this.addChild(instructive_text);
 		var ww = NOMINAL_WIDTH / 3;
+		var textfield_button:SimpleButton = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 175, "info");
+		textfield_button.addEventListener(MouseEvent.CLICK, onInstruction1);
+		addChild(textfield_button);
 		var continue_button:SimpleButton = Button.drawButton("Weiter", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
 		continue_button.addEventListener(MouseEvent.CLICK, onInstruction3);
         addChild(continue_button);
 	}
-	//third instruction text
+
+	//
 	public function onInstruction3(event: MouseEvent):Void{
-		this.removeChildren();
-		level_screen = new Sprite();
-		level_screen.addChild(img_alternative_screen2);
-		this.addChild(level_screen);
-		var instructiontext3:String = "In jedem Durchgang werden ihnen zwei verschiedene Medikamente angeboten, deren jeweilige Wirksamkeit zur Bekämpfung eines speziellen Krankheitserregers unterschiedlich hoch eingeschätzt wird. Das heißt, mit einer bestimmten Wahrscheinlichkeit können Sie alle Menschen, die mit diesem Medikament behandelt werden, heilen (d.h. den Gewinn Ihrer Kompetenz zu steigern). Es gibt auch Medikamente, die wegen ihrer starken Nebenwirkungen verheerenden Schaden anrichten können. In solchen Fällen ist das Ziel, möglichst wenigen Menschen mit diesem Medikament zu schaden (d.h. den Verlust ihrer Kompetenz gering zu halten). 
-			Ob Sie im aktuellen Durchgang die Wahrscheinlichkeit für den Nutzen oder Schaden der Medikamente angezeigt bekommen, erkennen Sie an _____________________.In jedem Durchgang sollen Sie sich für eines der beiden Medikamente entscheiden, das dann im Kampf gegen die Krankheitserreger eingesetzt wird. Klicken Sie einfach auf das jeweilige Rezept und schon wird das Medikament an einer Gruppe Testpersonen eingesetzt. Ob Ihre Therapie erfolgreich war oder nicht - oder ob Sie sogar Schaden angerichtet haben, erfahren Sie sofort nach der Entscheidung: durch die Veränderung Ihres Gesamtscores.
-			";
-		var instructive_text = new Instruction(instructiontext3);
-		this.addChild(instructive_text);
-		var ww = NOMINAL_WIDTH / 3;
-		var continue_button:SimpleButton = Button.drawButton("Weiter", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
-		continue_button.addEventListener(MouseEvent.CLICK, onInstruction4);
-        addChild(continue_button);
-	}
-	//second instruction picture
-	public function onInstruction4(event: MouseEvent):Void{
 		this.removeChildren();
 		level_screen = new Sprite();
 		level_screen.addChild(img_alternative_screen2);
@@ -285,27 +278,75 @@ class Main extends Sprite
 
 		level_screen.addChild(img_instruction_2);
 		var ww = NOMINAL_WIDTH / 3;
+		var textfield_button:SimpleButton = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 175, "info");
+		textfield_button.addEventListener(MouseEvent.CLICK, onInstruction2);
+        addChild(textfield_button);
+		var continue_button:SimpleButton = Button.drawButton("Weiter", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
+		continue_button.addEventListener(MouseEvent.CLICK, onInstruction4);
+        addChild(continue_button);
+	}
+
+	//fourth instruction text
+	public function onInstruction4(event: MouseEvent):Void{
+		this.removeChildren();
+		level_screen = new Sprite();
+		level_screen.addChild(img_alternative_screen2);
+		this.addChild(level_screen);
+		var instructiontext4:String = "Wichtig ist: In jedem Durchgang wirkt tatsächlich nur eines der Medikamente gegen den Krankheitserreger, das andere Medikament hingegen hat keinen heilenden Effekt.
+Die Zahl auf dem Notizblock gibt an, wie vielen von 100 behandelten Menschen das Medikament helfen würde, falls es wirkt. Welches Medikament aktuell wirkt,  können Sie jedoch nicht direkt erkennen, sondern nur durch Ausprobieren und Lernen herausfinden. Zum Beispiel können Sie an der Farbe des Kreises zwischen den beiden Optionen sehen, welches Medikament im vorigen Durchgang gewirkt hat.
+Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, dass ein bisher wirksames Medikament über den Verlauf eines Levels wieder unwirksam wird und ein Wechsel notwendig ist. Gleichzeitig kann ein zuvor nicht wirksames Medikament wieder effektiver werden und besser wirken. Es lohnt sich also immer genau zu verfolgen, welches Medikament gerade am besten wirkt.";
+
+		var instructive_text = new Instruction(instructiontext4);
+		this.addChild(instructive_text);
+		var ww = NOMINAL_WIDTH / 3;
+		var textfield_button:SimpleButton = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 175, "info");
+		textfield_button.addEventListener(MouseEvent.CLICK, onInstruction3);
+		addChild(textfield_button);
 		var continue_button:SimpleButton = Button.drawButton("Weiter", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
 		continue_button.addEventListener(MouseEvent.CLICK, onInstruction5);
         addChild(continue_button);
 	}
-	//fourth instruction text
 	public function onInstruction5(event: MouseEvent):Void{
 		this.removeChildren();
 		level_screen = new Sprite();
 		level_screen.addChild(img_alternative_screen2);
 		this.addChild(level_screen);
-		var instructiontext4:String = "Nach jedem erfolgreich absolvierten Level gelangen Sie in die Galerie, in der Sie die bereits bekämpften Krankheitserreger aufgereiht sehen können und Ihren aktuellen Gesamtscore finden. Von dort haben Sie die Möglichkeit, zurück zum Hauptmenü zu wechseln, oder direkt das nächste Level zu starten.";
+		var instructiontext4:String = "Wenn Sie sich für ein Medikament entschieden haben, klicken Sie einfach auf die jeweilige Spritze unter dem Notizblock. Haben Sie das richtige Medikament ausgewählt, sehen Sie den Erfolg direkt an der Einblendung eines grünen Hakens sowie der Steigerung Ihres Kompetenz-Scores, der in der oberen linken Ecke angezeigt wird. Haben Sie hingegen das falsche Medikament gewählt, wird Ihnen ein rotes Kreuz angezeigt und Ihr Kompetenz-Score sinkt. Der Kreis in der Mitte zwischen den beiden Optionen zeigt die Farbe des Medikaments, das in dem Durchgang das “richtige” war, also erfolgreich den Virus bekämpft hätte.";
 
 		var instructive_text = new Instruction(instructiontext4);
 		this.addChild(instructive_text);
 		var ww = NOMINAL_WIDTH / 3;
+		var textfield_button:SimpleButton = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 175, "info");
+		textfield_button.addEventListener(MouseEvent.CLICK, onInstruction4);
+		addChild(textfield_button);
 		var continue_button:SimpleButton = Button.drawButton("Weiter", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
 		continue_button.addEventListener(MouseEvent.CLICK, onInstruction6);
         addChild(continue_button);
 	}
-	//third intruction picture
+
 	public function onInstruction6(event: MouseEvent):Void{
+		this.removeChildren();
+		level_screen = new Sprite();
+		level_screen.addChild(img_alternative_screen2);
+		this.addChild(level_screen);
+		var instructiontext4:String = "Nach jedem beendeten Level gelangen Sie in die Galerie, in der Sie die bereits bekämpften Krankheitserreger aufgereiht sehen können und Ihren aktuellen Gesamtscore finden. Von dort haben Sie die Möglichkeit, zurück zum Hauptmenü zu wechseln, oder direkt das nächste Level zu starten.";
+
+		var instructive_text = new Instruction(instructiontext4);
+		this.addChild(instructive_text);
+		var ww = NOMINAL_WIDTH / 3;
+		var textfield_button:SimpleButton = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 175, "info");
+		textfield_button.addEventListener(MouseEvent.CLICK, onInstruction5);
+		addChild(textfield_button);
+		var continue_button:SimpleButton = Button.drawButton("Weiter", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
+		continue_button.addEventListener(MouseEvent.CLICK, onInstruction7);
+        addChild(continue_button);
+	}
+
+
+
+
+	//third intruction picture
+	public function onInstruction7(event: MouseEvent):Void{
 		this.removeChildren();
 		level_screen = new Sprite();
 		level_screen.addChild(img_alternative_screen2);
@@ -320,7 +361,20 @@ class Main extends Sprite
         addChild(continue_button);
 	}
 
+/*	public function onInstruction4(event: MouseEvent):Void{
+		this.removeChildren();
+		level_screen = new Sprite();
+		level_screen.addChild(img_alternative_screen2);
+		this.addChild(level_screen);
 
+		level_screen.addChild(img_instruction_2);
+		var ww = NOMINAL_WIDTH / 3;
+		var textfield_button:SimpleButton = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 175, "info");
+		textfield_button.addEventListener(MouseEvent.CLICK, onInstruction3);
+		var continue_button:SimpleButton = Button.drawButton("Weiter", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
+		continue_button.addEventListener(MouseEvent.CLICK, onInstruction5);
+        addChild(continue_button);
+	}*/
 	//DATENBANKABRUF
 	//Button Game Status - Button3
 	public function onClick3 (event: MouseEvent):Void {
@@ -1625,7 +1679,7 @@ class Main extends Sprite
 //%%%%%%%%%%%% GAME %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//function that draws the Main Game Screen
 	function MainGame(){
-		
+		trace(_timestamp);
 		//stops game when not zoned in and indicates when focus is back
 		stage.addEventListener(Event.DEACTIVATE, pause);
         stage.addEventListener(Event.ACTIVATE, unpause);
@@ -1777,6 +1831,13 @@ class Main extends Sprite
 		//Initialise probabilities using a gaussian random walk
 		probA = generateRandomWalk();
 							
+
+		//Query for number of games already played per day
+
+
+
+
+
 		// Generate properties for new trial
 		newRound();
 	}
