@@ -1538,7 +1538,7 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 			var database_availability = InternetConnection.isAvailable();
 			// Move data from local SQLite database to MariaDB if internet connection is available
 			if (database_availability == true) {
-				/*var transaction_finished = DatabaseSync.DBSync();
+				var transaction_finished = DatabaseSync.DBSync();
 				
 				if (transaction_finished == true){
 					var database_name_trial = "./" + _id + "_app_data_trial.db";					
@@ -1550,7 +1550,7 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 					if (FileSystem.exists(Path.join([database_path, database_name_run]))) {
 						FileSystem.deleteFile(Path.join([database_path, database_name_run]));
 					}
-				}*/
+				}
 			}
 			
 		});
@@ -2036,8 +2036,8 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 				Lib.current.stage.removeChild(circle_selection);
 				// remove old game screen
 				this.removeChild(game_screen);
-				// start new level by calling level screen 
-				haxe.Timer.delay(function() {DrawLevelscreen(); }, 500);
+				// start new level by calling the gallery first
+				haxe.Timer.delay(function() {drawGallery(); }, 500);
 				
 			}
 		//}

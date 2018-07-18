@@ -24,7 +24,7 @@ import haxe.macro.Expr;
 		
 		var config = {
 			
-			build: "83",
+			build: "86",
 			company: "neuroMADLAB",
 			file: "Influenca",
 			fps: 60,
