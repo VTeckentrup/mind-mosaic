@@ -57,7 +57,8 @@ class NormRandom
 		 * The actual internal seed. Stored as a Float value to prevent inaccuracies due to
 		 * integer overflow in the generate() equation.
 		 */
-		static var internalSeed:Float = 1;
+		//static var internalSeed:Float = 1;
+		static var internalSeed:Float = Sys.time() * 1000.0;
 		
 		/**
 		 * Constants used in the pseudorandom number generation equation.

@@ -137,6 +137,8 @@ class AppdataEntryLite
 		app_run.app_version = _app_version;
 		//app_run.timestamp = Date.now();
 		app_run.timestamp = Sys.time() * 1000.0;
+		app_run.runs_played_limit = _num_runs_played;
+		app_run.date_run = _timestamp_last_run;
 		return app_run;
     
 	}

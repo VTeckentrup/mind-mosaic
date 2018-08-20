@@ -20,6 +20,7 @@ class GlobalVars
 	
 	// save variables database
 	public static var db_address:String = "http://www.google.com";
+	public static var db_port:Int = 8080;
 	public static var trial_entry_list;
 	public static var run_entry_list;
 		// trial level
@@ -71,13 +72,16 @@ class GlobalVars
 	public static var _item_28:Int;
 	public static var _item_29:Int;
 	public static var _item_30:Int;
-	public static var _app_version:String = "1.0.0";
+	public static var _app_version:String = "0.0.1";
+	public static var _num_runs_played:Int;
+	public static var _timestamp_last_run:String;
 		// user info
 	public static var _mail_address:String;
 	public static var _password:String;
 	public static var _cb_consent:Int;
 	public static var _cb_contact:Int;
 	public static var _keycode:Int;
+	public static var _keycode_set:Int;
 	
 	// paths
 	public static var database_path = Path.join([System.applicationStorageDirectory, "database"]);
@@ -108,6 +112,7 @@ class GlobalVars
 	public static var img_menu_background: Bitmap;
 	public static var img_gallery_background: Bitmap;
 	public static var input_background: Bitmap;
+	public static var instruction_background: Bitmap;
 	public static var img_feedback_correct: Bitmap;
 	public static var img_feedback_wrong: Bitmap;
 	public static var img_notepad_A: Bitmap;
@@ -167,6 +172,10 @@ class GlobalVars
 	public static var questionnaire_items:Array<String> = [];
 	public static var quest_slider:HSlider;
 	
+	// instruction numbering
+	public static var intro_screen_num:Int;
+	public static var intro_screens_visited:Bool;
+	
 	// screens
 	public static var game_screen:MainGameScreen;
 	public static var menu_screen:Sprite;
@@ -178,6 +187,8 @@ class GlobalVars
 	public static var vbox_container:VBox;
 	public static var gallery_screen:Sprite;
 	public static var level_screen:Sprite;
+	public static var instruction_screen:Sprite;
+	public static var keycode_screen:Sprite;
 
 
 }

@@ -28,7 +28,7 @@
 	<icon path="assets/openfl.svg" />
 	
 	<!-- load and embed assets from img folder -->
-	<assets path="assets/img" rename="img" />
-	<assets path="assets/fonts" rename="fonts" />
+	<assets path="assets/img" rename="img" embed="true" />
+	<assets path="assets/fonts" rename="fonts" embed="true" />
 	
 </project>

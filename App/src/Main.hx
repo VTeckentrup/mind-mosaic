@@ -107,6 +107,13 @@ class Main extends Sprite
 	public var log_inet_info:InfoText;
 	public var log_entry_info:InfoText;
 	
+	public var key_accepted_info:InfoText;
+	public var key_rejected_info:InfoText;
+	
+	public var sync_info:InfoText;
+	
+	public var run_limit_info:InfoText;
+	
 	// questionnaire item text field
 	private var item_text:TextField;
 	private var item_counter:Int;
@@ -127,6 +134,8 @@ class Main extends Sprite
 	public var button_reg1:SimpleButton;
 	private var button_back:SimpleButton;
 	private var button_quest:SimpleButton;
+	private var button_keycode_OK:SimpleButton;
+	private var button_keycode_back:SimpleButton;
 
 
 	private var change:Bool = false;
@@ -169,6 +178,9 @@ class Main extends Sprite
 	// registration
 	private var reg_checkbox_consent:CheckBox;
 	private var reg_checkbox_contact:CheckBox;
+	
+	// keycode
+	private var keycode_input:TextField;
 
 	
 	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -187,194 +199,6 @@ class Main extends Sprite
 	
 	//onClick functions for the multiple buttons
 	
-	/**
-	 * In gallery when you click continue game -> leads you to levelscreen 
-	 */
-	public function onClick_cont(event: MouseEvent):Void{
-		DrawLevelscreen();
-	}
-
-	//DATENBANK ABSPEICHERN
-	//Button: New Game - Button1
-	/*public function onClick1 (event: MouseEvent):Void {
-		//menu_screen.removeChildren();
-		this.removeChildren();
-		//MainGame();
-		drawQuestionnaireScreen("scale");
-	}*/
-	//Instruction - Button2
-	public function onClick2 (event: MouseEvent):Void {
-		this.removeChildren();
-
-		level_screen = new Sprite();
-		level_screen.addChild(img_alternative_screen2);
-		this.addChild(level_screen);
-		
-		
-		//var instruction_text = new InfoText("");
-		//this.addChild(instruction_text);
-		
-		//Strings for the Instructionsequence
-		
-		var instructiontext1:String = "Unsere Städte werden von Krankheitserregern angegriffen. Nur die Wissenschaft kann sie nun noch aufhalten. Sie führen ein Labor und müssen das beste Medikament finden, um die Pandemie zu bekämpfen. Doch seien Sie vorsichtig: Die Krankheitserreger passen sich an. Können Sie die Welt retten?";
-		var instructive_text = new Instruction(instructiontext1);
-		this.addChild(instructive_text);
-
-
-
-		// add button to info textfield
-		var ww = NOMINAL_WIDTH / 3;
-		var textfield_button:SimpleButton = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 175, "info");
-		textfield_button.addEventListener(MouseEvent.CLICK, onClick_back);
-        addChild(textfield_button);
-		
-		var continue_button:SimpleButton = Button.drawButton("Weiter", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
-		continue_button.addEventListener(MouseEvent.CLICK, onInstruction1);
-        addChild(continue_button);
-	}
-	//second instruction text
-	public function onInstruction1(event: MouseEvent):Void{
-		this.removeChildren();
-		level_screen = new Sprite();
-		level_screen.addChild(img_alternative_screen2);
-		this.addChild(level_screen);
-
-		var instructiontext2:String = "Das gesamte Spiel besteht aus 30 aufeinander aufbauenden Level. In jedem Level bekämpfen Sie einen weiteren fiesen Krankheitserreger mit neu entwickelten Medikamenten. Das Ziel ist, möglichst viele Menschen durch den Einsatz geeigneter Medikamente zu retten. Dafür müssen Sie herausfinden, welches Medikament aktuell gegen die Krankheitserreger wirkt. Mit der Anzahl geheilter Menschen - im Vergleich zu den erfolglos behandelten Menschen - steigt auch ihr Gesamtscore. Mit der Zunahme Ihres Gesamtscores erhalten Sie über die Zeit nicht nur Ruhm und Ehre als erfolgreicher Wissenschaftler, sondern auch fortschrittlicheres Equipment und ein besser ausgestattetes Labor. Das ist auch dringend notwendig, denn die Krankheitserreger entwickeln sich stetig weiter! ";
-		var instructive_text = new Instruction(instructiontext2);
-		this.addChild(instructive_text);
-		var ww = NOMINAL_WIDTH / 3;
-		var textfield_button:SimpleButton = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 175, "info");
-		textfield_button.addEventListener(MouseEvent.CLICK, onClick2);
-        addChild(textfield_button);
-		var continue_button:SimpleButton = Button.drawButton("Weiter", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
-		continue_button.addEventListener(MouseEvent.CLICK, onInstruction2);
-        addChild(continue_button);	
-	}
-	
-	//third instruction text
-	public function onInstruction2(event: MouseEvent):Void{
-		this.removeChildren();
-		level_screen = new Sprite();
-		level_screen.addChild(img_alternative_screen2);
-		this.addChild(level_screen);
-		var instructiontext3:String = "Jedes Level beginnt mit der Vorstellung eines neuen fiesen Krankheitserregers. Nach der Beantwortung einiger Fragen zu Ihrem aktuellen Befinden startet das eigentliche Spiel. Ein Level durch zu spielen dauert etwa 5 Minuten. Bitte versuchen Sie, sich in dieser Zeit nur auf das Spiel zu konzentrieren. Wenn Sie ein Level nicht direkt beenden und die App für zu lange Zeit in den Hintergrund schieben, müssen Sie beim nächsten Start dieses Level wieder neu beginnen und auch die Fragen neu beantworten.Innerhalb eines Levels spielen Sie 150 Durchgänge. In jedem Durchgang werden ihnen zwei verschiedene Medikamente zur Auswahl angeboten. Sie sind als Spritzen dargestellt. Die jeweilige Wirksamkeit zur Bekämpfung des Krankheitserregers ändert sich in jedem Durchgang und wird Ihnen als Zahl auf einem Notizblock eingeblendet, der über dem jeweiligen Medikament angezeigt wird.";
-		var instructive_text = new Instruction(instructiontext3);
-		this.addChild(instructive_text);
-		var ww = NOMINAL_WIDTH / 3;
-		var textfield_button:SimpleButton = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 175, "info");
-		textfield_button.addEventListener(MouseEvent.CLICK, onInstruction1);
-		addChild(textfield_button);
-		var continue_button:SimpleButton = Button.drawButton("Weiter", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
-		continue_button.addEventListener(MouseEvent.CLICK, onInstruction3);
-        addChild(continue_button);
-	}
-
-	//
-	public function onInstruction3(event: MouseEvent):Void{
-		this.removeChildren();
-		level_screen = new Sprite();
-		level_screen.addChild(img_alternative_screen2);
-		this.addChild(level_screen);
-
-		level_screen.addChild(img_instruction_2);
-		var ww = NOMINAL_WIDTH / 3;
-		var textfield_button:SimpleButton = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 175, "info");
-		textfield_button.addEventListener(MouseEvent.CLICK, onInstruction2);
-        addChild(textfield_button);
-		var continue_button:SimpleButton = Button.drawButton("Weiter", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
-		continue_button.addEventListener(MouseEvent.CLICK, onInstruction4);
-        addChild(continue_button);
-	}
-
-	//fourth instruction text
-	public function onInstruction4(event: MouseEvent):Void{
-		this.removeChildren();
-		level_screen = new Sprite();
-		level_screen.addChild(img_alternative_screen2);
-		this.addChild(level_screen);
-		var instructiontext4:String = "Wichtig ist: In jedem Durchgang wirkt tatsächlich nur eines der Medikamente gegen den Krankheitserreger, das andere Medikament hingegen hat keinen heilenden Effekt.
-Die Zahl auf dem Notizblock gibt an, wie vielen von 100 behandelten Menschen das Medikament helfen würde, falls es wirkt. Welches Medikament aktuell wirkt,  können Sie jedoch nicht direkt erkennen, sondern nur durch Ausprobieren und Lernen herausfinden. Zum Beispiel können Sie an der Farbe des Kreises zwischen den beiden Optionen sehen, welches Medikament im vorigen Durchgang gewirkt hat.
-Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, dass ein bisher wirksames Medikament über den Verlauf eines Levels wieder unwirksam wird und ein Wechsel notwendig ist. Gleichzeitig kann ein zuvor nicht wirksames Medikament wieder effektiver werden und besser wirken. Es lohnt sich also immer genau zu verfolgen, welches Medikament gerade am besten wirkt.";
-
-		var instructive_text = new Instruction(instructiontext4);
-		this.addChild(instructive_text);
-		var ww = NOMINAL_WIDTH / 3;
-		var textfield_button:SimpleButton = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 175, "info");
-		textfield_button.addEventListener(MouseEvent.CLICK, onInstruction3);
-		addChild(textfield_button);
-		var continue_button:SimpleButton = Button.drawButton("Weiter", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
-		continue_button.addEventListener(MouseEvent.CLICK, onInstruction5);
-        addChild(continue_button);
-	}
-	public function onInstruction5(event: MouseEvent):Void{
-		this.removeChildren();
-		level_screen = new Sprite();
-		level_screen.addChild(img_alternative_screen2);
-		this.addChild(level_screen);
-		var instructiontext4:String = "Wenn Sie sich für ein Medikament entschieden haben, klicken Sie einfach auf die jeweilige Spritze unter dem Notizblock. Haben Sie das richtige Medikament ausgewählt, sehen Sie den Erfolg direkt an der Einblendung eines grünen Hakens sowie der Steigerung Ihres Kompetenz-Scores, der in der oberen linken Ecke angezeigt wird. Haben Sie hingegen das falsche Medikament gewählt, wird Ihnen ein rotes Kreuz angezeigt und Ihr Kompetenz-Score sinkt. Der Kreis in der Mitte zwischen den beiden Optionen zeigt die Farbe des Medikaments, das in dem Durchgang das “richtige” war, also erfolgreich den Virus bekämpft hätte.";
-
-		var instructive_text = new Instruction(instructiontext4);
-		this.addChild(instructive_text);
-		var ww = NOMINAL_WIDTH / 3;
-		var textfield_button:SimpleButton = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 175, "info");
-		textfield_button.addEventListener(MouseEvent.CLICK, onInstruction4);
-		addChild(textfield_button);
-		var continue_button:SimpleButton = Button.drawButton("Weiter", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
-		continue_button.addEventListener(MouseEvent.CLICK, onInstruction6);
-        addChild(continue_button);
-	}
-
-	public function onInstruction6(event: MouseEvent):Void{
-		this.removeChildren();
-		level_screen = new Sprite();
-		level_screen.addChild(img_alternative_screen2);
-		this.addChild(level_screen);
-		var instructiontext4:String = "Nach jedem beendeten Level gelangen Sie in die Galerie, in der Sie die bereits bekämpften Krankheitserreger aufgereiht sehen können und Ihren aktuellen Gesamtscore finden. Von dort haben Sie die Möglichkeit, zurück zum Hauptmenü zu wechseln, oder direkt das nächste Level zu starten.";
-
-		var instructive_text = new Instruction(instructiontext4);
-		this.addChild(instructive_text);
-		var ww = NOMINAL_WIDTH / 3;
-		var textfield_button:SimpleButton = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 175, "info");
-		textfield_button.addEventListener(MouseEvent.CLICK, onInstruction5);
-		addChild(textfield_button);
-		var continue_button:SimpleButton = Button.drawButton("Weiter", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
-		continue_button.addEventListener(MouseEvent.CLICK, onInstruction7);
-        addChild(continue_button);
-	}
-
-
-
-
-	//third intruction picture
-	public function onInstruction7(event: MouseEvent):Void{
-		this.removeChildren();
-		level_screen = new Sprite();
-		level_screen.addChild(img_alternative_screen2);
-		this.addChild(level_screen);
-		level_screen.addChild(img_instruction_gallery);
-		var ww = NOMINAL_WIDTH / 3;
-		var textfield_button:SimpleButton = Button.drawButton("Beenden", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 175, "info");
-		textfield_button.addEventListener(MouseEvent.CLICK, onClick_back);
-        addChild(textfield_button);
-		var continue_button:SimpleButton = Button.drawButton("Spielen", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
-		continue_button.addEventListener(MouseEvent.CLICK, onClick_MainGame);
-        addChild(continue_button);
-	}
-
-/*	public function onInstruction4(event: MouseEvent):Void{
-		this.removeChildren();
-		level_screen = new Sprite();
-		level_screen.addChild(img_alternative_screen2);
-		this.addChild(level_screen);
-
-		level_screen.addChild(img_instruction_2);
-		var ww = NOMINAL_WIDTH / 3;
-		var textfield_button:SimpleButton = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 175, "info");
-		textfield_button.addEventListener(MouseEvent.CLICK, onInstruction3);
-		var continue_button:SimpleButton = Button.drawButton("Weiter", NOMINAL_WIDTH / 2, ((1080 - ww) / 2) + ww + 75, "info");
-		continue_button.addEventListener(MouseEvent.CLICK, onInstruction5);
-        addChild(continue_button);
-	}*/
 	//DATENBANKABRUF
 	//Button Game Status - Button3
 	public function onClick3 (event: MouseEvent):Void {
@@ -406,8 +230,26 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 	
 	//Button Beenden - button6
 	public function onClick6 (event: MouseEvent):Void {
+		
+		this.removeChildren();
+		
+		// Input fields need to be filled
+		sync_info = new InfoText ("Bitte schließen Sie eventuell noch geöffnete Hintergrundfenster nicht. \n Sie werden geschlossen, sobald die Datenübertragung beendet ist!");
+		var sync_info_button = sync_info.getChildAt(1);
+		sync_info_button.visible = false;
+		
+		this.addChild(sync_info);
+				
+		//invoke quit function
+		haxe.Timer.delay(function() {quitInfluenca(); }, 3000);		
+		
+	}
+	
+	public function quitInfluenca() {
+		
 		// Close window (invoking exit handler)
 		Lib.application.window.close();
+		
 	}
 	
 	//DATENBANK - ABSPEICHERN
@@ -458,6 +300,14 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 								_run_ind = 1;
 								// Set initial value for global score
 								_global_score = 0;
+								// Set initial value for keycode set flag
+								_keycode_set = 0;
+								// Set initial value for indicator coding how many runs have been played on a given day
+								_num_runs_played = 0;
+								// Set initial value for date coding when the last run has been played
+								_timestamp_last_run = DateTools.format(Date.now(), "%Y-%m-%d");
+								// Set flag signaling that instruction needs to be visited
+								intro_screens_visited = false;
 								// Save local JSON userdata
 								AppdataJSON.AppdataSave();
 								// Set user as logged in
@@ -557,20 +407,20 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 					_mail_address = username.text;
 					_password = passw.text;
 					var mail_availability = DatabaseSync.CheckRegistration(_mail_address,_password,true);
-					if (mail_availability == 2){ // mail address is registered and password fits -> ID is already retrieved from database
+					if (mail_availability == 2){ // mail address is registered and password fits -> ID, keycode & keycode entered state are already retrieved from database
 						
-						// check if appdata.json exists, if not, retrieve data from database and save
-						/*var savepath_id = "./" + Std.string(_id) + "_appdata.json";
-						if (!FileSystem.exists(Path.join([save_path, savepath_id]))) {
-							
-							AppdataJSON.AppdataSave();
-						}*/
+						// retrieve run data from database and save
+						DatabaseSync.SyncUserData(_id);
 						
-						// set ID as logged in
+						// Save local JSON userdata
+						AppdataJSON.AppdataSave();
+						// Set user as logged in
 						AppdataJSON.saveLogin();
+												
 						// send to main menu
 						this.removeChild(login_screen);
-						drawMenuScreen();					
+						drawMenuScreen();
+						
 					} else  if (mail_availability == 0){
 						
 						// Info field: mail address not yet registered -> send to registration page
@@ -652,10 +502,42 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 		then the level you're in, then the current reward with short introduction, then the questionaires &
 		then the Main Game starts
 		*/
-		this.removeChildren();
-		DrawLevelscreen();
-		//MainGame();
+		
+		if (_run_ind == 1 && intro_screens_visited == false) {
+			
+			this.removeChildren();
+			drawInstructionScreen();
+			
+		} else if (_num_runs_played == 3 && _timestamp_last_run == DateTools.format(Date.now(), "%Y-%m-%d")) {
+			
+			this.removeChildren();
+			run_limit_info = new InfoText ("Sie haben heute bereits 3 Level gespielt.\n Weitere Level können erst am nächsten Tag gestartet werden.");
+			var run_limit_info_button = run_limit_info.getChildAt(1);
+			run_limit_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRunLimit);
+			this.addChild(run_limit_info);
+			
+		} else if (_run_ind >= 11 && _keycode_set == 1) {
+			
+			this.removeChildren();
+			DrawLevelscreen();
+			
+		} else if (_run_ind >= 11 && _keycode_set == 0) {
+			
+			this.removeChildren();
+			drawKeycodeScreen();
+			
+		} else if (_run_ind < 11) {
+			
+			this.removeChildren();
+			DrawLevelscreen();
+			
+		}
 
+	}
+	
+	function toggleMessageRunLimit(event: MouseEvent):Void {
+		this.removeChildren();
+		drawMenuScreen();
 	}
 	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -859,6 +741,119 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 
 		this.addChild(registration_screen);
 	}
+	
+	
+	
+	// create screen for keycode information
+	public function drawKeycodeScreen(){
+		
+		keycode_screen = new Sprite();
+		keycode_screen.addChild(img_alternative_screen2);
+		
+		// set up formats
+		var keycodeinfoformat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 50, 0x000000, true);
+		keycodeinfoformat.align = TextFormatAlign.LEFT;
+		
+		var keycodeinputformat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 40, 0x000000, true);
+		keycodeinputformat.align = TextFormatAlign.LEFT;
+		
+		// set up keycode info text
+		var keycode_textfield:TextField = new TextField();
+
+		var keycode_text:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 40, 0x000000, true);
+		keycode_text.align = TextFormatAlign.CENTER;
+
+		keycode_textfield.defaultTextFormat = keycode_text;
+		keycode_textfield.text = "\nUm Level 11 sowie die nachfolgenden Level spielen zu können, möchten wir Sie bitten, \n Fragebögen auszufüllen, die wir Ihnen per E-Mail zuschicken. \n\n Die Fragebögen erfassen Eigenschaften Ihrer Persönlichkeit, \n die wir mit dem im Spiel gemessenen Lernverhalten in Verbindung bringen können.\n\n Nach erfolgtem Ausfüllen und Zurücksenden der Fragebögen, erhalten Sie einen Code per Mail, \n den Sie hier eingeben können, um die folgenden Level freizuschalten.";
+		
+		keycode_textfield.height = keycode_textfield.textHeight + 150;
+		keycode_textfield.width = 1800;
+		keycode_textfield.multiline = true;
+		//keycode_textfield.autoSize = TextFieldAutoSize.CENTER;
+		keycode_textfield.x = (NOMINAL_WIDTH - keycode_textfield.width) / 2;
+        keycode_textfield.y = 100;
+		keycode_screen.addChild(keycode_textfield);
+		
+		// set up info text field
+		var keycode_info = new TextField();
+		keycode_info.background = false;
+		keycode_info.width = 900;
+		keycode_info.height = 80;
+		keycode_info.x = (NOMINAL_WIDTH - keycode_info.width) / 2;
+		keycode_info.y = keycode_textfield.height;
+		keycode_info.text = "Code:";
+		keycode_info.defaultTextFormat = keycodeinfoformat;
+		keycode_screen.addChild(keycode_info);
+
+		// set up input field
+		keycode_input = new TextField();
+		keycode_input.background = true;
+		keycode_input.width = 900;
+		keycode_input.height = 60;
+		keycode_input.x = (NOMINAL_WIDTH - keycode_input.width) / 2;
+		keycode_input.y = keycode_textfield.height + 80;
+		keycode_input.defaultTextFormat = keycodeinputformat;
+		keycode_input.restrict = "0-9";
+		keycode_input.type = TextFieldType.INPUT;
+		// Request software keyboard on devices without hardware keyboard
+		keycode_input.needsSoftKeyboard = true;
+		keycode_input.requestSoftKeyboard();
+		keycode_screen.addChild(keycode_input);
+		
+		//OK button
+		button_keycode_back = Button.drawButton("OK", NOMINAL_WIDTH / 2, 950, "menu");
+		button_keycode_back.addEventListener(MouseEvent.CLICK, onClick_keycode);
+		keycode_screen.addChild(button_keycode_back);
+
+		this.addChild(keycode_screen);	
+	}
+	
+	public function onClick_keycode (event: MouseEvent):Void {
+		
+		if (keycode_input.length > 0) {
+		
+			var keycode_str = Std.string(_keycode);
+			if (keycode_input.text == keycode_str) {
+				
+				// set keycode as activated
+				_keycode_set = 1;
+				// save variable to JSON file
+				AppdataJSON.AppdataSave();
+				// Display info text field: Key was accepted
+				key_accepted_info = new InfoText ("Der eingegebene Code ist korrekt.\n Das nächste Level kann nun gestartet werden.");
+				var key_accepted_info_button = key_accepted_info.getChildAt(1);
+				key_accepted_info_button.addEventListener(MouseEvent.CLICK, toggleMessageKeyAccepted);
+				keycode_screen.addChild(key_accepted_info);
+				
+			} else if (keycode_input.text != keycode_str) {
+				
+				// Display info text field: Key was wrong
+				key_rejected_info = new InfoText ("Der eingegebene Code stimmt nicht überein.\n Bitte überprüfen Sie den eingegebenen Code, \n um das nächste Level starten zu können.");
+				var key_rejected_info_button = key_rejected_info.getChildAt(1);
+				key_rejected_info_button.addEventListener(MouseEvent.CLICK, toggleMessageKeyRejected);
+				keycode_screen.addChild(key_rejected_info);
+				
+			}
+			
+		} else {
+		
+		this.removeChildren();
+		drawGallery();
+		
+		}
+	}
+	
+	function toggleMessageKeyAccepted(event: MouseEvent):Void {
+		//keycode_screen.removeChild(key_accepted_info);
+		this.removeChildren();
+		drawGallery();
+	}
+	
+	function toggleMessageKeyRejected(event: MouseEvent):Void {
+		//keycode_screen.removeChild(key_rejected_info);
+		this.removeChildren();
+		drawGallery();
+	}
 
 
 
@@ -885,7 +880,7 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 
 	
 		button1.addEventListener(MouseEvent.CLICK, onClick_MainGame);
-		button2.addEventListener(MouseEvent.CLICK, onClick2);
+		button2.addEventListener(MouseEvent.CLICK, onInstruction);
 		button3.addEventListener(MouseEvent.CLICK, onClick3);
 		button4.addEventListener(MouseEvent.CLICK, onClick4);
 		button5.addEventListener(MouseEvent.CLICK, onClick5);
@@ -1294,6 +1289,79 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 		
 	}
 	
+	
+	//%%%%%%%%% Instruction screens %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	public function drawInstructionScreen(){
+		
+		// remove old content
+		this.removeChildren();
+		instruction_screen = new Sprite();
+		
+		var imgpath_str = "img/Intro_" + Std.string(intro_screen_num) + ".jpg";
+		instruction_background = AssetPreparation.loadImage(imgpath_str);
+		
+		instruction_screen.addChild(instruction_background);
+		
+		if (intro_screen_num == 12) {
+			
+			// add button to instruction screens
+			var ww = NOMINAL_WIDTH / 3;
+			var textfield_button:SimpleButton = Button.drawButton("Zurück", (NOMINAL_WIDTH / 2) - 300, ((1080 - ww) / 2) + ww + 150, "info");
+			textfield_button.addEventListener(MouseEvent.CLICK, InstructionBack);
+			instruction_screen.addChild(textfield_button);
+			
+			var continue_button:SimpleButton = Button.drawButton("Spielen", (NOMINAL_WIDTH / 2) + 300, ((1080 - ww) / 2) + ww + 150, "info");
+			continue_button.addEventListener(MouseEvent.CLICK, InstructionForward);
+			instruction_screen.addChild(continue_button);
+			
+		} else {
+	
+			// add button to instruction screens
+			var ww = NOMINAL_WIDTH / 3;
+			var textfield_button:SimpleButton = Button.drawButton("Zurück", (NOMINAL_WIDTH / 2) - 300, ((1080 - ww) / 2) + ww + 150, "info");
+			textfield_button.addEventListener(MouseEvent.CLICK, InstructionBack);
+			instruction_screen.addChild(textfield_button);
+				
+			var continue_button:SimpleButton = Button.drawButton("Weiter", (NOMINAL_WIDTH / 2) + 300, ((1080 - ww) / 2) + ww + 150, "info");
+			continue_button.addEventListener(MouseEvent.CLICK, InstructionForward);
+			instruction_screen.addChild(continue_button);
+		
+		}
+		
+		this.addChild(instruction_screen);
+	
+	}
+	
+	public function InstructionBack (event: MouseEvent):Void {
+		
+		if (intro_screen_num == 1) {
+			drawMenuScreen();
+		} else {
+			intro_screen_num = intro_screen_num - 1;
+			drawInstructionScreen();
+		}
+		
+	}
+	
+	public function InstructionForward (event: MouseEvent):Void {
+		
+		if (intro_screen_num == 12) {
+			intro_screens_visited = true;
+			intro_screen_num = 1;
+			drawGallery();
+		} else {
+			intro_screen_num = intro_screen_num + 1;
+			drawInstructionScreen();
+		}
+		
+	}
+	
+	public function onInstruction (event: MouseEvent):Void {
+		
+		drawInstructionScreen();
+				
+	}
+	
 	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 	//%%%%%%%%%OUT OF FOCUS FUNCTIONS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1350,24 +1418,56 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 		//Initialise probabilities
 		var step:Float;
 		var probvalueadd:Float;
-		var probabilitiesA:Array<Float> = [0.5];
+		var probabilitiesA:Array<Float>;
+		var probabilityB:Float;
+		var sum_abs_differences:Float;
+		
+		var start_prob_draw = random();
+		
+		if (start_prob_draw >= 0.5) {
+		
+			probabilitiesA = [0.2];
+			sum_abs_differences = Math.abs(0.2-0.8);
+			
+		} else {
+			
+			probabilitiesA = [0.8];
+			sum_abs_differences = Math.abs(0.8-0.2);
+			
+		}
 		
 		// Generate values for a gaussian random walk and append them to the probability values array
 		for (i in 0...trials-1) {
 			
-			step = NormRandom.floatNormal(0,0.075);
+			step = NormRandom.floatNormal(0,0.1);
 			
-			while (probabilitiesA[i] + step - 0.05 * (probabilitiesA[i] - 0.5) < 0 || probabilitiesA[i] + step - 0.05 * (probabilitiesA[i] - 0.5) > 1) {
+			while (probabilitiesA[i] + step - 0.03 * (probabilitiesA[i] - 0.5) < 0 || probabilitiesA[i] + step - 0.03 * (probabilitiesA[i] - 0.5) > 1) {
 				
-				step = NormRandom.floatNormal(0,0.075);
+				step = NormRandom.floatNormal(0,0.1);
 				
 			}
 			
-			probvalueadd = probabilitiesA[i] + step - 0.05 * (probabilitiesA[i] - 0.5);
+			probvalueadd = probabilitiesA[i] + step - 0.03 * (probabilitiesA[i] - 0.5);
 			probabilitiesA.push(probvalueadd);
+			
+			// Sum up absolute differences in probability between the two options to be able to check for difficulty of the walk later
+			probabilityB = 1 - probvalueadd;
+			sum_abs_differences = sum_abs_differences + Math.abs(probvalueadd - probabilityB);
 		}
 		
+		var avg_sum_abs_differences = sum_abs_differences / trials;
+		
+		if (avg_sum_abs_differences < 0.4 || avg_sum_abs_differences > 0.5) {
+			
+			return probabilitiesA; // function needs to have a return value, so return array and delete it directly after
+			untyped probA.length = 0;
+			probA = generateRandomWalk();
+			
+		} else {
+		
 		return probabilitiesA;
+		
+		}
 		
 	}
 
@@ -1401,7 +1501,7 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 		gallery_screen.addChild(button_end);
 
 		var button_continue = Button.drawButton("Spielen", Std.int(NOMINAL_WIDTH/2), 1000, "info");
-		button_continue.addEventListener(MouseEvent.CLICK, onClick_cont);
+		button_continue.addEventListener(MouseEvent.CLICK, onClick_MainGame);
 		gallery_screen.addChild(button_continue);
 		
 		
@@ -1497,7 +1597,17 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 
 		var level_text:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 70, 0x000000, true);
 		level_text.align = TextFormatAlign.CENTER;
-		level_display.text = 'Level $_run_ind';
+		
+		if (_run_ind != runs) {
+			
+			level_display.text = 'Level $_run_ind';
+			
+		} else {
+			
+			level_display.text = 'Level $_run_ind (Bonuslevel!)';
+			
+		}
+		
 		level_screen.addChild(level_display);
 		
 		level_display.defaultTextFormat = level_text;
@@ -1534,10 +1644,11 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 		
 		// Listen for exit events and attach sync functions to exit handler
 		ExitHandler.setExitHandler(function() {
-			
+				
 			var database_availability = InternetConnection.isAvailable();
 			// Move data from local SQLite database to MariaDB if internet connection is available
 			if (database_availability == true) {
+				
 				var transaction_finished = DatabaseSync.DBSync();
 				
 				if (transaction_finished == true){
@@ -1576,6 +1687,17 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 		_run_finished = 0;
 		// Initialize questionnaire item counter
 		item_counter = 1;
+		// Initialize counter for the instruction screens
+		intro_screen_num = 1;
+		
+		// Grab system specs
+		#if desktop
+		_device_type = "desktop";
+		#elseif mobile
+		_device_type = "mobile";
+		#end
+			
+		_device_os = Capabilities.os;
 			
 		// Check if user is logged in and retrieve ID
 		login_savepath = Path.join([save_path, login_file]);
@@ -1585,14 +1707,10 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 			AppdataJSON.loadLogin();
 			// Load appdata
 			AppdataJSON.AppdataLoad();
-			// Grab system specs
-			#if desktop
-			_device_type = "desktop";
-			#elseif mobile
-			_device_type = "mobile";
-			#end
-			
-			_device_os = Capabilities.os;
+			// determine if instruction needs to be visited
+			if (_run_ind == 1) {
+				intro_screens_visited = false;
+			}
 			// Send to main menu
 			drawMenuScreen();
 			
@@ -1827,16 +1945,7 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 				Lib.current.stage.addChild(circle_selection);
 			}
 		}
-		
-		//Initialise probabilities using a gaussian random walk
-		probA = generateRandomWalk();
 							
-
-		//Query for number of games already played per day
-
-
-
-
 
 		// Generate properties for new trial
 		newRound();
@@ -1920,7 +2029,7 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 			// If the non-winning option was selected subtract reward from score and update score field
 			else if (drug_choice == 'B') {
 				
-				_score = Std.int(_score - A_reward);
+				_score = Std.int(_score - B_reward);
 				scoreField.text = 'Score: $_score';
 				
 				img_feedback_wrong.x = 1325;
@@ -1956,7 +2065,7 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 			// If the non-winning option was selected subtract reward from score and update score field
 			else if (drug_choice == 'A') {
 				
-				_score = _score - B_reward;
+				_score = _score - A_reward;
 				scoreField.text = 'Score: $_score';
 				
 				img_feedback_wrong.x = 525;
@@ -2003,21 +2112,19 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 			// call function newRound with delay of 300 ms	
 			haxe.Timer.delay(MainGame,500);
 			
-		} /*else {
-			
-			// Call entry field for questionnaire code
-			if (_run_ind == 9) {
-				
-				
-			
-				
-			}*/
-			
-			// Call new level
-			else {
+		} else {
 			
 				// modify run_finished entry as run is now finalized
 				AppdataEntryLite.modifyLiteTrialEntry(modification_start);
+				if (_num_runs_played < 3 && _timestamp_last_run == DateTools.format(Date.now(), "%Y-%m-%d")) {
+					_num_runs_played = _num_runs_played + 1;
+				}
+				
+				if (_timestamp_last_run != DateTools.format(Date.now(), "%Y-%m-%d")) {
+					_timestamp_last_run = DateTools.format(Date.now(), "%Y-%m-%d");
+					_num_runs_played = 1;
+				}
+				//haxe.Timer.delay(function() {AppdataEntryLite.modifyLiteTrialEntry(modification_start); }, 2000);
 				// update global score
 				_global_score = _global_score + _score;
 				// save run related info in the database
@@ -2036,8 +2143,8 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 				Lib.current.stage.removeChild(circle_selection);
 				// remove old game screen
 				this.removeChild(game_screen);
-				// start new level by calling the gallery first
-				haxe.Timer.delay(function() {drawGallery(); }, 500);
+				// send to gallery
+				haxe.Timer.delay(function() {drawGallery(); }, 1000);
 				
 			}
 		//}
@@ -2049,8 +2156,20 @@ Da die Krankheitserreger fortlaufend mutieren und sich anpassen, kann es sein, d
 	private function newRound():Void {
 		
 		// Adapt trial counter
-		_trial_ind = _trial_ind + 1;
+		if (_trial_ind != trials) {
+		
+			_trial_ind = _trial_ind + 1;
+			
+		}
+		
 		levelField.text = 'Runde: $_trial_ind von $trials';
+		
+		//Initialise probabilities using a gaussian random walk if a new round has been started
+		if (_trial_ind == 1) {
+		
+			probA = generateRandomWalk();
+			
+		}
 		
 		// Set up new rewards
 		A_reward = Math.round(NormRandom.floatNormal(50, 16));
