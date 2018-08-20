@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\Vanessa Teckentrup\Documents\GitHub\mind-mosaic\App\bin\android\bin\app\build\intermediates\exploded-aar\bin.deps\extension-api\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="27.0.3"
+        sha1="fac2917bf4370b5c52498e5e38829f597ff777e0">
+        <dex dex="C:\Users\Vanessa Teckentrup\Documents\GitHub\mind-mosaic\App\bin\android\bin\app\build\intermediates\pre-dexed\debug\bin.deps-extension-api-unspecified_8cefa95fbc2c033789db31b0cd831be987f48cfd.jar" />
+    </item>
+
+</items>

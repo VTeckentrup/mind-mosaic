@@ -6,7 +6,7 @@
 	<meta title="Influenca" package="com.neuroMADLAB.Influenca" version="1.0.0" company="neuroMADLAB" />
 	
 	<!-- output -->
-	<app main="Main" file="Influenca" path="bin" />
+	<app main="Main" package="com.neuroMADLAB.Influenca" version="1.0.0" company="neuroMADLAB" title="Influenca"  file="Influenca" path="bin" />
 	
 	<window background="#000000" fps="60" />
 	<!-- <window width="1600" height="900" unless="mobile" /> -->
@@ -28,6 +28,7 @@
 	<icon path="assets/openfl.svg" />
 	
 	<!-- load and embed assets from img folder -->
+	<assets if="mobile" path="assets/img" rename="img" embed="false" />
 	<assets path="assets/img" rename="img" embed="true" />
 	<assets path="assets/fonts" rename="fonts" embed="true" />
 	

@@ -61,7 +61,7 @@ c:\windows\system32\cmd.exe /c copy "C:\HaxeToolkit\neko\neko.dll" "$(OutputDir)
 c:\windows\system32\cmd.exe /c copy "C:\HaxeToolkit\neko\regexp.ndll" "$(OutputDir)\bin\neko\bin\"
 c:\windows\system32\cmd.exe /c copy "C:\HaxeToolkit\neko\std.ndll" "$(OutputDir)\bin\neko\bin\"
 c:\windows\system32\cmd.exe /c copy "C:\HaxeToolkit\neko\zlib.ndll" "$(OutputDir)\bin\neko\bin\"
-c:\windows\system32\cmd.exe /c C:\"Program Files"\7-Zip\7z a -tzip "$(OutputDir)\bin\neko\bin\Influenca.zip" "$(OutputDir)\bin\neko\bin\*"
+c:\windows\system32\cmd.exe /c C:\"Program Files"\7-Zip\7z a -tzip "$(OutputDir)\bin\neko\bin\Influenca.zip" "$(OutputDir)\bin\neko\bin\*" "$(OutputDir)\Influenca_Cleaner.bat"
 c:\windows\system32\cmd.exe /c copy "$(OutputDir)\bin\neko\bin\Influenca.zip" "$(OutputDir)\"</postBuildCommand>
   <!-- Other project options -->
   <options>
