@@ -30,6 +30,42 @@ class AssetPreparation {
 		questionnaire_items[11] = "Wie stark fühlen Sie sich momentan durch Ihre \n Umgebung abgelenkt?";
 		questionnaire_items[12] = "Wie stark fühlen Sie sich momentan durch Ihre \n Gedanken abgelenkt?";
 		questionnaire_items[13] = "Hatten Sie seit der letzten Spielrunde einen Essanfall?";
+		// EMA questions
+		questionnaire_items[14] = "Hatten Sie das Gefühl von Kontrollverlust über \n die Art und Menge von Essen, oder das Gefühl \n nicht mit dem Essen aufhören zu können?";
+		questionnaire_items[15] = "Haben Sie in einem abgrenzbaren Zeitraum \n (z.B. innerhalb von 2 Stunden) eine Menge an Essen gegessen, \n die andere als außerordentlich groß bezeichnen würden?";
+		questionnaire_items[16] = "Haben Sie viel schneller gegessen als normal?";
+		questionnaire_items[17] = "Haben Sie gegessen, bis Sie sich \n unangenehm voll gefühlt haben?";
+		questionnaire_items[18] = "Haben Sie große Mengen Nahrung zu sich genommen, \n obwohl Sie sich nicht physisch hungrig gefühlt haben?";
+		questionnaire_items[19] = "Haben Sie alleine gegessen, \n weil Sie sich dafür geschämt haben, wie viel Sie gegessen haben?";
+		questionnaire_items[20] = "Haben Sie sich nach dem Essanfall vor sich selbst geekelt, \n sich schuldig oder niedergeschlagen gefühlt?";
+		questionnaire_items[21] = "Haben Sie versucht etwas zu tun, um die Folgen \n des Essanfalls zu verhindern? (z.B.  selbstverursachtes Erbrechen, \n Einnahme von Abführmitteln, exzessiver Sport...)";
+		questionnaire_items[22] = "Wie stark war Ihr Drang, etwas zu essen, vor dem Essanfall?";
+		questionnaire_items[23] = "Wie stark war Ihr Appetit vor dem Essanfall?";
+		questionnaire_items[24] = "Wie intensiv war Ihr Essanfall?";
+		questionnaire_items[25] = "Wann hatten Sie den letzten Essanfall?";
+		questionnaire_items[26] = "Wie lange dauerte der letzte Essanfall?";
+	
+		// Likert answer options
+		anchors_likert[1] = "< 0,5h";
+		anchors_likert[2] = "1h";
+		anchors_likert[3] = "1,5h";
+		anchors_likert[4] = "2h";
+		anchors_likert[5] = "2,5h";
+		anchors_likert[6] = "> 3h";
+		
+		anchors_likert[7] = "< 30 min";
+		anchors_likert[8] = "30-60 min";
+		anchors_likert[9] = "1-2h";
+		anchors_likert[10] = "2-4h";
+		anchors_likert[11] = "4-8h";
+		anchors_likert[12] = "> 8h";
+		
+		anchors_likert[13] = "< 10 min";
+		anchors_likert[14] = "10-15 min";
+		anchors_likert[15] = "15-20 min";
+		anchors_likert[16] = "20-25 min";
+		anchors_likert[17] = "25-30 min";
+		anchors_likert[18] = "> 30 min";
 		
 	}
 	
@@ -46,7 +82,7 @@ class AssetPreparation {
 		circle_colors_A[8] = 0xef9d3c;
 		circle_colors_A[9] = 0x00aaad;
 		circle_colors_A[10] = 0xf15a22;
-		circle_colors_A[11] = 0xff0000;
+		circle_colors_A[11] = 0xab4a9c;
 		circle_colors_A[12] = 0xec008c;
 		circle_colors_A[13] = 0xfff200;
 		circle_colors_A[14] = 0x00ffff;
@@ -74,7 +110,7 @@ class AssetPreparation {
 		circle_colors_B[4] = 0x93c75e;
 		circle_colors_B[5] = 0xe61e25;
 		circle_colors_B[6] = 0xe62f50;
-		circle_colors_B[7] = 0xab4a9c;
+		circle_colors_B[7] = 0xff0000;
 		circle_colors_B[8] = 0x79db2a;
 		circle_colors_B[9] = 0xff3366;
 		circle_colors_B[10] = 0xb2d235;
@@ -105,7 +141,7 @@ class AssetPreparation {
 	
 	static public function getPathogens() {
 		
-		for (i in 0...runs-1) {
+		for (i in 0...runs) {
 			
 			var imgpath_str = "img/pathogen_" + Std.string(i+1) + ".png";
 			pathogen_array[i] = AssetPreparation.loadImage(imgpath_str);

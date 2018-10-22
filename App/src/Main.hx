@@ -114,6 +114,8 @@ class Main extends Sprite
 	
 	public var run_limit_info:InfoText;
 	
+	public var end_game_info:InfoText;
+	
 	// questionnaire item text field
 	private var item_text:TextField;
 	private var item_counter:Int;
@@ -164,6 +166,7 @@ class Main extends Sprite
 	//radio buttons
 	private var yes_rb:OptionBox;
 	private var no_rb:OptionBox;
+	private var notyet_rb:OptionBox;
 	
 	private var Likert_1_rb:OptionBox;
 	private var Likert_2_rb:OptionBox;
@@ -508,6 +511,14 @@ class Main extends Sprite
 			this.removeChildren();
 			drawInstructionScreen();
 			
+		} else if (_run_ind == runs + 1) {
+			
+			this.removeChildren();
+			end_game_info = new InfoText ("Sie haben bereits alle Level erfolgreich beendet.\n In der Galerie können Sie sich ihre Erfolge ansehen.");
+			var end_game_info_button = end_game_info.getChildAt(1);
+			end_game_info_button.addEventListener(MouseEvent.CLICK, toggleMessageEndGame);
+			this.addChild(end_game_info);
+			
 		} else if (_num_runs_played == 3 && _timestamp_last_run == DateTools.format(Date.now(), "%Y-%m-%d")) {
 			
 			this.removeChildren();
@@ -538,6 +549,11 @@ class Main extends Sprite
 	function toggleMessageRunLimit(event: MouseEvent):Void {
 		this.removeChildren();
 		drawMenuScreen();
+	}
+	
+	function toggleMessageEndGame(event: MouseEvent):Void {
+		this.removeChildren();
+		drawGallery();
 	}
 	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -916,8 +932,8 @@ class Main extends Sprite
 			
 			item_text = new TextField();
 			item_text.width = 1920;
-			item_text.height = 200;
-			item_text.y = 200;
+			item_text.height = 400;
+			item_text.y = 100;
 			item_text.x = 0;
 			item_text.defaultTextFormat = itemFormat;
 			item_text.text = questionnaire_items[item_counter];
@@ -927,7 +943,7 @@ class Main extends Sprite
 			// UI elements
 			box_container = new HBox();
 			box_container.x = stageScaleX*550;
-			box_container.y = stageScaleY*550;
+			box_container.y = stageScaleY * 550;
 			
 			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 40, 0xFFFFFF, true);
 			rbFormat.align = TextFormatAlign.LEFT;
@@ -951,7 +967,11 @@ class Main extends Sprite
 			questionnaire_screen.addChild(anchor_right);
 			
 			quest_slider = new HSlider();
-			quest_slider.resizeComponent(stageScale*800, stageScale*100);
+			#if mobile
+			quest_slider.resizeComponent(stageScale * 400, stageScale * 100);
+			#else
+			quest_slider.resizeComponent(stageScale * 800, stageScale * 100);
+			#end
 			quest_slider.max = 100;
 			quest_slider.min = 0;
 			
@@ -984,8 +1004,8 @@ class Main extends Sprite
 			
 			item_text = new TextField();
 			item_text.width = 1920;
-			item_text.height = 200;
-			item_text.y = 200;
+			item_text.height = 400;
+			item_text.y = 100;
 			item_text.x = 0;
 			item_text.defaultTextFormat = itemFormat;
 			item_text.text = questionnaire_items[item_counter];
@@ -994,8 +1014,13 @@ class Main extends Sprite
 			
 			// UI elements
 			box_container = new HBox();
+			#if mobile
 			box_container.x = stageScaleX*50;
 			box_container.y = stageScaleY * 570;
+			#else
+			box_container.x = stageScaleX*100;
+			box_container.y = stageScaleY * 570;
+			#end
 			
 			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 40, 0xFFFFFF, true);
 			rbFormat.align = TextFormatAlign.LEFT;
@@ -1003,85 +1028,133 @@ class Main extends Sprite
 			var rb_Likert_Text_1 = new TextField();
 			rb_Likert_Text_1.width = 300;
 			rb_Likert_Text_1.height = 200;
-			rb_Likert_Text_1.y = 565;
-			rb_Likert_Text_1.x = 100;
+			rb_Likert_Text_1.y = 570;
+			rb_Likert_Text_1.x = 150;
 			rb_Likert_Text_1.defaultTextFormat = rbFormat;
-			rb_Likert_Text_1.text = "Vor mehr\nals 3h";
+			
+			if (item_counter == 4) {
+				rb_Likert_Text_1.text = anchors_likert[1];
+			} else if (item_counter == 25) {
+				rb_Likert_Text_1.text = anchors_likert[7];
+			} else if (item_counter == 26) {
+				rb_Likert_Text_1.text = anchors_likert[13];
+			}
+			
 			questionnaire_screen.addChild(rb_Likert_Text_1);
 						
 			var rb_Likert_Text_2 = new TextField();
 			rb_Likert_Text_2.width = 300;
 			rb_Likert_Text_2.height = 200;
-			rb_Likert_Text_2.y = 565;
-			rb_Likert_Text_2.x = 400;
+			rb_Likert_Text_2.y = 570;
+			rb_Likert_Text_2.x = 450;
 			rb_Likert_Text_2.defaultTextFormat = rbFormat;
-			rb_Likert_Text_2.text = "Vor etwa\n2,5h";
+			
+			if (item_counter == 4) {
+				rb_Likert_Text_2.text = anchors_likert[2];
+			} else if (item_counter == 25) {
+				rb_Likert_Text_2.text = anchors_likert[8];
+			} else if (item_counter == 26) {
+				rb_Likert_Text_2.text = anchors_likert[14];
+			}
+			
 			questionnaire_screen.addChild(rb_Likert_Text_2);
 			
 			var rb_Likert_Text_3 = new TextField();
 			rb_Likert_Text_3.width = 300;
 			rb_Likert_Text_3.height = 200;
-			rb_Likert_Text_3.y = 565;
-			rb_Likert_Text_3.x = 700;
+			rb_Likert_Text_3.y = 570;
+			rb_Likert_Text_3.x = 750;
 			rb_Likert_Text_3.defaultTextFormat = rbFormat;
-			rb_Likert_Text_3.text = "Vor etwa\n2h";
+			
+			if (item_counter == 4) {
+				rb_Likert_Text_3.text = anchors_likert[3];
+			} else if (item_counter == 25) {
+				rb_Likert_Text_3.text = anchors_likert[9];
+			} else if (item_counter == 26) {
+				rb_Likert_Text_3.text = anchors_likert[15];
+			}
+			
 			questionnaire_screen.addChild(rb_Likert_Text_3);
 			
 			var rb_Likert_Text_4 = new TextField();
 			rb_Likert_Text_4.width = 300;
 			rb_Likert_Text_4.height = 200;
-			rb_Likert_Text_4.y = 565;
-			rb_Likert_Text_4.x = 1000;
+			rb_Likert_Text_4.y = 570;
+			rb_Likert_Text_4.x = 1050;
 			rb_Likert_Text_4.defaultTextFormat = rbFormat;
-			rb_Likert_Text_4.text = "Vor etwa\n1,5h";
+			
+			if (item_counter == 4) {
+				rb_Likert_Text_4.text = anchors_likert[4];
+			} else if (item_counter == 25) {
+				rb_Likert_Text_4.text = anchors_likert[10];
+			} else if (item_counter == 26) {
+				rb_Likert_Text_4.text = anchors_likert[16];
+			}
+			
 			questionnaire_screen.addChild(rb_Likert_Text_4);
 			
 			var rb_Likert_Text_5 = new TextField();
 			rb_Likert_Text_5.width = 300;
 			rb_Likert_Text_5.height = 200;
-			rb_Likert_Text_5.y = 565;
-			rb_Likert_Text_5.x = 1300;
+			rb_Likert_Text_5.y = 570;
+			rb_Likert_Text_5.x = 1350;
 			rb_Likert_Text_5.defaultTextFormat = rbFormat;
-			rb_Likert_Text_5.text = "Vor etwa\n1h";
+			
+			if (item_counter == 4) {
+				rb_Likert_Text_5.text = anchors_likert[5];
+			} else if (item_counter == 25) {
+				rb_Likert_Text_5.text = anchors_likert[11];
+			} else if (item_counter == 26) {
+				rb_Likert_Text_5.text = anchors_likert[17];
+			}
+			
 			questionnaire_screen.addChild(rb_Likert_Text_5);
 			
 			var rb_Likert_Text_6 = new TextField();
 			rb_Likert_Text_6.width = 300;
 			rb_Likert_Text_6.height = 200;
-			rb_Likert_Text_6.y = 565;
-			rb_Likert_Text_6.x = 1600;
+			rb_Likert_Text_6.y = 570;
+			rb_Likert_Text_6.x = 1650;
 			rb_Likert_Text_6.defaultTextFormat = rbFormat;
-			rb_Likert_Text_6.text = "Vor weniger\nals 0,5h";
+			
+			if (item_counter == 4) {
+				rb_Likert_Text_6.text = anchors_likert[6];
+			} else if (item_counter == 25) {
+				rb_Likert_Text_6.text = anchors_likert[12];
+			} else if (item_counter == 26) {
+				rb_Likert_Text_6.text = anchors_likert[18];
+			}
+			
 			questionnaire_screen.addChild(rb_Likert_Text_6);
 			
 			Likert_1_rb = new OptionBox();
 			Likert_1_rb.groupName = "LikertRBs";
-			Likert_1_rb.height = stageScaleY*80;
+			Likert_1_rb.height = stageScaleY * 50;
 			Likert_1_rb.width = stageScaleX * 295;
 			
 			Likert_2_rb = new OptionBox();
 			Likert_2_rb.groupName = "LikertRBs";
-			Likert_2_rb.height = stageScaleY*80;
+			Likert_2_rb.height = stageScaleY * 50;
 			Likert_2_rb.width = stageScaleX * 295;
 			
 			Likert_3_rb = new OptionBox();
 			Likert_3_rb.groupName = "LikertRBs";
-			Likert_3_rb.height = stageScaleY*80;
+			Likert_3_rb.height = stageScaleY * 50;
 			Likert_3_rb.width = stageScaleX * 295;
 			
 			Likert_4_rb = new OptionBox();
 			Likert_4_rb.groupName = "LikertRBs";
-			Likert_4_rb.height = stageScaleY*80;
+			Likert_4_rb.height = stageScaleY * 50;
 			Likert_4_rb.width = stageScaleX * 295;
 			
 			Likert_5_rb = new OptionBox();
 			Likert_5_rb.groupName = "LikertRBs";
-			Likert_5_rb.height = stageScaleY*80;
+			Likert_5_rb.height = stageScaleY * 50;
 			Likert_5_rb.width = stageScaleX * 295;
 			
 			Likert_6_rb = new OptionBox();
 			Likert_6_rb.groupName = "LikertRBs";
-			Likert_6_rb.height = stageScaleY*80;
+			Likert_6_rb.height = stageScaleY * 50;
 			Likert_6_rb.width = stageScaleX * 295;
 			
 			/*Likert_1_rb.registerEvent(UIEvent.CHANGE, activateButton);
@@ -1123,8 +1196,8 @@ class Main extends Sprite
 			
 			item_text = new TextField();
 			item_text.width = 1920;
-			item_text.height = 200;
-			item_text.y = 200;
+			item_text.height = 400;
+			item_text.y = 100;
 			item_text.x = 0;
 			item_text.defaultTextFormat = itemFormat;
 			item_text.text = questionnaire_items[item_counter];
@@ -1142,7 +1215,7 @@ class Main extends Sprite
 			var rb_text_yes = new TextField();
 			rb_text_yes.width = 200;
 			rb_text_yes.height = 200;
-			rb_text_yes.y = 565;
+			rb_text_yes.y = 570;
 			rb_text_yes.x = 750;
 			rb_text_yes.defaultTextFormat = rbFormat;
 			rb_text_yes.text = "Ja";
@@ -1151,7 +1224,7 @@ class Main extends Sprite
 			var rb_text_no = new TextField();
 			rb_text_no.width = 200;
 			rb_text_no.height = 200;
-			rb_text_no.y = 565;
+			rb_text_no.y = 570;
 			rb_text_no.x = 1170;
 			rb_text_no.defaultTextFormat = rbFormat;
 			rb_text_no.text = "Nein";
@@ -1174,6 +1247,97 @@ class Main extends Sprite
 			
 			box_container.addComponent(yes_rb);
 			box_container.addComponent(no_rb);
+			
+			Screen.instance.addComponent(box_container);
+			
+			// Forward button
+			button_quest = Button.drawButton("OK", NOMINAL_WIDTH / 2, 950, "info");
+			button_quest.visible = false;
+			
+			button_quest.addEventListener(MouseEvent.CLICK, QuestPagefinished);
+			
+			questionnaire_screen.addChild(button_quest);
+			
+			this.addChild(questionnaire_screen);
+			
+		}
+		
+		else if (type == "threeoptions") {
+			
+			questionnaire_screen = new Sprite();
+			
+			// item text
+			var itemFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 60, 0xFFFFFF, true);
+			itemFormat.align = TextFormatAlign.CENTER;
+			
+			item_text = new TextField();
+			item_text.width = 1920;
+			item_text.height = 400;
+			item_text.y = 100;
+			item_text.x = 0;
+			item_text.defaultTextFormat = itemFormat;
+			item_text.text = questionnaire_items[item_counter];
+			item_text.multiline = true;
+			questionnaire_screen.addChild(item_text);
+			
+			// UI elements
+			box_container = new HBox();
+			box_container.x = stageScaleX*220;
+			box_container.y = stageScaleY*570;
+			
+			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 40, 0xFFFFFF, true);
+			rbFormat.align = TextFormatAlign.LEFT;
+			
+			var rb_text_yes = new TextField();
+			rb_text_yes.width = 200;
+			rb_text_yes.height = 200;
+			rb_text_yes.y = 570;
+			rb_text_yes.x = 280;
+			rb_text_yes.defaultTextFormat = rbFormat;
+			rb_text_yes.text = "Ja";
+			questionnaire_screen.addChild(rb_text_yes);
+			
+			var rb_text_no = new TextField();
+			rb_text_no.width = 200;
+			rb_text_no.height = 200;
+			rb_text_no.y = 570;
+			rb_text_no.x = 700;
+			rb_text_no.defaultTextFormat = rbFormat;
+			rb_text_no.text = "Nein";
+			questionnaire_screen.addChild(rb_text_no);
+			
+			var rb_text_notyet = new TextField();
+			rb_text_notyet.width = 200;
+			rb_text_notyet.height = 200;
+			rb_text_notyet.y = 570;
+			rb_text_notyet.x = 1140;
+			rb_text_notyet.defaultTextFormat = rbFormat;
+			rb_text_notyet.text = "Noch nicht, aber ich werde es tun";
+			questionnaire_screen.addChild(rb_text_notyet);
+			
+			yes_rb = new OptionBox();
+			yes_rb.groupName = "questRBs";
+			yes_rb.height = stageScaleY*50;
+			yes_rb.width = stageScaleX*420;
+			
+			no_rb = new OptionBox();
+			no_rb.groupName = "questRBs";
+			no_rb.height = stageScaleY*50;
+			no_rb.width = stageScaleX * 420;
+			
+			notyet_rb = new OptionBox();
+			notyet_rb.groupName = "questRBs";
+			notyet_rb.height = stageScaleY*50;
+			notyet_rb.width = stageScaleX*420;
+			
+			/*yes_rb.registerEvent(UIEvent.CHANGE, activateButton);
+			no_rb.registerEvent(UIEvent.CHANGE, activateButton);*/
+			
+			box_container.addEventListener(MouseEvent.CLICK, activateButtonClick);
+			
+			box_container.addComponent(yes_rb);
+			box_container.addComponent(no_rb);
+			box_container.addComponent(notyet_rb);
 			
 			Screen.instance.addComponent(box_container);
 			
@@ -1261,6 +1425,100 @@ class Main extends Sprite
 			} else if (no_rb.selected == true){
 				_item_13 = 0;
 			}
+		} else if (item_counter == 14) {
+			// check which radiobutton is activated
+			if (yes_rb.selected == true){
+				_item_14 = 1;
+			} else if (no_rb.selected == true){
+				_item_14 = 0;
+			}
+		} else if (item_counter == 15) {
+			// check which radiobutton is activated
+			if (yes_rb.selected == true){
+				_item_15 = 1;
+			} else if (no_rb.selected == true){
+				_item_15 = 0;
+			}
+		} else if (item_counter == 16) {
+			// check which radiobutton is activated
+			if (yes_rb.selected == true){
+				_item_16 = 1;
+			} else if (no_rb.selected == true){
+				_item_16 = 0;
+			}
+		} else if (item_counter == 17) {
+			// check which radiobutton is activated
+			if (yes_rb.selected == true){
+				_item_17 = 1;
+			} else if (no_rb.selected == true){
+				_item_17 = 0;
+			}
+		} else if (item_counter == 18) {
+			// check which radiobutton is activated
+			if (yes_rb.selected == true){
+				_item_18 = 1;
+			} else if (no_rb.selected == true){
+				_item_18 = 0;
+			}
+		} else if (item_counter == 19) {
+			// check which radiobutton is activated
+			if (yes_rb.selected == true){
+				_item_19 = 1;
+			} else if (no_rb.selected == true){
+				_item_19 = 0;
+			}
+		} else if (item_counter == 20) {
+			// check which radiobutton is activated
+			if (yes_rb.selected == true){
+				_item_20 = 1;
+			} else if (no_rb.selected == true){
+				_item_20 = 0;
+			}
+		} else if (item_counter == 21) {
+			// check which radiobutton is activated
+			if (yes_rb.selected == true){
+				_item_21 = 1;
+			} else if (no_rb.selected == true){
+				_item_21 = 0;
+			} else if (notyet_rb.selected == true){
+				_item_21 = 2;
+			}
+		} else if (item_counter == 22) {
+			_item_22 = quest_slider.value;
+		} else if (item_counter == 23) {
+			_item_23 = quest_slider.value;
+		} else if (item_counter == 24) {
+			_item_24 = quest_slider.value;
+		} else if (item_counter == 25) {
+			// check which radiobutton is activated
+			if (Likert_1_rb.selected == true){
+				_item_25 = 1;
+			} else if (Likert_2_rb.selected == true){
+				_item_4 = 2;
+			} else if (Likert_3_rb.selected == true){
+				_item_25 = 3;
+			} else if (Likert_4_rb.selected == true){
+				_item_25 = 4;
+			} else if (Likert_5_rb.selected == true){
+				_item_25 = 5;
+			} else if (Likert_6_rb.selected == true){
+				_item_25 = 6;
+			}
+		} else if (item_counter == 26) {
+			// check which radiobutton is activated
+			if (Likert_1_rb.selected == true){
+				_item_26 = 1;
+			} else if (Likert_2_rb.selected == true){
+				_item_26 = 2;
+			} else if (Likert_3_rb.selected == true){
+				_item_26 = 3;
+			} else if (Likert_4_rb.selected == true){
+				_item_26 = 4;
+			} else if (Likert_5_rb.selected == true){
+				_item_26 = 5;
+			} else if (Likert_6_rb.selected == true){
+				_item_26 = 6;
+			}
 		}
 		
 		// remove old content
@@ -1281,8 +1539,27 @@ class Main extends Sprite
 				drawQuestionnaireScreen("scale");
 			}
 		} else {
+			// check if last question has been answered with yes -> append EMA questions
+			if (_item_13 == 1 && item_counter <= 25) {
+				
+				item_counter = item_counter + 1;
+				
+				if (item_counter == 21) {
+					drawQuestionnaireScreen("threeoptions");
+				}
+				else if (item_counter == 22 || item_counter == 23 || item_counter == 24) {
+					drawQuestionnaireScreen("scale");
+				}
+				else if (item_counter == 25 || item_counter == 26) {
+					drawQuestionnaireScreen("Likert");
+				} else {
+					drawQuestionnaireScreen("options");
+				}
+				
+			} else {
 			item_counter = 1;
 			MainGame();
+			}
 		}
 		
 		
@@ -1455,19 +1732,9 @@ class Main extends Sprite
 			sum_abs_differences = sum_abs_differences + Math.abs(probvalueadd - probabilityB);
 		}
 		
-		var avg_sum_abs_differences = sum_abs_differences / trials;
-		
-		if (avg_sum_abs_differences < 0.4 || avg_sum_abs_differences > 0.5) {
-			
-			return probabilitiesA; // function needs to have a return value, so return array and delete it directly after
-			untyped probA.length = 0;
-			probA = generateRandomWalk();
-			
-		} else {
+		avg_sum_abs_differences = sum_abs_differences / trials;
 		
 		return probabilitiesA;
-		
-		}
 		
 	}
 
@@ -1508,7 +1775,7 @@ class Main extends Sprite
 
 		
 		add = 280;
-		// only count to run_ind - 1 as the current pathogen has not been beaten yet
+		// loop to get pathogens that have been beaten already		
 		for (i in 1..._run_ind){
 			
 			if (i >= 1 && i <= 8) {
@@ -1552,7 +1819,7 @@ class Main extends Sprite
 				
 			}
 			
-			else if (i >= 25 && i <= 31) {
+			else if (i >= 25 && i <= runs) {
 				
 				if (i == 25) {
 					add = 280;
@@ -1589,11 +1856,12 @@ class Main extends Sprite
 		
 		var level_display = new TextField();
 		level_display.background = false;
-		level_display.width = 600;
+		level_display.width = 1000;
 		level_display.height = 200;
-		level_display.x = (NOMINAL_WIDTH/2)-300;
+		level_display.x = (NOMINAL_WIDTH/2)-500;
 		level_display.y = (NOMINAL_HEIGHT/2)-100;
 		level_display.selectable = false;
+		level_display.multiline = true;
 
 		var level_text:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 70, 0x000000, true);
 		level_text.align = TextFormatAlign.CENTER;
@@ -1618,7 +1886,12 @@ class Main extends Sprite
 	//insert pathogen information to display but only if 
 	function pathogenText(){
 		this.removeChildren();
-		haxe.Timer.delay(function() {drawQuestionnaireScreen("scale");},1000);
+		
+		if (debug_mode == "off") {
+			haxe.Timer.delay(function() {drawQuestionnaireScreen("scale"); }, 1000);
+		} else if (debug_mode == "game only") {
+			haxe.Timer.delay(function() {MainGame(); }, 1000);
+		}
 	}
 	// you need this function because in the Timer.delay the inserted
 	//function need to be void but drawQuestionnaireScreen is not void
@@ -1838,11 +2111,7 @@ class Main extends Sprite
 		scoreField.defaultTextFormat = scoreFormat;
 		scoreField.selectable = false;		
 		scoreField.text = 'Score: $_score';
-		game_screen.addChild(scoreField);
-		//_score = 1;
-		
-		
-		
+		game_screen.addChild(scoreField);		
 		
 
 		var runFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 30, 0x000000, true);
@@ -1855,8 +2124,6 @@ class Main extends Sprite
 		runField.selectable = false;		
 		runField.text = 'Level: $_run_ind';
 		game_screen.addChild(runField);
-
-		
 		
 		
 		/*// Draw city text field	
@@ -1888,18 +2155,28 @@ class Main extends Sprite
 
 		// Define and format text fields displaying drug outcome
 		// A
-		var scoreFormat_notepads:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 50, 0x000000, true);
+		var scoreFormat_notepads:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 70, 0x000000, true);
 		scoreFormat_notepads.align = TextFormatAlign.CENTER;
 
 		scoreField_A = new TextField();
 		game_screen.addChild(scoreField_A);
 		scoreField_A.width = 200;
 		scoreField_A.height = 200;
-		scoreField_A.x = 475;
-		scoreField_A.y = 400;
+		// set up x coordinate depending on lab background (due to differences in notepad design)
+		if (_run_ind == 1 || _run_ind == 2 || _run_ind == 3 || _run_ind == 4 || _run_ind == 5 || _run_ind == 6 || _run_ind == 25 || _run_ind == 26 || _run_ind == 27 || _run_ind == 28 || _run_ind == 29 || _run_ind == 30) {
+			scoreField_A.x = 470;
+		} else if (_run_ind == 7 || _run_ind == 8 || _run_ind == 9 || _run_ind == 10 || _run_ind == 11 || _run_ind == 12) {
+			scoreField_A.x = 430;
+		} else if (_run_ind == 13 || _run_ind == 14 || _run_ind == 15 || _run_ind == 16 || _run_ind == 17 || _run_ind == 18 || _run_ind == 19 || _run_ind == 20 || _run_ind == 21 || _run_ind == 22 || _run_ind == 23 || _run_ind == 24 || _run_ind == 31) {
+			scoreField_A.x = 445;
+		}
+		// set y lower for labs 3 and 4
+		if (_run_ind == 13 || _run_ind == 14 || _run_ind == 15 || _run_ind == 16 || _run_ind == 17 || _run_ind == 18 || _run_ind == 19 || _run_ind == 20 || _run_ind == 21 || _run_ind == 22 || _run_ind == 23 || _run_ind == 24) {
+			scoreField_A.y = 420;
+		} else {
+			scoreField_A.y = 370;
+		}
 		scoreField_A.multiline = true;
-		//scoreField_A.x = Std.int(NOMINAL_WIDTH / 2) - Std.int(NOMINAL_WIDTH / 6);
-		//scoreField_A.y = Std.int(NOMINAL_HEIGHT / 2);
 		scoreField_A.defaultTextFormat = scoreFormat_notepads;
 		scoreField_A.selectable = false;
 
@@ -1908,24 +2185,44 @@ class Main extends Sprite
 		game_screen.addChild(scoreField_B);
 		scoreField_B.width = 200;
 		scoreField_B.height = 200;
-		scoreField_B.x = 1275;
-		scoreField_B.y = 400;
+		// set up x coordinate depending on lab background (due to differences in notepad design)
+		if (_run_ind == 1 || _run_ind == 2 || _run_ind == 3 || _run_ind == 4 || _run_ind == 5 || _run_ind == 6 || _run_ind == 25 || _run_ind == 26 || _run_ind == 27 || _run_ind == 28 || _run_ind == 29 || _run_ind == 30) {
+			scoreField_B.x = 1270;
+		} else if (_run_ind == 7 || _run_ind == 8 || _run_ind == 9 || _run_ind == 10 || _run_ind == 11 || _run_ind == 12) {
+			scoreField_B.x = 1230;
+		} else if (_run_ind == 13 || _run_ind == 14 || _run_ind == 15 || _run_ind == 16 || _run_ind == 17 || _run_ind == 18 || _run_ind == 19 || _run_ind == 20 || _run_ind == 21 || _run_ind == 22 || _run_ind == 23 || _run_ind == 24 || _run_ind == 31) {
+			scoreField_B.x = 1245;
+		}
+		// set y lower for labs 3 and 4
+		if (_run_ind == 13 || _run_ind == 14 || _run_ind == 15 || _run_ind == 16 || _run_ind == 17 || _run_ind == 18 || _run_ind == 19 || _run_ind == 20 || _run_ind == 21 || _run_ind == 22 || _run_ind == 23 || _run_ind == 24) {
+			scoreField_B.y = 420;
+		} else {
+			scoreField_B.y = 370;
+		}
 		scoreField_B.multiline = true;
-		//scoreField_B.x = Std.int(NOMINAL_WIDTH / 2) + Std.int(NOMINAL_WIDTH / 6);
-		//scoreField_B.y = Std.int(NOMINAL_HEIGHT / 2);
 		scoreField_B.defaultTextFormat = scoreFormat_notepads;
 		scoreField_B.selectable = false;
 		
 		// add syringes (full) to game screen
 		SyringeA = new Syringe("full", "A");
 		SyringeA.x = 400;
-		SyringeA.y = 600;
+		// set up y coordinate depending on lab background (due to differences in notepad design)
+		if (_run_ind == 1 || _run_ind == 2 || _run_ind == 3 || _run_ind == 4 || _run_ind == 5 || _run_ind == 6 || _run_ind == 7 || _run_ind == 8 || _run_ind == 9 || _run_ind == 10 || _run_ind == 11 || _run_ind == 12) {
+			SyringeA.y = 600;
+		} else {
+			SyringeA.y = 650;
+		}
 		SyringeA.addEventListener(MouseEvent.CLICK, PostChoiceA);
 		game_screen.addChild(SyringeA);
 		
 		SyringeB = new Syringe("full", "B");
 		SyringeB.x = 1200;
-		SyringeB.y = 600;
+		// set up y coordinate depending on lab background (due to differences in notepad design)
+		if (_run_ind == 1 || _run_ind == 2 || _run_ind == 3 || _run_ind == 4 || _run_ind == 5 || _run_ind == 6 || _run_ind == 7 || _run_ind == 8 || _run_ind == 9 || _run_ind == 10 || _run_ind == 11 || _run_ind == 12) {
+			SyringeB.y = 600;
+		} else {
+			SyringeB.y = 650;
+		}
 		SyringeB.addEventListener(MouseEvent.CLICK, PostChoiceB);
 		game_screen.addChild(SyringeB);
 		
@@ -1959,7 +2256,12 @@ class Main extends Sprite
 		game_screen.removeChild(SyringeA);
 		SyringeA = new Syringe("empty", "A");
 		SyringeA.x = 400;
-		SyringeA.y = 600;
+		// set up y coordinate depending on lab background (due to differences in notepad design)
+		if (_run_ind == 1 || _run_ind == 2 || _run_ind == 3 || _run_ind == 4 || _run_ind == 5 || _run_ind == 6 || _run_ind == 7 || _run_ind == 8 || _run_ind == 9 || _run_ind == 10 || _run_ind == 11 || _run_ind == 12) {
+			SyringeA.y = 600;
+		} else {
+			SyringeA.y = 650;
+		}
 		game_screen.addChild(SyringeA);
 				
 		// Shortly change circle color to grey to make evaluation visible
@@ -1980,7 +2282,12 @@ class Main extends Sprite
 		game_screen.removeChild(SyringeB);
 		SyringeB = new Syringe("empty", "B");
 		SyringeB.x = 1200;
-		SyringeB.y = 600;
+		// set up y coordinate depending on lab background (due to differences in notepad design)
+		if (_run_ind == 1 || _run_ind == 2 || _run_ind == 3 || _run_ind == 4 || _run_ind == 5 || _run_ind == 6 || _run_ind == 7 || _run_ind == 8 || _run_ind == 9 || _run_ind == 10 || _run_ind == 11 || _run_ind == 12) {
+			SyringeB.y = 600;
+		} else {
+			SyringeB.y = 650;
+		}
 		game_screen.addChild(SyringeB);
 				
 		// Shortly change circle color to grey to make evaluation visible
@@ -2005,14 +2312,6 @@ class Main extends Sprite
 		// Evaluate winning machine and set output accordingly
 		if (prob_draw <= reward_prob_A) {
 			correct_choice = 'A';
-						
-			/*//this.removeChild(circle_selection);
-			Lib.current.stage.removeChild(circle_selection);
-			circle_selection = new Selection_Circle(circle_colors_A[_run_ind]);
-			circle_selection.x = stageScaleX*Std.int(NOMINAL_WIDTH / 2);
-			circle_selection.y = stageScaleY*Std.int(NOMINAL_HEIGHT / 2);
-			Lib.current.stage.addChild(circle_selection);
-			//this.addChild(circle_selection);*/
 			
 			// If the winning option was selected add reward to score and update score field
 			if (drug_choice == 'A') {
@@ -2020,8 +2319,20 @@ class Main extends Sprite
 				_score = Std.int(_score + A_reward);
 				scoreField.text = 'Score: $_score';
 
-				img_feedback_correct.x = 525;
-				img_feedback_correct.y = 475;
+				// set up x coordinate depending on lab background (due to differences in notepad design)
+				if (_run_ind == 1 || _run_ind == 2 || _run_ind == 3 || _run_ind == 4 || _run_ind == 5 || _run_ind == 6 || _run_ind == 25 || _run_ind == 26 || _run_ind == 27 || _run_ind == 28 || _run_ind == 29 || _run_ind == 30) {
+					img_feedback_correct.x = 525;
+				} else if (_run_ind == 7 || _run_ind == 8 || _run_ind == 9 || _run_ind == 10 || _run_ind == 11 || _run_ind == 12) {
+					img_feedback_correct.x = 485;
+				} else if (_run_ind == 13 || _run_ind == 14 || _run_ind == 15 || _run_ind == 16 || _run_ind == 17 || _run_ind == 18 || _run_ind == 19 || _run_ind == 20 || _run_ind == 21 || _run_ind == 22 || _run_ind == 23 || _run_ind == 24 || _run_ind == 31) {
+					img_feedback_correct.x = 500;
+				}
+				// set y lower for labs 3 and 4
+				if (_run_ind == 13 || _run_ind == 14 || _run_ind == 15 || _run_ind == 16 || _run_ind == 17 || _run_ind == 18 || _run_ind == 19 || _run_ind == 20 || _run_ind == 21 || _run_ind == 22 || _run_ind == 23 || _run_ind == 24) {
+					img_feedback_correct.y = 525;
+				} else {
+					img_feedback_correct.y = 475;
+				}
 				game_screen.addChild(img_feedback_correct);
 				
 			}
@@ -2032,8 +2343,20 @@ class Main extends Sprite
 				_score = Std.int(_score - B_reward);
 				scoreField.text = 'Score: $_score';
 				
-				img_feedback_wrong.x = 1325;
-				img_feedback_wrong.y = 475;
+				// set up x coordinate depending on lab background (due to differences in notepad design)
+				if (_run_ind == 1 || _run_ind == 2 || _run_ind == 3 || _run_ind == 4 || _run_ind == 5 || _run_ind == 6 || _run_ind == 25 || _run_ind == 26 || _run_ind == 27 || _run_ind == 28 || _run_ind == 29 || _run_ind == 30) {
+					img_feedback_wrong.x = 1325;
+				} else if (_run_ind == 7 || _run_ind == 8 || _run_ind == 9 || _run_ind == 10 || _run_ind == 11 || _run_ind == 12) {
+					img_feedback_wrong.x = 1285;
+				} else if (_run_ind == 13 || _run_ind == 14 || _run_ind == 15 || _run_ind == 16 || _run_ind == 17 || _run_ind == 18 || _run_ind == 19 || _run_ind == 20 || _run_ind == 21 || _run_ind == 22 || _run_ind == 23 || _run_ind == 24 || _run_ind == 31) {
+					img_feedback_wrong.x = 1300;
+				}
+				// set y lower for labs 3 and 4
+				if (_run_ind == 13 || _run_ind == 14 || _run_ind == 15 || _run_ind == 16 || _run_ind == 17 || _run_ind == 18 || _run_ind == 19 || _run_ind == 20 || _run_ind == 21 || _run_ind == 22 || _run_ind == 23 || _run_ind == 24) {
+					img_feedback_wrong.y = 525;
+				} else {
+					img_feedback_wrong.y = 475;
+				}
 				game_screen.addChild(img_feedback_wrong);
 				
 			}
@@ -2041,23 +2364,27 @@ class Main extends Sprite
 		
 		} else {
 			correct_choice = 'B';
-			
-			/*//this.removeChild(circle_selection);
-			Lib.current.stage.removeChild(circle_selection);
-			circle_selection = new Selection_Circle(circle_colors_B[_run_ind]);
-			circle_selection.x = stageScaleX*Std.int(NOMINAL_WIDTH / 2);
-			circle_selection.y = stageScaleY*Std.int(NOMINAL_HEIGHT / 2);
-			//this.addChild(circle_selection);
-			Lib.current.stage.addChild(circle_selection);*/
-						
+									
 			// If the winning option was selected add reward to score and update score field
 			if (drug_choice == 'B') {
 				
 				_score = _score + B_reward;
 				scoreField.text = 'Score: $_score';
 				
-				img_feedback_correct.x = 1325;
-				img_feedback_correct.y = 475;
+				// set up x coordinate depending on lab background (due to differences in notepad design)
+				if (_run_ind == 1 || _run_ind == 2 || _run_ind == 3 || _run_ind == 4 || _run_ind == 5 || _run_ind == 6 || _run_ind == 25 || _run_ind == 26 || _run_ind == 27 || _run_ind == 28 || _run_ind == 29 || _run_ind == 30) {
+					img_feedback_correct.x = 1325;
+				} else if (_run_ind == 7 || _run_ind == 8 || _run_ind == 9 || _run_ind == 10 || _run_ind == 11 || _run_ind == 12) {
+					img_feedback_correct.x = 1285;
+				} else if (_run_ind == 13 || _run_ind == 14 || _run_ind == 15 || _run_ind == 16 || _run_ind == 17 || _run_ind == 18 || _run_ind == 19 || _run_ind == 20 || _run_ind == 21 || _run_ind == 22 || _run_ind == 23 || _run_ind == 24 || _run_ind == 31) {
+					img_feedback_correct.x = 1300;
+				}
+				// set y lower for labs 3 and 4
+				if (_run_ind == 13 || _run_ind == 14 || _run_ind == 15 || _run_ind == 16 || _run_ind == 17 || _run_ind == 18 || _run_ind == 19 || _run_ind == 20 || _run_ind == 21 || _run_ind == 22 || _run_ind == 23 || _run_ind == 24) {
+					img_feedback_correct.y = 525;
+				} else {
+					img_feedback_correct.y = 475;
+				}
 				game_screen.addChild(img_feedback_correct);
 				
 			}
@@ -2068,8 +2395,20 @@ class Main extends Sprite
 				_score = _score - A_reward;
 				scoreField.text = 'Score: $_score';
 				
-				img_feedback_wrong.x = 525;
-				img_feedback_wrong.y = 475;
+				// set up x coordinate depending on lab background (due to differences in notepad design)
+				if (_run_ind == 1 || _run_ind == 2 || _run_ind == 3 || _run_ind == 4 || _run_ind == 5 || _run_ind == 6 || _run_ind == 25 || _run_ind == 26 || _run_ind == 27 || _run_ind == 28 || _run_ind == 29 || _run_ind == 30) {
+					img_feedback_wrong.x = 525;
+				} else if (_run_ind == 7 || _run_ind == 8 || _run_ind == 9 || _run_ind == 10 || _run_ind == 11 || _run_ind == 12) {
+					img_feedback_wrong.x = 485;
+				} else if (_run_ind == 13 || _run_ind == 14 || _run_ind == 15 || _run_ind == 16 || _run_ind == 17 || _run_ind == 18 || _run_ind == 19 || _run_ind == 20 || _run_ind == 21 || _run_ind == 22 || _run_ind == 23 || _run_ind == 24 || _run_ind == 31) {
+					img_feedback_wrong.x = 500;
+				}
+				// set y lower for labs 3 and 4
+				if (_run_ind == 13 || _run_ind == 14 || _run_ind == 15 || _run_ind == 16 || _run_ind == 17 || _run_ind == 18 || _run_ind == 19 || _run_ind == 20 || _run_ind == 21 || _run_ind == 22 || _run_ind == 23 || _run_ind == 24) {
+					img_feedback_wrong.y = 525;
+				} else {
+					img_feedback_wrong.y = 475;
+				}
 				game_screen.addChild(img_feedback_wrong);
 				
 			}
@@ -2166,8 +2505,28 @@ class Main extends Sprite
 		
 		//Initialise probabilities using a gaussian random walk if a new round has been started
 		if (_trial_ind == 1) {
-		
-			probA = generateRandomWalk();
+			
+			rgw_qc = false;
+			
+			// redraw random walks until the average sum of absolute differences in probabilities is between 0.4 and 0.5
+			while (rgw_qc == false) {
+			
+				probA = generateRandomWalk();
+				trace(avg_sum_abs_differences);
+			
+				if (avg_sum_abs_differences >= 0.4 && avg_sum_abs_differences <= 0.5) {
+					
+					rgw_qc = true;
+					
+				} else {
+					
+					untyped probA.length = 0;
+					
+				}
+				
+				avg_sum_abs_differences = 0;
+			
+			}
 			
 		}
 		

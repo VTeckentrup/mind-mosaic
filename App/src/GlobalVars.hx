@@ -10,7 +10,10 @@ import openfl.display.Sprite;
 
 class GlobalVars
 {
-    // general settings
+    // maintenance
+	public static var debug_mode:String = "off";
+	
+	// general settings
 	public static var trials:Int = 150;
 	public static var runs:Int = 31;
 	
@@ -72,7 +75,7 @@ class GlobalVars
 	public static var _item_28:Int;
 	public static var _item_29:Int;
 	public static var _item_30:Int;
-	public static var _app_version:String = "0.0.1";
+	public static var _app_version:String = "0.0.2";
 	public static var _num_runs_played:Int;
 	public static var _timestamp_last_run:String;
 		// user info
@@ -162,7 +165,9 @@ class GlobalVars
 	// button images
 	public static var menu_button_array: Array<Bitmap> = [];
 
-
+	// Random walk quality control
+	public static var avg_sum_abs_differences:Float;
+	public static var rgw_qc:Bool;
 	
 	// color code array for feedback circle
 	public static var circle_colors_A: Array<Int> = [];
@@ -170,6 +175,7 @@ class GlobalVars
 	
 	// questionnaire items
 	public static var questionnaire_items:Array<String> = [];
+	public static var anchors_likert:Array<String> = [];
 	public static var quest_slider:HSlider;
 	
 	// instruction numbering

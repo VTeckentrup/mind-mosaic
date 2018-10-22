@@ -3,16 +3,18 @@
 	<!-- NMML reference: https://gist.github.com/1763850 -->
 	
 	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
-	<meta title="Influenca" package="com.neuroMADLAB.Influenca" version="1.0.0" company="neuroMADLAB" />
+	<meta title="Influenca" package="com.neuroMADLAB.Influenca" version="0.0.2" company="neuroMADLAB" />
 	
 	<!-- output -->
-	<app main="Main" package="com.neuroMADLAB.Influenca" version="1.0.0" company="neuroMADLAB" title="Influenca"  file="Influenca" path="bin" />
+	<app main="Main" package="com.neuroMADLAB.Influenca" version="0.0.2" company="neuroMADLAB" title="Influenca"  file="Influenca" path="bin" />
 	
-	<window background="#000000" fps="60" />
+	<window background="#000000" />
 	<!-- <window width="1600" height="900" unless="mobile" /> -->
 	<!-- <window orientation="landscape" vsync="false" antialiasing="0" if="cpp" /> -->
 	<!-- <window fullscreen="true" /> -->
-	<window width="1920" height="1080" />
+	<window width="1920" height="1080" unless="mobile" />
+	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" />
+
 	
 	<!-- classpath, haxe libs -->
 	<source path="src" />
@@ -25,7 +27,25 @@
 	<haxelib name="random" />
 	
 	<!-- assets -->
-	<icon path="assets/openfl.svg" />
+	<icon path="assets/influenca.svg" embed="true" />
+    <!--<icon path="assets/influenca.svg" size="24" embed="true" />
+    <icon path="assets/influenca.svg" size="32" embed="true" />
+    <icon path="assets/influenca.svg" size="40" embed="true" />
+    <icon path="assets/influenca.svg" size="48" embed="true" />
+    <icon path="assets/influenca.svg" size="64" embed="true" />
+    <icon path="assets/influenca.svg" size="96" embed="true" />
+    <icon path="assets/influenca.svg" size="128" embed="true" />
+    <icon path="assets/influenca.svg" size="256" embed="true" /> -->
+	
+	<!--<icon path="assets/Influenca.png" size="16" embed="true" />
+    <icon path="assets/Influenca.png" size="24" embed="true" />
+    <icon path="assets/Influenca.png" size="32" embed="true" />
+    <icon path="assets/Influenca.png" size="40" embed="true" />
+    <icon path="assets/Influenca.png" size="48" embed="true" />
+    <icon path="assets/Influenca.png" size="64" embed="true" />
+    <icon path="assets/Influenca.png" size="96" embed="true" />
+    <icon path="assets/Influenca.png" size="128" embed="true" />
+    <icon path="assets/Influenca.png" size="256" embed="true" /> -->
 	
 	<!-- load and embed assets from img folder -->
 	<assets if="mobile" path="assets/img" rename="img" embed="false" />
