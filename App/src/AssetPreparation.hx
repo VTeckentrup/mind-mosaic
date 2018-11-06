@@ -60,12 +60,12 @@ class AssetPreparation {
 		anchors_likert[11] = "4-8h";
 		anchors_likert[12] = "> 8h";
 		
-		anchors_likert[13] = "< 10 min";
-		anchors_likert[14] = "10-15 min";
-		anchors_likert[15] = "15-20 min";
-		anchors_likert[16] = "20-25 min";
-		anchors_likert[17] = "25-30 min";
-		anchors_likert[18] = "> 30 min";
+		anchors_likert[13] = "< 20 min";
+		anchors_likert[14] = "20-45 min";
+		anchors_likert[15] = "45-70 min";
+		anchors_likert[16] = "70-95 min";
+		anchors_likert[17] = "95-120 min";
+		anchors_likert[18] = "> 2h";
 		
 	}
 	
@@ -200,6 +200,19 @@ class AssetPreparation {
 			notepad_array_B[i] = AssetPreparation.loadImage(imgpath_str);
 			
 		}
+		
+	}
+	
+	
+	static public function getScoreBoards() {
+		
+		//for (i in 0...6) {
+			
+			//var imgpath_str = "img/notepad_" + Std.string(i+1) + ".png";
+			var imgpath_str = "img/scoreboard_lab_3.png";
+			scoreboard_array[0] = AssetPreparation.loadImage(imgpath_str);
+			
+		//}
 		
 	}
 	

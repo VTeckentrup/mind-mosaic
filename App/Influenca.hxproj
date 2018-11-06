@@ -26,11 +26,11 @@
     <class path="C:\HaxeToolkit\haxe\lib\random\1,4,1\src" />
     <class path="src" />
     <class path="assets" />
-    <class path="bin\android\haxe" />
+    <class path="bin\windows\haxe" />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="lime=7.1.1&#xA;actuate=1.8.7&#xA;record-macros=1.0.0-alpha&#xA;haxeui-openfl=0.0.2&#xA;haxeui-core=0.0.4&#xA;hscript=2.3.0&#xA;openfl=8.6.0&#xA;random=1.4.1&#xA;lime-harfbuzz&#xA;lime-openal&#xA;tools=7.1.1&#xA;lime-cairo&#xA;no-compilation&#xA;native&#xA;lime-opengles&#xA;lime-curl&#xA;lime-native&#xA;lime-vorbis&#xA;openfl-native&#xA;lime-cffi&#xA;android&#xA;mobile&#xA;android&#xA;android-9" />
+    <option directives="lime=7.1.1&#xA;actuate=1.8.7&#xA;record-macros=1.0.0-alpha&#xA;haxeui-openfl=0.0.2&#xA;haxeui-core=0.0.4&#xA;hscript=2.3.0&#xA;openfl=8.6.0&#xA;random=1.4.1&#xA;lime-harfbuzz&#xA;lime-openal&#xA;tools=7.1.1&#xA;lime-cairo&#xA;lime-opengl&#xA;no-compilation&#xA;native&#xA;lime-curl&#xA;lime-native&#xA;lime-vorbis&#xA;openfl-native&#xA;lime-cffi&#xA;windows&#xA;desktop" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
@@ -58,9 +58,7 @@ c:\windows\system32\cmd.exe /c copy "C:\HaxeToolkit\neko\gcmt-dll.dll" "$(Output
 c:\windows\system32\cmd.exe /c copy "C:\HaxeToolkit\neko\neko.dll" "$(OutputDir)\bin\neko\bin\"
 c:\windows\system32\cmd.exe /c copy "C:\HaxeToolkit\neko\regexp.ndll" "$(OutputDir)\bin\neko\bin\"
 c:\windows\system32\cmd.exe /c copy "C:\HaxeToolkit\neko\std.ndll" "$(OutputDir)\bin\neko\bin\"
-c:\windows\system32\cmd.exe /c copy "C:\HaxeToolkit\neko\zlib.ndll" "$(OutputDir)\bin\neko\bin\"
-c:\windows\system32\cmd.exe /c C:\"Program Files"\7-Zip\7z a -tzip "$(OutputDir)\bin\neko\bin\Influenca.zip" "$(OutputDir)\bin\neko\bin\*" "$(OutputDir)\Influenca_Cleaner.bat"
-c:\windows\system32\cmd.exe /c copy "$(OutputDir)\bin\neko\bin\Influenca.zip" "$(OutputDir)\"</postBuildCommand>
+c:\windows\system32\cmd.exe /c copy "C:\HaxeToolkit\neko\zlib.ndll" "$(OutputDir)\bin\neko\bin\"</postBuildCommand>
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="False" />

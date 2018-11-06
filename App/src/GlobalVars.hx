@@ -25,7 +25,10 @@ class GlobalVars
 	public static var db_address:String = "http://www.google.com";
 	public static var db_port:Int = 8080;
 	public static var trial_entry_list;
+	public static var trial_entry;
 	public static var run_entry_list;
+	public static var run_entry;
+	public static var trial_timestamps: Array<Float> = [];
 		// trial level
 	public static var _id:Int;
 	public static var _trial_ind:Int;
@@ -45,36 +48,36 @@ class GlobalVars
 	public static var _device_os:String;
 		// run level
 	public static var _global_score:Int;
-	public static var _item_1:Int;
-	public static var _item_2:Int;
-	public static var _item_3:Int;
-	public static var _item_4:Int;
-	public static var _item_5:Int;
-	public static var _item_6:Int;
-	public static var _item_7:Int;
-	public static var _item_8:Int;
-	public static var _item_9:Int;
-	public static var _item_10:Int;
-	public static var _item_11:Int;
-	public static var _item_12:Int;
-	public static var _item_13:Int;
-	public static var _item_14:Int;
-	public static var _item_15:Int;
-	public static var _item_16:Int;
-	public static var _item_17:Int;
-	public static var _item_18:Int;
-	public static var _item_19:Int;
-	public static var _item_20:Int;
-	public static var _item_21:Int;
-	public static var _item_22:Int;
-	public static var _item_23:Int;
-	public static var _item_24:Int;
-	public static var _item_25:Int;
-	public static var _item_26:Int;
-	public static var _item_27:Int;
-	public static var _item_28:Int;
-	public static var _item_29:Int;
-	public static var _item_30:Int;
+	public static var _item_1:Null<Int>;
+	public static var _item_2:Null<Int>;
+	public static var _item_3:Null<Int>;
+	public static var _item_4:Null<Int>;
+	public static var _item_5:Null<Int>;
+	public static var _item_6:Null<Int>;
+	public static var _item_7:Null<Int>;
+	public static var _item_8:Null<Int>;
+	public static var _item_9:Null<Int>;
+	public static var _item_10:Null<Int>;
+	public static var _item_11:Null<Int>;
+	public static var _item_12:Null<Int>;
+	public static var _item_13:Null<Int>;
+	public static var _item_14:Null<Int>;
+	public static var _item_15:Null<Int>;
+	public static var _item_16:Null<Int>;
+	public static var _item_17:Null<Int>;
+	public static var _item_18:Null<Int>;
+	public static var _item_19:Null<Int>;
+	public static var _item_20:Null<Int>;
+	public static var _item_21:Null<Int>;
+	public static var _item_22:Null<Int>;
+	public static var _item_23:Null<Int>;
+	public static var _item_24:Null<Int>;
+	public static var _item_25:Null<Int>;
+	public static var _item_26:Null<Int>;
+	public static var _item_27:Null<Int>;
+	public static var _item_28:Null<Int>;
+	public static var _item_29:Null<Int>;
+	public static var _item_30:Null<Int>;
 	public static var _app_version:String = "0.0.2";
 	public static var _num_runs_played:Int;
 	public static var _timestamp_last_run:String;
@@ -134,6 +137,8 @@ class GlobalVars
 	// notepad array
 	public static var notepad_array_A:Array < Bitmap> = [];
 	public static var notepad_array_B:Array < Bitmap> = [];
+	// scoreboard array
+	public static var scoreboard_array:Array < Bitmap> = [];
 	//pathogen array
 	public static var pathogen_array:Array<Bitmap> = [];
 	

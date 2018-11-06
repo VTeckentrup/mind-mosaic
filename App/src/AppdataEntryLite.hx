@@ -94,6 +94,38 @@ class AppdataEntryLite
 
 		// Close the connection
         litecnx.close();
+		
+		// Clear item entries
+		_item_1 = null;
+		_item_2 = null;
+		_item_3 = null;
+		_item_4 = null;
+		_item_5 = null;
+		_item_6 = null;
+		_item_7 = null;
+		_item_8 = null;
+		_item_9 = null;
+		_item_10 = null;
+		_item_11 = null;
+		_item_12 = null;
+		_item_13 = null;
+		_item_14 = null;
+		_item_15 = null;
+		_item_16 = null;
+		_item_17 = null;
+		_item_18 = null;
+		_item_19 = null;
+		_item_20 = null;
+		_item_21 = null;
+		_item_22 = null;
+		_item_23 = null;
+		_item_24 = null;
+		_item_25 = null;
+		_item_26 = null;
+		/*_item_27 = null;
+		_item_28 = null;
+		_item_29 = null;
+		_item_30 = null;*/
 
     }
 	
@@ -117,7 +149,7 @@ class AppdataEntryLite
 		app_run.item_11 = _item_11;
 		app_run.item_12 = _item_12;
 		app_run.item_13 = _item_13;
-		/*app_run.item_14 = _item_14;
+		app_run.item_14 = _item_14;
 		app_run.item_15 = _item_15;
 		app_run.item_16 = _item_16;
 		app_run.item_17 = _item_17;
@@ -130,7 +162,7 @@ class AppdataEntryLite
 		app_run.item_24 = _item_24;
 		app_run.item_25 = _item_25;
 		app_run.item_26 = _item_26;
-		app_run.item_27 = _item_27;
+		/*app_run.item_27 = _item_27;
 		app_run.item_28 = _item_28;
 		app_run.item_29 = _item_29;
 		app_run.item_30 = _item_30;*/
@@ -145,7 +177,7 @@ class AppdataEntryLite
 	
 	
 	
-	static public function modifyLiteTrialEntry (mod_time:Float)
+	static public function modifyLiteTrialEntry (timestamps:Array<Float>)
 	{
 		
 		// Generate SQLite connection
@@ -155,41 +187,25 @@ class AppdataEntryLite
 		// Connect and initialize manager
 		sys.db.Manager.cnx = litecnx;
 		sys.db.Manager.initialize();
-			
-		// Retrieve list of all entries related to the current run in the SQLite database
-		trial_entry_list = AppDataTrial.manager.search($run_ind == _run_ind);
 		
-		for (entries in 0...trial_entry_list.length) {
+		// Loop through all trials
+		for (entries in 1...trials+1) {
 			
-			// Retrieve SQLite entry from generated list and convert back to date
-			var entry_item = trial_entry_list.pop();
-			var entry_item_str = entry_item.toString();
-			var entry_item_str_mod = StringTools.replace(entry_item_str, "app_data_trial(subject_id_app:" + _id + ",timestamp:", "");
-			var entry_item_str_mod2 = StringTools.replace(entry_item_str_mod, ")", "");
-			var entry_time = Std.parseFloat(entry_item_str_mod2);
-			//var entry_time = Date.fromString(entry_item_str_mod2);
+			// Fetch entry according to trial timestamp in array
+			trial_entry = AppDataTrial.manager.get({subject_id_app: _id, timestamp: timestamps[entries]});
 			
-			if (entry_time >= mod_time){
-			
-				// Fetch entry from list
-				var app_trial = AppDataTrial.manager.get({subject_id_app: _id, timestamp: entry_time});
+			// Change run_finished entry
+			trial_entry.run_finished = 1;
 				
-				// Change run_finished entry
-				app_trial.run_finished = 1;
-				
-				// Update entry in SQLite database
-				app_trial.update();
-				
-			}
+			// Update entry in SQLite database
+			trial_entry.update();
 			
-		}
+		}		
 			
 		// Clean-up and close connection
 		sys.db.Manager.cleanup();
 		litecnx.close();
 		
 	}
-
-    
 
 }

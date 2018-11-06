@@ -3,10 +3,10 @@
 	<!-- NMML reference: https://gist.github.com/1763850 -->
 	
 	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
-	<meta title="Influenca" package="com.neuroMADLAB.Influenca" version="0.0.2" company="neuroMADLAB" />
+	<meta title="Influenca" company="neuroMADLAB" file="Influenca" package="com.neuroMADLAB.Influenca" version="0.0.2" />
 	
 	<!-- output -->
-	<app main="Main" package="com.neuroMADLAB.Influenca" version="0.0.2" company="neuroMADLAB" title="Influenca"  file="Influenca" path="bin" />
+	<app main="Main" title="Influenca" company="neuroMADLAB" file="Influenca" path="bin" package="com.neuroMADLAB.Influenca" version="0.0.2" />
 	
 	<window background="#000000" />
 	<!-- <window width="1600" height="900" unless="mobile" /> -->
@@ -14,6 +14,9 @@
 	<!-- <window fullscreen="true" /> -->
 	<window width="1920" height="1080" unless="mobile" />
 	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" />
+	
+	<!-- Android specific settings -->
+	<android target-sdk-version="28" install-location="preferExternal" if="android" />
 
 	
 	<!-- classpath, haxe libs -->

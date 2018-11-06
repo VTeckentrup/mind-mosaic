@@ -56,6 +56,7 @@ class Main extends Sprite
 	private var slot_machine_green:Machine_green;
 	private var NotepadA:NotepadLeft;
 	private var NotepadB:NotepadRight;
+	private var Score_Board:ScoreBoard;
 	private var SyringeA:Syringe;
 	private var SyringeB:Syringe;
 	
@@ -944,13 +945,13 @@ class Main extends Sprite
 			box_container = new HBox();
 			box_container.x = stageScaleX*550;
 			box_container.y = stageScaleY * 550;
-			
-			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 40, 0xFFFFFF, true);
+						
+			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 50, 0xFFFFFF, true);
 			rbFormat.align = TextFormatAlign.LEFT;
 			
 			var anchor_left = new TextField();
-			anchor_left.width = 200;
-			anchor_left.height = 200;
+			anchor_left.width = 300;
+			anchor_left.height = 300;
 			anchor_left.y = 570;
 			anchor_left.x = 250;
 			anchor_left.defaultTextFormat = rbFormat;
@@ -958,8 +959,8 @@ class Main extends Sprite
 			questionnaire_screen.addChild(anchor_left);
 			
 			var anchor_right = new TextField();
-			anchor_right.width = 200;
-			anchor_right.height = 200;
+			anchor_right.width = 300;
+			anchor_right.height = 300;
 			anchor_right.y = 570;
 			anchor_right.x = 1500;
 			anchor_right.defaultTextFormat = rbFormat;
@@ -968,7 +969,7 @@ class Main extends Sprite
 			
 			quest_slider = new HSlider();
 			#if mobile
-			quest_slider.resizeComponent(stageScale * 400, stageScale * 100);
+			quest_slider.resizeComponent(stageScale * 400, stageScale * 50);
 			#else
 			quest_slider.resizeComponent(stageScale * 800, stageScale * 100);
 			#end
@@ -1014,15 +1015,10 @@ class Main extends Sprite
 			
 			// UI elements
 			box_container = new HBox();
-			#if mobile
-			box_container.x = stageScaleX*50;
+			box_container.x = stageScaleX*70;
 			box_container.y = stageScaleY * 570;
-			#else
-			box_container.x = stageScaleX*100;
-			box_container.y = stageScaleY * 570;
-			#end
 			
-			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 40, 0xFFFFFF, true);
+			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 50, 0xFFFFFF, true);
 			rbFormat.align = TextFormatAlign.LEFT;
 			
 			var rb_Likert_Text_1 = new TextField();
@@ -1129,40 +1125,64 @@ class Main extends Sprite
 			
 			Likert_1_rb = new OptionBox();
 			Likert_1_rb.groupName = "LikertRBs";
+			#if mobile
+			Likert_1_rb.height = stageScaleY * 25;
+			Likert_1_rb.width = stageScaleX * 147;
+			#else
 			Likert_1_rb.height = stageScaleY * 50;
 			Likert_1_rb.width = stageScaleX * 295;
+			#end
 			
 			Likert_2_rb = new OptionBox();
 			Likert_2_rb.groupName = "LikertRBs";
+			#if mobile
+			Likert_2_rb.height = stageScaleY * 25;
+			Likert_2_rb.width = stageScaleX * 147;
+			#else
 			Likert_2_rb.height = stageScaleY * 50;
 			Likert_2_rb.width = stageScaleX * 295;
+			#end
 			
 			Likert_3_rb = new OptionBox();
 			Likert_3_rb.groupName = "LikertRBs";
+			#if mobile
+			Likert_3_rb.height = stageScaleY * 25;
+			Likert_3_rb.width = stageScaleX * 147;
+			#else
 			Likert_3_rb.height = stageScaleY * 50;
 			Likert_3_rb.width = stageScaleX * 295;
+			#end
 			
 			Likert_4_rb = new OptionBox();
 			Likert_4_rb.groupName = "LikertRBs";
+			#if mobile
+			Likert_4_rb.height = stageScaleY * 25;
+			Likert_4_rb.width = stageScaleX * 147;
+			#else
 			Likert_4_rb.height = stageScaleY * 50;
 			Likert_4_rb.width = stageScaleX * 295;
+			#end
 			
 			Likert_5_rb = new OptionBox();
 			Likert_5_rb.groupName = "LikertRBs";
+			#if mobile
+			Likert_5_rb.height = stageScaleY * 25;
+			Likert_5_rb.width = stageScaleX * 147;
+			#else
 			Likert_5_rb.height = stageScaleY * 50;
 			Likert_5_rb.width = stageScaleX * 295;
+			#end
 			
 			Likert_6_rb = new OptionBox();
 			Likert_6_rb.groupName = "LikertRBs";
+			#if mobile
+			Likert_6_rb.height = stageScaleY * 25;
+			Likert_6_rb.width = stageScaleX * 147;
+			#else
 			Likert_6_rb.height = stageScaleY * 50;
 			Likert_6_rb.width = stageScaleX * 295;
+			#end
 			
-			/*Likert_1_rb.registerEvent(UIEvent.CHANGE, activateButton);
-			Likert_2_rb.registerEvent(UIEvent.CHANGE, activateButton);
-			Likert_3_rb.registerEvent(UIEvent.CHANGE, activateButton);
-			Likert_4_rb.registerEvent(UIEvent.CHANGE, activateButton);
-			Likert_5_rb.registerEvent(UIEvent.CHANGE, activateButton);
-			Likert_6_rb.registerEvent(UIEvent.CHANGE, activateButton);*/
 			box_container.addEventListener(MouseEvent.CLICK, activateButtonClick);
 			
 			box_container.addComponent(Likert_1_rb);
@@ -1206,10 +1226,10 @@ class Main extends Sprite
 			
 			// UI elements
 			box_container = new HBox();
-			box_container.x = stageScaleX*690;
+			box_container.x = stageScaleX*660;
 			box_container.y = stageScaleY*570;
 			
-			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 40, 0xFFFFFF, true);
+			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 50, 0xFFFFFF, true);
 			rbFormat.align = TextFormatAlign.LEFT;
 			
 			var rb_text_yes = new TextField();
@@ -1232,16 +1252,23 @@ class Main extends Sprite
 			
 			yes_rb = new OptionBox();
 			yes_rb.groupName = "questRBs";
+			#if mobile
+			yes_rb.height = stageScaleY*25;
+			yes_rb.width = stageScaleX*210;
+			#else
 			yes_rb.height = stageScaleY*50;
 			yes_rb.width = stageScaleX*420;
+			#end
 			
 			no_rb = new OptionBox();
 			no_rb.groupName = "questRBs";
+			#if mobile
+			no_rb.height = stageScaleY*25;
+			no_rb.width = stageScaleX*210;
+			#else
 			no_rb.height = stageScaleY*50;
 			no_rb.width = stageScaleX*420;
-			
-			/*yes_rb.registerEvent(UIEvent.CHANGE, activateButton);
-			no_rb.registerEvent(UIEvent.CHANGE, activateButton);*/
+			#end
 			
 			box_container.addEventListener(MouseEvent.CLICK, activateButtonClick);
 			
@@ -1282,10 +1309,10 @@ class Main extends Sprite
 			
 			// UI elements
 			box_container = new HBox();
-			box_container.x = stageScaleX*220;
+			box_container.x = stageScaleX*190;
 			box_container.y = stageScaleY*570;
 			
-			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 40, 0xFFFFFF, true);
+			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 50, 0xFFFFFF, true);
 			rbFormat.align = TextFormatAlign.LEFT;
 			
 			var rb_text_yes = new TextField();
@@ -1307,31 +1334,44 @@ class Main extends Sprite
 			questionnaire_screen.addChild(rb_text_no);
 			
 			var rb_text_notyet = new TextField();
-			rb_text_notyet.width = 200;
+			rb_text_notyet.width = 800;
 			rb_text_notyet.height = 200;
-			rb_text_notyet.y = 570;
+			rb_text_notyet.y = 550;
 			rb_text_notyet.x = 1140;
 			rb_text_notyet.defaultTextFormat = rbFormat;
-			rb_text_notyet.text = "Noch nicht, aber ich werde es tun";
+			rb_text_notyet.multiline = true;
+			rb_text_notyet.text = "Noch nicht,\naber ich werde es tun";
 			questionnaire_screen.addChild(rb_text_notyet);
 			
 			yes_rb = new OptionBox();
 			yes_rb.groupName = "questRBs";
+			#if mobile
+			yes_rb.height = stageScaleY*25;
+			yes_rb.width = stageScaleX*210;
+			#else
 			yes_rb.height = stageScaleY*50;
 			yes_rb.width = stageScaleX*420;
+			#end
 			
 			no_rb = new OptionBox();
 			no_rb.groupName = "questRBs";
+			#if mobile
+			no_rb.height = stageScaleY*25;
+			no_rb.width = stageScaleX*210;
+			#else
 			no_rb.height = stageScaleY*50;
-			no_rb.width = stageScaleX * 420;
+			no_rb.width = stageScaleX*420;
+			#end
 			
 			notyet_rb = new OptionBox();
 			notyet_rb.groupName = "questRBs";
+			#if mobile
+			notyet_rb.height = stageScaleY*25;
+			notyet_rb.width = stageScaleX*210;
+			#else
 			notyet_rb.height = stageScaleY*50;
 			notyet_rb.width = stageScaleX*420;
-			
-			/*yes_rb.registerEvent(UIEvent.CHANGE, activateButton);
-			no_rb.registerEvent(UIEvent.CHANGE, activateButton);*/
+			#end
 			
 			box_container.addEventListener(MouseEvent.CLICK, activateButtonClick);
 			
@@ -1372,7 +1412,6 @@ class Main extends Sprite
 		// write out value from questionnaire item
 		if (item_counter == 1) {
 			_item_1 = quest_slider.value;
-			trace(_item_1);
 		} else if (item_counter == 2) {
 			_item_2 = quest_slider.value;
 		} else if (item_counter == 3) {
@@ -1893,28 +1932,18 @@ class Main extends Sprite
 			haxe.Timer.delay(function() {MainGame(); }, 1000);
 		}
 	}
-	// you need this function because in the Timer.delay the inserted
-	//function need to be void but drawQuestionnaireScreen is not void
-	//function afterPathogen(){
-	//	drawQuestionnaireScreen("scale");
-	//}
+	
+	
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-//%%%%%%%%%%INITIATION FUNCTION%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//%%%%%%%%%%INIT FUNCTION%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	function init() 
 	{
 
 		if (inited) return;
 		inited = true;
 
-		/*// Set up keys to select option: usually in init function 
-		keys = [];
-		stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-		stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);*/
-		
-		// Listen for input
-		//this.addEventListener(Event.ENTER_FRAME, everyFrame);
-		
+				
 		// Listen for exit events and attach sync functions to exit handler
 		ExitHandler.setExitHandler(function() {
 				
@@ -1944,12 +1973,17 @@ class Main extends Sprite
 		AssetPreparation.getPathogens();
 		AssetPreparation.getBackgrounds();
 		AssetPreparation.getNotepads();
+		AssetPreparation.getScoreBoards();
 		AssetPreparation.getSyringes();
 		AssetPreparation.getCircleColors();
 		
 		
 		// Initialize HaxeUI toolkit
 		Toolkit.init();
+		// Add css style rules to increase size of UI components
+		Toolkit.styleSheet.addRules(".hslider .slider-value-background { height: 20px !important; }");
+		Toolkit.styleSheet.addRules(".hslider .slider-button { height: 26px !important; width: 26px !important; }");
+		Toolkit.styleSheet.addRules(".optionbox-value { height: 28px !important; width: 28px !important; }");
 		
 		// Set initial values
 		// Set round index to 0 as it will be increased to 1 in the newRound function
@@ -1971,6 +2005,12 @@ class Main extends Sprite
 		#end
 			
 		_device_os = Capabilities.os;
+
+		//trace(System.applicationStorageDirectory);
+		
+		// Add listeners for active and inactive focus to the stage
+		stage.addEventListener(Event.DEACTIVATE, pause);
+        stage.addEventListener(Event.ACTIVATE, unpause);
 			
 		// Check if user is logged in and retrieve ID
 		login_savepath = Path.join([save_path, login_file]);
@@ -1993,33 +2033,16 @@ class Main extends Sprite
 			log_and_reg();
 			
 		}
-		
-		
-		//getLoginScreen();
-		//createLogInPage();
-		//drawMenuScreen();
-		//MainGame();
-
-
-		
+				
 	}
+	
+	
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
 	/* SETUP */
 	//Entry point of main function: treats it as an object
-	public function new() 
-
-	{
-		//Lib.application.window.x = 0;
-		//Lib.application.window.y = 0;
-		
-		//Lib.application.window.resize(Std.int(Capabilities.screenResolutionX), Std.int(Capabilities.screenResolutionY));
-		
-		
+	public function new() {
 		super();	
-		//addEventListener(Event.ADDED_TO_STAGE, onResize);
-
-		//stage.scaleMode = openfl.display.StageScaleMode.SHOW_ALL;
 		
 		#if flash
         stage.align = untyped "";
@@ -2037,8 +2060,6 @@ class Main extends Sprite
 	}
 
 	private function onResize(e:Event):Void {
-    	//stageScaleX = stage.stageWidth / NOMINAL_WIDTH;
-    	//stageScaleY = stage.stageHeight / NOMINAL_HEIGHT;
 		
 		stageScaleX = Lib.current.stage.window.width / NOMINAL_WIDTH;
     	stageScaleY = Lib.current.stage.window.height / NOMINAL_HEIGHT;
@@ -2057,24 +2078,12 @@ class Main extends Sprite
 		
 	}
 
-	/*// Set keyboard keys actived/deactivated on key press/release
-	private function onKeyDown(evt:KeyboardEvent):Void {
-		keys[evt.keyCode] = true;
-	}
-
-	private function onKeyUp(evt:KeyboardEvent):Void {
-		keys[evt.keyCode] = false;
-	}*/
-
 
 //%%%%%%%%%%%% GAME %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//function that draws the Main Game Screen
-	function MainGame(){
-		trace(_timestamp);
-		//stops game when not zoned in and indicates when focus is back
-		stage.addEventListener(Event.DEACTIVATE, pause);
-        stage.addEventListener(Event.ACTIVATE, unpause);
-		
+	function MainGame() {
+
+		// Remove prior instances of the game screen		
 		this.removeChild(game_screen);
 	
 		//End game Button --> drawMenuScreen
@@ -2089,6 +2098,7 @@ class Main extends Sprite
 		button_end = Button.drawButton("Zurück", Std.int(NOMINAL_WIDTH -150),50, "back");
 		button_end.addEventListener(MouseEvent.CLICK, onClick_end);
 		game_screen.addChild(button_end);
+		
 		// add notepads to game screen
 		NotepadA = new NotepadLeft();
 		NotepadA.x = 350;
@@ -2100,6 +2110,11 @@ class Main extends Sprite
 		NotepadB.y = 250;
 		game_screen.addChild(NotepadB);
 		
+		// add scoreboard to game screen
+		Score_Board = new ScoreBoard();
+		Score_Board.x = 5;
+		Score_Board.y = 10;
+		game_screen.addChild(Score_Board);
 		
 		// Draw score text field
 		var scoreFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 30, 0x000000, true);
@@ -2107,7 +2122,8 @@ class Main extends Sprite
 		
 		scoreField = new TextField();
 		scoreField.width = 600;
-		scoreField.y = NOMINAL_HEIGHT / 60;
+		scoreField.x = 40; 
+		scoreField.y = 50;
 		scoreField.defaultTextFormat = scoreFormat;
 		scoreField.selectable = false;		
 		scoreField.text = 'Score: $_score';
@@ -2119,34 +2135,21 @@ class Main extends Sprite
 		
 		var runField = new TextField();
 		runField.width = 600;
-		runField.y = NOMINAL_HEIGHT / 10;
+		runField.x = 40;
+		runField.y = 150;
 		runField.defaultTextFormat = scoreFormat;
 		runField.selectable = false;		
 		runField.text = 'Level: $_run_ind';
 		game_screen.addChild(runField);
-		
-		
-		/*// Draw city text field	
-		var cityFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 30, 0xbbbbbb, true);
-		scoreFormat.align = TextFormatAlign.RIGHT;
-		
-		cityField = new TextField();
-		addChild(cityField);
-		cityField.width = NOMINAL_WIDTH / 2.2;
-		//cityField.x = 650;
-		cityField.y = NOMINAL_HEIGHT / 60;
-		cityField.defaultTextFormat = scoreFormat;
-		cityField.selectable = false;
-		
-		cityName = "Tübingen";
-		cityField.text = '$cityName';*/
+	
 
 		levelFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 30, 0x000000, true);
 		levelFormat.align = TextFormatAlign.LEFT;
 		
 		levelField = new TextField();
 		levelField.width = 600;
-		levelField.y = NOMINAL_HEIGHT / 20;
+		levelField.x = 40;
+		levelField.y = 100;
 		levelField.defaultTextFormat = levelFormat;
 		levelField.selectable = false;
 		levelField.text = 'Runde: $_trial_ind von $trials';	
@@ -2429,10 +2432,13 @@ class Main extends Sprite
 		// Milisecond precision
 		_timestamp = Sys.time() * 1000.0;
 		
-		// Save timestamp value of first trial to later modify the run_finished column
+		// Write timestamp to array to later modify run_finished marker
+		trial_timestamps[_trial_ind] = _timestamp;
+		
+		/*// Save timestamp value of first trial to later modify the run_finished column
 		if (_trial_ind == 1){
 			modification_start = _timestamp;
-		}
+		}*/
 
 		// Write to database
 		AppdataEntryLite.writeLiteTrialEntry();
@@ -2449,12 +2455,14 @@ class Main extends Sprite
 		if (_trial_ind < trials)
 		{
 			// call function newRound with delay of 300 ms	
-			haxe.Timer.delay(MainGame,500);
+			haxe.Timer.delay(MainGame,300);
 			
 		} else {
 			
 				// modify run_finished entry as run is now finalized
-				AppdataEntryLite.modifyLiteTrialEntry(modification_start);
+				AppdataEntryLite.modifyLiteTrialEntry(trial_timestamps);
+				
+				// Modify number of runs played and according timestamps
 				if (_num_runs_played < 3 && _timestamp_last_run == DateTools.format(Date.now(), "%Y-%m-%d")) {
 					_num_runs_played = _num_runs_played + 1;
 				}
@@ -2463,7 +2471,7 @@ class Main extends Sprite
 					_timestamp_last_run = DateTools.format(Date.now(), "%Y-%m-%d");
 					_num_runs_played = 1;
 				}
-				//haxe.Timer.delay(function() {AppdataEntryLite.modifyLiteTrialEntry(modification_start); }, 2000);
+				
 				// update global score
 				_global_score = _global_score + _score;
 				// save run related info in the database
@@ -2483,10 +2491,9 @@ class Main extends Sprite
 				// remove old game screen
 				this.removeChild(game_screen);
 				// send to gallery
-				haxe.Timer.delay(function() {drawGallery(); }, 1000);
+				haxe.Timer.delay(function() {drawGallery(); }, 500);
 				
 			}
-		//}
 		
 	}
 	
@@ -2551,14 +2558,7 @@ class Main extends Sprite
 		// Grab new reward probabilities
 		reward_prob_A = probA[_trial_ind-1];
 		reward_prob_B = 1 - reward_prob_A;
-		
-		// Reset selection circle
-		/*this.removeChild(circle_selection);
-		circle_selection = new Selection_Circle(0xc7ccd6);
-		circle_selection.x = Std.int(NOMINAL_WIDTH / 2);
-		circle_selection.y = Std.int(NOMINAL_HEIGHT / 2);
-		this.addChild(circle_selection);*/
-		
+				
 		// Set new values for database
 		_p_reward_A = reward_prob_A;
 		_p_reward_B = reward_prob_B;
