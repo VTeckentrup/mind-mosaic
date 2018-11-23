@@ -4,6 +4,15 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
 import haxe.ui.core.UIEvent;
+import openfl.display.DisplayObject;
+import openfl.display.InteractiveObject;
+import openfl.display.Stage;
+import openfl.events.ActivityEvent;
+import openfl.events.EventDispatcher;
+import openfl.events.FocusEvent;
+import openfl.events.GameInputEvent;
+import openfl.events.KeyboardEvent;
+import openfl.events.TouchEvent;
 import openfl.text.TextField;
 import haxe.ui.components.OptionBox;
 import haxe.ui.containers.HBox;
@@ -24,6 +33,7 @@ import haxe.ui.Toolkit;
 import haxe.ui.core.Screen;
 import haxe.ui.components.CheckBox;
 import haxe.ui.components.HSlider;
+import lime.system.System;
 
 enum GameState {
 	
@@ -51,9 +61,7 @@ class Main extends Sprite
 	// Set up array for keys
 	private var keys:Array<Bool>;
 
-	// Definition of slot machine graphic elements
-	private var slot_machine_blue:Machine_blue;
-	private var slot_machine_green:Machine_green;
+	// Definition of game screen graphic elements
 	private var NotepadA:NotepadLeft;
 	private var NotepadB:NotepadRight;
 	private var Score_Board:ScoreBoard;
@@ -62,10 +70,6 @@ class Main extends Sprite
 	
 	// Definition of selection circle graphic element
 	private var circle_selection:Selection_Circle;
-	
-	// Definition of choice frame graphic element
-	private var frame_choice:Choice_Frame;
-	private var frame_choice_side:Int;
 
 	// Define vars for slot machine values and associated text fields
 	private var A_reward:Int;
@@ -148,10 +152,7 @@ class Main extends Sprite
 	private var mailaddress:TextField;
 	private var selectedpw:TextField;
 
-	//represents the level you are in- just for presentation
-	//purpose - needs to be drawn from sheet
-	//private var level:Int=1;
-	//represents an array (length 30) with all pathogens
+	//Gallery - variable for pathogen image spacing
 	private var add:Int;
 	
 	// Setup background graphic
@@ -209,7 +210,7 @@ class Main extends Sprite
 		this.removeChild(menu_screen);
 		drawGallery();
 		button_back = Button.drawButton("Zurück",Std.int(NOMINAL_WIDTH -150),50,"back");
-		button_back.addEventListener(MouseEvent.CLICK, onClick_back);	
+		button_back.addEventListener(MouseEvent.CLICK, onClick_back,false,0,true);	
 		menu_screen.addChild(button_back);
 	}
 	
@@ -217,7 +218,7 @@ class Main extends Sprite
 	public function onClick4 (event: MouseEvent):Void {
 		menu_screen.removeChildren();
 		button_back = Button.drawButton("Zurück",Std.int(NOMINAL_WIDTH -150),50,"back");
-		button_back.addEventListener(MouseEvent.CLICK, onClick_back);
+		button_back.addEventListener(MouseEvent.CLICK, onClick_back,false,0,true);
 		menu_screen.addChild(button_back);
 		//menu_screen.removeChildren();	
 	}
@@ -328,7 +329,7 @@ class Main extends Sprite
 								// Info field: mail address already registered
 								reg_mail_info = new InfoText ("Diese E-Mail Adresse wurde bereits für ein Konto registriert.\nBitte wählen Sie eine andere E-Mail Adresse.");
 								var reg_mail_info_button = reg_mail_info.getChildAt(1);
-								reg_mail_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegMail);
+								reg_mail_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegMail,false,0,true);
 								registration_screen.addChild(reg_mail_info);
 														
 							}
@@ -339,7 +340,7 @@ class Main extends Sprite
 							// Input fields need to be filled
 							reg_entry_info = new InfoText ("Die Eingaben zu E-Mailadresse und Passwort dürfen nicht leer sein.");
 							var reg_entry_info_button = reg_entry_info.getChildAt(1);
-							reg_entry_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegEntry);
+							reg_entry_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegEntry,false,0,true);
 							registration_screen.addChild(reg_entry_info);
 							
 						}
@@ -350,7 +351,7 @@ class Main extends Sprite
 						// Display info text field: consent needs to be given
 						reg_consent_info = new InfoText ("Sie haben im Auswahlkästchen kein Einverständnis\n für Ihre Teilnahme an der Studie gegeben.\n\n Ohne Ihr Einverständnis ist eine Nutzung\n der App leider nicht möglich.");
 						var reg_consent_info_button = reg_consent_info.getChildAt(1);
-						reg_consent_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegConsent);
+						reg_consent_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegConsent,false,0,true);
 						registration_screen.addChild(reg_consent_info);
 						
 					}
@@ -361,7 +362,7 @@ class Main extends Sprite
 			// Display info text field: Internet Connection is necessary
 			reg_inet_info = new InfoText ("Eine Internetverbindung ist zur Registrierung notwendig,\n wurde aber nicht erkannt.\n\n Bitte stellen Sie eine Internetverbindung her.");
 			var reg_inet_info_button = reg_inet_info.getChildAt(1);
-			reg_inet_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegInet);
+			reg_inet_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegInet,false,0,true);
 			registration_screen.addChild(reg_inet_info);
 			
 		}
@@ -430,7 +431,7 @@ class Main extends Sprite
 						// Info field: mail address not yet registered -> send to registration page
 						log_mail_info = new InfoText ("Ein Nutzerkonto mit dieser E-Mail Adresse wurde noch nicht registriert.\nBitte registrieren Sie sich zunächst für ein Konto.");
 						var log_mail_info_button = log_mail_info.getChildAt(1);
-						log_mail_info_button.addEventListener(MouseEvent.CLICK, onClick_reg1);
+						log_mail_info_button.addEventListener(MouseEvent.CLICK, onClick_reg1,false,0,true);
 						login_screen.addChild(log_mail_info);
 						
 					} else if (mail_availability == 1) {
@@ -438,7 +439,7 @@ class Main extends Sprite
 						// Info field: mail address registered, but password incorrect
 						log_password_info = new InfoText ("Das eingegebene Passwort passt nicht zur registrierten E-Mail Adresse.\n");
 						var log_password_info_button = log_password_info.getChildAt(1);
-						log_password_info_button.addEventListener(MouseEvent.CLICK, toggleMessageLogPassw);
+						log_password_info_button.addEventListener(MouseEvent.CLICK, toggleMessageLogPassw,false,0,true);
 						login_screen.addChild(log_password_info);
 						
 					}
@@ -448,7 +449,7 @@ class Main extends Sprite
 					// Input fields need to be filled
 					log_entry_info = new InfoText ("Die Eingaben zu E-Mailadresse und Passwort dürfen nicht leer sein");
 					var log_entry_info_button = log_entry_info.getChildAt(1);
-					log_entry_info_button.addEventListener(MouseEvent.CLICK, toggleMessageLogEntry);
+					log_entry_info_button.addEventListener(MouseEvent.CLICK, toggleMessageLogEntry,false,0,true);
 					login_screen.addChild(log_entry_info);
 					
 				}
@@ -458,7 +459,7 @@ class Main extends Sprite
 				// Display info text field: Internet Connection is necessary
 				log_inet_info = new InfoText ("Eine Internetverbindung ist für den Login notwendig, wurde aber nicht erkannt.\n Bitte stellen Sie eine Internetverbindung her.");
 				var log_inet_info_button = log_inet_info.getChildAt(1);
-				log_inet_info_button.addEventListener(MouseEvent.CLICK, toggleMessageLogInet);
+				log_inet_info_button.addEventListener(MouseEvent.CLICK, toggleMessageLogInet,false,0,true);
 				login_screen.addChild(log_inet_info);
 				
 			}
@@ -517,7 +518,7 @@ class Main extends Sprite
 			this.removeChildren();
 			end_game_info = new InfoText ("Sie haben bereits alle Level erfolgreich beendet.\n In der Galerie können Sie sich ihre Erfolge ansehen.");
 			var end_game_info_button = end_game_info.getChildAt(1);
-			end_game_info_button.addEventListener(MouseEvent.CLICK, toggleMessageEndGame);
+			end_game_info_button.addEventListener(MouseEvent.CLICK, toggleMessageEndGame,false,0,true);
 			this.addChild(end_game_info);
 			
 		} else if (_num_runs_played == 3 && _timestamp_last_run == DateTools.format(Date.now(), "%Y-%m-%d")) {
@@ -525,7 +526,7 @@ class Main extends Sprite
 			this.removeChildren();
 			run_limit_info = new InfoText ("Sie haben heute bereits 3 Level gespielt.\n Weitere Level können erst am nächsten Tag gestartet werden.");
 			var run_limit_info_button = run_limit_info.getChildAt(1);
-			run_limit_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRunLimit);
+			run_limit_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRunLimit,false,0,true);
 			this.addChild(run_limit_info);
 			
 		} else if (_run_ind >= 11 && _keycode_set == 1) {
@@ -559,6 +560,30 @@ class Main extends Sprite
 	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 	//%%%%%%%% REGISTRATION & LOGINS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	function ShiftScreenSoftKeyboardIn(event: FocusEvent):Void {
+		
+		var screenkeyboardrect = stage.softKeyboardRect;
+		var screenkeyboardheight = screenkeyboardrect.height;
+		var inputobject:DisplayObject = event.currentTarget;
+		var inputheight = inputobject.y;
+		
+		if (screenkeyboardheight != 0 && inputheight > (NOMINAL_HEIGHT-screenkeyboardheight)) 
+		{
+			var heightdifference = (inputheight - (NOMINAL_HEIGHT - screenkeyboardheight));
+			//Lib.current.y = ((Lib.current.stage.window.height - NOMINAL_HEIGHT * stageScale) / 2) - heightdifference;
+			Lib.current.y = Lib.current.y - heightdifference;
+		}
+	}
+	
+	function ShiftScreenSoftKeyboardOut(event: FocusEvent):Void {
+		
+		Lib.current.y = (Lib.current.stage.window.height - NOMINAL_HEIGHT * stageScale) / 2;
+		//Lib.current.stage.y = (Lib.current.stage.window.height - NOMINAL_HEIGHT * stageScale) / 2;
+		
+	}
+		
+	
 	//first page that lets you choose between Login and Registration
 	public function log_and_reg(){
 		//global var
@@ -567,8 +592,8 @@ class Main extends Sprite
 		
 		button_log = Button.drawButton("Login",NOMINAL_WIDTH / 2, 400, "menu");
 		button_reg1 = Button.drawButton("Registrierung", NOMINAL_WIDTH / 2, 600, "menu");
-		button_log.addEventListener(MouseEvent.CLICK, onClick_log);
-		button_reg1.addEventListener(MouseEvent.CLICK, onClick_reg1);
+		button_log.addEventListener(MouseEvent.CLICK, onClick_log,false,0,true);
+		button_reg1.addEventListener(MouseEvent.CLICK, onClick_reg1,false,0,true);
 		
 		login_screen.addChild(button_log);
 		login_screen.addChild(button_reg1);
@@ -576,7 +601,7 @@ class Main extends Sprite
 		this.addChild(login_screen);
 		
 	}
-
+	
 	// draw login screen Log-in data & PW
 	public function getLoginScreen(){
 		
@@ -599,6 +624,8 @@ class Main extends Sprite
 		username_info.y = 120;
 		username_info.text = "E-Mail:";
 		username_info.defaultTextFormat = logformat;
+		username_info.selectable = false;
+		username_info.mouseEnabled = false;
 		login_screen.addChild(username_info);
 		
 		var passw_info = new TextField();
@@ -609,6 +636,8 @@ class Main extends Sprite
 		passw_info.y = 420;
 		passw_info.text = "Passwort:";
 		passw_info.defaultTextFormat = logformat;
+		passw_info.selectable = false;
+		passw_info.mouseEnabled = false;
 		login_screen.addChild(passw_info);
 
 		// set up input fields
@@ -624,7 +653,8 @@ class Main extends Sprite
 		// Request software keyboard on devices without hardware keyboard
 		username.needsSoftKeyboard = true;
 		username.requestSoftKeyboard();
-		//username.replaceSelectedText("Benutzername"); //LEADS TO CRASH OF NEKO
+		username.addEventListener(FocusEvent.FOCUS_IN, ShiftScreenSoftKeyboardIn);
+		username.addEventListener(FocusEvent.FOCUS_OUT, ShiftScreenSoftKeyboardOut);
 		login_screen.addChild(username);
 
 
@@ -643,16 +673,18 @@ class Main extends Sprite
 		passw.defaultTextFormat = inputformat;
 		passw.needsSoftKeyboard = true;
 		passw.requestSoftKeyboard();
+		passw.addEventListener(FocusEvent.FOCUS_IN, ShiftScreenSoftKeyboardIn);
+		passw.addEventListener(FocusEvent.FOCUS_OUT, ShiftScreenSoftKeyboardOut);
 		login_screen.addChild(passw);
 
 		//login button
 		button_login = Button.drawButton("Login", NOMINAL_WIDTH / 2, 800, "menu");		
-		button_login.addEventListener(MouseEvent.CLICK, onClick_login);
+		button_login.addEventListener(MouseEvent.CLICK, onClick_login,false,0,true);
 		login_screen.addChild(button_login);
 		
 		//back button
 		button_login_back = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, 950, "menu");		
-		button_login_back.addEventListener(MouseEvent.CLICK, onClick_Log_Back);
+		button_login_back.addEventListener(MouseEvent.CLICK, onClick_Log_Back,false,0,true);
 		login_screen.addChild(button_login_back);
 
 		this.addChild(login_screen);	
@@ -681,6 +713,8 @@ class Main extends Sprite
 		mailaddress_info.y = 120;
 		mailaddress_info.text = "E-Mail:";
 		mailaddress_info.defaultTextFormat = infoformat;
+		mailaddress_info.selectable = false;
+		mailaddress_info.mouseEnabled = false;
 		registration_screen.addChild(mailaddress_info);		
 		
 		var selectedpw_info = new TextField();
@@ -691,6 +725,8 @@ class Main extends Sprite
 		selectedpw_info.y = 320;
 		selectedpw_info.text = "Passwort:";
 		selectedpw_info.defaultTextFormat = infoformat;
+		selectedpw_info.selectable = false;
+		selectedpw_info.mouseEnabled = false;
 		registration_screen.addChild(selectedpw_info);	
 		
 		// set up input fields
@@ -722,36 +758,38 @@ class Main extends Sprite
 		registration_screen.addChild(selectedpw);
 		
 		vbox_container = new VBox();
-		vbox_container.x = stageScaleX*((NOMINAL_WIDTH - 900) / 2);
-		vbox_container.y = stageScaleY*500;
+		vbox_container.x = (NOMINAL_WIDTH - 900) / 2;
+		vbox_container.y = 500;
 				
 		reg_checkbox_consent = new CheckBox();
 		reg_checkbox_consent.id = "consent_cb";
 		reg_checkbox_consent.selected = false;
-		reg_checkbox_consent.height = stageScaleY*80;
-		reg_checkbox_consent.width = stageScaleX * 800;
-		reg_checkbox_consent.text = "Ich bin damit einverstanden, an der Studie teilzunehmen.";
+		reg_checkbox_consent.height = 100;
+		reg_checkbox_consent.text = "Ich bin damit einverstanden, \nan der Studie teilzunehmen.";
+		reg_checkbox_consent.styleNames = "CheckboxFont";
+		Toolkit.styleSheet.addRules(".CheckboxFont { font-size: 40; }");
 		
 		reg_checkbox_contact = new CheckBox();
 		reg_checkbox_contact.id = "contact_cb";
 		reg_checkbox_contact.selected = false;
-		reg_checkbox_contact.height = stageScaleY*80;
-		reg_checkbox_contact.width = stageScaleX * 800;
-		reg_checkbox_contact.text = "Ich bin damit einverstanden, für weitere Studien über meine Emailadresse kontaktiert zu werden.";
+		reg_checkbox_contact.height = 100;
+		reg_checkbox_contact.text = "Ich bin damit einverstanden, für weitere Studien\n über meine Emailadresse kontaktiert zu werden.";
+		reg_checkbox_contact.styleNames = "CheckboxFont";
+		Toolkit.styleSheet.addRules(".CheckboxFont { font-size: 40; }");
 		
 		vbox_container.addComponent(reg_checkbox_consent);
 		vbox_container.addComponent(reg_checkbox_contact);
 		
-		Screen.instance.addComponent(vbox_container);
+		registration_screen.addChild(vbox_container);
 		
 
 		//Enabled only if text is inserted, internet connection available and mail address is not already in the database
 		//Button for Registration
-		button_reg = Button.drawButton("Registrieren",NOMINAL_WIDTH / 2,800,"menu");
-		button_reg.addEventListener(MouseEvent.CLICK, onClick_Reg);
+		button_reg = Button.drawButton("Registrieren",NOMINAL_WIDTH / 2,850,"menu");
+		button_reg.addEventListener(MouseEvent.CLICK, onClick_Reg,false,0,true);
 		
-		button_reg_back = Button.drawButton("Zurück",NOMINAL_WIDTH / 2,950,"menu");
-		button_reg_back.addEventListener(MouseEvent.CLICK, onClick_Reg_Back);
+		button_reg_back = Button.drawButton("Zurück",NOMINAL_WIDTH / 2,1000,"menu");
+		button_reg_back.addEventListener(MouseEvent.CLICK, onClick_Reg_Back,false,0,true);
 		
 		registration_screen.addChild(button_reg);
 		registration_screen.addChild(button_reg_back);
@@ -789,6 +827,8 @@ class Main extends Sprite
 		//keycode_textfield.autoSize = TextFieldAutoSize.CENTER;
 		keycode_textfield.x = (NOMINAL_WIDTH - keycode_textfield.width) / 2;
         keycode_textfield.y = 100;
+		keycode_textfield.selectable = false;
+		keycode_textfield.mouseEnabled = false;
 		keycode_screen.addChild(keycode_textfield);
 		
 		// set up info text field
@@ -800,6 +840,8 @@ class Main extends Sprite
 		keycode_info.y = keycode_textfield.height;
 		keycode_info.text = "Code:";
 		keycode_info.defaultTextFormat = keycodeinfoformat;
+		keycode_info.selectable = false;
+		keycode_info.mouseEnabled = false;
 		keycode_screen.addChild(keycode_info);
 
 		// set up input field
@@ -819,7 +861,7 @@ class Main extends Sprite
 		
 		//OK button
 		button_keycode_back = Button.drawButton("OK", NOMINAL_WIDTH / 2, 950, "menu");
-		button_keycode_back.addEventListener(MouseEvent.CLICK, onClick_keycode);
+		button_keycode_back.addEventListener(MouseEvent.CLICK, onClick_keycode,false,0,true);
 		keycode_screen.addChild(button_keycode_back);
 
 		this.addChild(keycode_screen);	
@@ -839,7 +881,7 @@ class Main extends Sprite
 				// Display info text field: Key was accepted
 				key_accepted_info = new InfoText ("Der eingegebene Code ist korrekt.\n Das nächste Level kann nun gestartet werden.");
 				var key_accepted_info_button = key_accepted_info.getChildAt(1);
-				key_accepted_info_button.addEventListener(MouseEvent.CLICK, toggleMessageKeyAccepted);
+				key_accepted_info_button.addEventListener(MouseEvent.CLICK, toggleMessageKeyAccepted,false,0,true);
 				keycode_screen.addChild(key_accepted_info);
 				
 			} else if (keycode_input.text != keycode_str) {
@@ -847,7 +889,7 @@ class Main extends Sprite
 				// Display info text field: Key was wrong
 				key_rejected_info = new InfoText ("Der eingegebene Code stimmt nicht überein.\n Bitte überprüfen Sie den eingegebenen Code, \n um das nächste Level starten zu können.");
 				var key_rejected_info_button = key_rejected_info.getChildAt(1);
-				key_rejected_info_button.addEventListener(MouseEvent.CLICK, toggleMessageKeyRejected);
+				key_rejected_info_button.addEventListener(MouseEvent.CLICK, toggleMessageKeyRejected,false,0,true);
 				keycode_screen.addChild(key_rejected_info);
 				
 			}
@@ -896,12 +938,12 @@ class Main extends Sprite
 		button6 = Button.drawButton("Beenden", Std.int(NOMINAL_WIDTH / 2), 950, "menu");
 
 	
-		button1.addEventListener(MouseEvent.CLICK, onClick_MainGame);
-		button2.addEventListener(MouseEvent.CLICK, onInstruction);
-		button3.addEventListener(MouseEvent.CLICK, onClick3);
-		button4.addEventListener(MouseEvent.CLICK, onClick4);
-		button5.addEventListener(MouseEvent.CLICK, onClick5);
-		button6.addEventListener(MouseEvent.CLICK, onClick6);
+		button1.addEventListener(MouseEvent.CLICK, onClick_MainGame,false,0,true);
+		button2.addEventListener(MouseEvent.CLICK, onInstruction,false,0,true);
+		button3.addEventListener(MouseEvent.CLICK, onClick3,false,0,true);
+		button4.addEventListener(MouseEvent.CLICK, onClick4,false,0,true);
+		button5.addEventListener(MouseEvent.CLICK, onClick5,false,0,true);
+		button6.addEventListener(MouseEvent.CLICK, onClick6,false,0,true);
 		
 		menu_screen.addChild(button1);
 		menu_screen.addChild(button2);
@@ -939,12 +981,14 @@ class Main extends Sprite
 			item_text.defaultTextFormat = itemFormat;
 			item_text.text = questionnaire_items[item_counter];
 			item_text.multiline = true;
-			questionnaire_screen.addChild(item_text);
+			item_text.selectable = false;
+			item_text.mouseEnabled = false;
+			
 			
 			// UI elements
 			box_container = new HBox();
-			box_container.x = stageScaleX*550;
-			box_container.y = stageScaleY * 550;
+			box_container.width = NOMINAL_WIDTH;
+			box_container.height = NOMINAL_HEIGHT;
 						
 			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 50, 0xFFFFFF, true);
 			rbFormat.align = TextFormatAlign.LEFT;
@@ -955,6 +999,8 @@ class Main extends Sprite
 			anchor_left.y = 570;
 			anchor_left.x = 250;
 			anchor_left.defaultTextFormat = rbFormat;
+			anchor_left.selectable = false;
+			anchor_left.mouseEnabled = false;
 			anchor_left.text = "gar nicht";
 			questionnaire_screen.addChild(anchor_left);
 			
@@ -964,31 +1010,46 @@ class Main extends Sprite
 			anchor_right.y = 570;
 			anchor_right.x = 1500;
 			anchor_right.defaultTextFormat = rbFormat;
+			anchor_right.selectable = false;
+			anchor_right.mouseEnabled = false;
 			anchor_right.text = "sehr";
 			questionnaire_screen.addChild(anchor_right);
 			
+			// Set slider button initially to 0 size
+			Toolkit.styleSheet.addRules(".hslider .slider-button { height: 0px !important; width: 0px !important; }");
+			
 			quest_slider = new HSlider();
-			#if mobile
-			quest_slider.resizeComponent(stageScale * 400, stageScale * 50);
-			#else
-			quest_slider.resizeComponent(stageScale * 800, stageScale * 100);
-			#end
 			quest_slider.max = 100;
 			quest_slider.min = 0;
+			quest_slider.width = 840;
+			quest_slider.marginTop = 595;
+			quest_slider.marginLeft = 550;
+			quest_slider.animatable = false;
 			
-			quest_slider.registerEvent(UIEvent.CHANGE,activateButton);
-			//quest_slider.addEventListener(MouseEvent.CLICK, activateButton);
-			// Implement separate event setup: Slider change event attached to slider to prevent ghost moving without event fired to activate the button
+			quest_slider.registerEvent(UIEvent.CHANGE, activateButton);
 			
 			box_container.addComponent(quest_slider);
 			
-			Screen.instance.addComponent(box_container);
+			//box_container.addEventListener(MouseEvent.CLICK, restoreSliderButton,false,0,true);
 			
+			questionnaire_screen.addChild(box_container);
+			questionnaire_screen.addChild(item_text);
+			
+			/*trace(Toolkit.autoScale);
+			trace(Toolkit.autoScaleDPIThreshold);
+			trace(Toolkit.scaleX);
+			trace(Toolkit.scaleY);
+			trace(Screen.instance.dpi);
+			trace(System.getDisplay(0).dpi);
+			trace(Screen.instance.height);
+			trace(Screen.instance.width);*/
+			
+				
 			// Forward button
 			button_quest = Button.drawButton("OK", NOMINAL_WIDTH / 2, 950, "info");
 			button_quest.visible = false;
 			
-			button_quest.addEventListener(MouseEvent.CLICK, QuestPagefinished);
+			button_quest.addEventListener(MouseEvent.CLICK, QuestPagefinished,false,0,true);
 			questionnaire_screen.addChild(button_quest);
 			
 			this.addChild(questionnaire_screen);
@@ -1011,21 +1072,27 @@ class Main extends Sprite
 			item_text.defaultTextFormat = itemFormat;
 			item_text.text = questionnaire_items[item_counter];
 			item_text.multiline = true;
+			item_text.selectable = false;
+			item_text.mouseEnabled = false;
 			questionnaire_screen.addChild(item_text);
 			
 			// UI elements
 			box_container = new HBox();
-			box_container.x = stageScaleX*70;
-			box_container.y = stageScaleY * 570;
+			box_container.x = 10;
+			box_container.y = 570;
 			
 			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 50, 0xFFFFFF, true);
 			rbFormat.align = TextFormatAlign.LEFT;
 			
+			// answer options
 			var rb_Likert_Text_1 = new TextField();
 			rb_Likert_Text_1.width = 300;
 			rb_Likert_Text_1.height = 200;
 			rb_Likert_Text_1.y = 570;
-			rb_Likert_Text_1.x = 150;
+			rb_Likert_Text_1.x = 100;
+			rb_Likert_Text_1.multiline = true;
+			rb_Likert_Text_1.selectable = false;
+			rb_Likert_Text_1.mouseEnabled = false;
 			rb_Likert_Text_1.defaultTextFormat = rbFormat;
 			
 			if (item_counter == 4) {
@@ -1042,7 +1109,10 @@ class Main extends Sprite
 			rb_Likert_Text_2.width = 300;
 			rb_Likert_Text_2.height = 200;
 			rb_Likert_Text_2.y = 570;
-			rb_Likert_Text_2.x = 450;
+			rb_Likert_Text_2.x = 420;
+			rb_Likert_Text_2.multiline = true;
+			rb_Likert_Text_2.selectable = false;
+			rb_Likert_Text_2.mouseEnabled = false;
 			rb_Likert_Text_2.defaultTextFormat = rbFormat;
 			
 			if (item_counter == 4) {
@@ -1059,7 +1129,10 @@ class Main extends Sprite
 			rb_Likert_Text_3.width = 300;
 			rb_Likert_Text_3.height = 200;
 			rb_Likert_Text_3.y = 570;
-			rb_Likert_Text_3.x = 750;
+			rb_Likert_Text_3.x = 740;
+			rb_Likert_Text_3.multiline = true;
+			rb_Likert_Text_3.selectable = false;
+			rb_Likert_Text_3.mouseEnabled = false;
 			rb_Likert_Text_3.defaultTextFormat = rbFormat;
 			
 			if (item_counter == 4) {
@@ -1076,7 +1149,10 @@ class Main extends Sprite
 			rb_Likert_Text_4.width = 300;
 			rb_Likert_Text_4.height = 200;
 			rb_Likert_Text_4.y = 570;
-			rb_Likert_Text_4.x = 1050;
+			rb_Likert_Text_4.x = 1060;
+			rb_Likert_Text_4.multiline = true;
+			rb_Likert_Text_4.selectable = false;
+			rb_Likert_Text_4.mouseEnabled = false;
 			rb_Likert_Text_4.defaultTextFormat = rbFormat;
 			
 			if (item_counter == 4) {
@@ -1093,7 +1169,10 @@ class Main extends Sprite
 			rb_Likert_Text_5.width = 300;
 			rb_Likert_Text_5.height = 200;
 			rb_Likert_Text_5.y = 570;
-			rb_Likert_Text_5.x = 1350;
+			rb_Likert_Text_5.x = 1380;
+			rb_Likert_Text_5.multiline = true;
+			rb_Likert_Text_5.selectable = false;
+			rb_Likert_Text_5.mouseEnabled = false;
 			rb_Likert_Text_5.defaultTextFormat = rbFormat;
 			
 			if (item_counter == 4) {
@@ -1110,7 +1189,10 @@ class Main extends Sprite
 			rb_Likert_Text_6.width = 300;
 			rb_Likert_Text_6.height = 200;
 			rb_Likert_Text_6.y = 570;
-			rb_Likert_Text_6.x = 1650;
+			rb_Likert_Text_6.x = 1700;
+			rb_Likert_Text_6.multiline = true;
+			rb_Likert_Text_6.selectable = false;
+			rb_Likert_Text_6.mouseEnabled = false;
 			rb_Likert_Text_6.defaultTextFormat = rbFormat;
 			
 			if (item_counter == 4) {
@@ -1125,65 +1207,29 @@ class Main extends Sprite
 			
 			Likert_1_rb = new OptionBox();
 			Likert_1_rb.groupName = "LikertRBs";
-			#if mobile
-			Likert_1_rb.height = stageScaleY * 25;
-			Likert_1_rb.width = stageScaleX * 147;
-			#else
-			Likert_1_rb.height = stageScaleY * 50;
-			Likert_1_rb.width = stageScaleX * 295;
-			#end
+			Likert_1_rb.width = 315;
 			
 			Likert_2_rb = new OptionBox();
 			Likert_2_rb.groupName = "LikertRBs";
-			#if mobile
-			Likert_2_rb.height = stageScaleY * 25;
-			Likert_2_rb.width = stageScaleX * 147;
-			#else
-			Likert_2_rb.height = stageScaleY * 50;
-			Likert_2_rb.width = stageScaleX * 295;
-			#end
+			Likert_2_rb.width = 315;
 			
 			Likert_3_rb = new OptionBox();
 			Likert_3_rb.groupName = "LikertRBs";
-			#if mobile
-			Likert_3_rb.height = stageScaleY * 25;
-			Likert_3_rb.width = stageScaleX * 147;
-			#else
-			Likert_3_rb.height = stageScaleY * 50;
-			Likert_3_rb.width = stageScaleX * 295;
-			#end
+			Likert_3_rb.width = 315;
 			
 			Likert_4_rb = new OptionBox();
 			Likert_4_rb.groupName = "LikertRBs";
-			#if mobile
-			Likert_4_rb.height = stageScaleY * 25;
-			Likert_4_rb.width = stageScaleX * 147;
-			#else
-			Likert_4_rb.height = stageScaleY * 50;
-			Likert_4_rb.width = stageScaleX * 295;
-			#end
+			Likert_4_rb.width = 315;
 			
 			Likert_5_rb = new OptionBox();
 			Likert_5_rb.groupName = "LikertRBs";
-			#if mobile
-			Likert_5_rb.height = stageScaleY * 25;
-			Likert_5_rb.width = stageScaleX * 147;
-			#else
-			Likert_5_rb.height = stageScaleY * 50;
-			Likert_5_rb.width = stageScaleX * 295;
-			#end
+			Likert_5_rb.width = 315;
 			
 			Likert_6_rb = new OptionBox();
 			Likert_6_rb.groupName = "LikertRBs";
-			#if mobile
-			Likert_6_rb.height = stageScaleY * 25;
-			Likert_6_rb.width = stageScaleX * 147;
-			#else
-			Likert_6_rb.height = stageScaleY * 50;
-			Likert_6_rb.width = stageScaleX * 295;
-			#end
+			Likert_6_rb.width = 315;
 			
-			box_container.addEventListener(MouseEvent.CLICK, activateButtonClick);
+			box_container.addEventListener(MouseEvent.CLICK, activateButtonClick,false,0,true);
 			
 			box_container.addComponent(Likert_1_rb);
 			box_container.addComponent(Likert_2_rb);
@@ -1192,13 +1238,13 @@ class Main extends Sprite
 			box_container.addComponent(Likert_5_rb);
 			box_container.addComponent(Likert_6_rb);
 			
-			Screen.instance.addComponent(box_container);
+			questionnaire_screen.addChild(box_container);
 			
 			// Forward button
 			button_quest = Button.drawButton("OK", NOMINAL_WIDTH / 2, 950, "info");
 			button_quest.visible = false;
 			
-			button_quest.addEventListener(MouseEvent.CLICK, QuestPagefinished);
+			button_quest.addEventListener(MouseEvent.CLICK, QuestPagefinished,false,0,true);
 			
 			questionnaire_screen.addChild(button_quest);
 			
@@ -1222,12 +1268,14 @@ class Main extends Sprite
 			item_text.defaultTextFormat = itemFormat;
 			item_text.text = questionnaire_items[item_counter];
 			item_text.multiline = true;
+			item_text.selectable = false;
+			item_text.mouseEnabled = false;
 			questionnaire_screen.addChild(item_text);
 			
 			// UI elements
 			box_container = new HBox();
-			box_container.x = stageScaleX*660;
-			box_container.y = stageScaleY*570;
+			box_container.x = 640;
+			box_container.y = 570;
 			
 			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 50, 0xFFFFFF, true);
 			rbFormat.align = TextFormatAlign.LEFT;
@@ -1238,6 +1286,8 @@ class Main extends Sprite
 			rb_text_yes.y = 570;
 			rb_text_yes.x = 750;
 			rb_text_yes.defaultTextFormat = rbFormat;
+			rb_text_yes.selectable = false;
+			rb_text_yes.mouseEnabled = false;
 			rb_text_yes.text = "Ja";
 			questionnaire_screen.addChild(rb_text_yes);
 			
@@ -1247,41 +1297,31 @@ class Main extends Sprite
 			rb_text_no.y = 570;
 			rb_text_no.x = 1170;
 			rb_text_no.defaultTextFormat = rbFormat;
+			rb_text_no.selectable = false;
+			rb_text_no.mouseEnabled = false;
 			rb_text_no.text = "Nein";
 			questionnaire_screen.addChild(rb_text_no);
 			
 			yes_rb = new OptionBox();
 			yes_rb.groupName = "questRBs";
-			#if mobile
-			yes_rb.height = stageScaleY*25;
-			yes_rb.width = stageScaleX*210;
-			#else
-			yes_rb.height = stageScaleY*50;
-			yes_rb.width = stageScaleX*420;
-			#end
+			yes_rb.width = 420;
 			
 			no_rb = new OptionBox();
 			no_rb.groupName = "questRBs";
-			#if mobile
-			no_rb.height = stageScaleY*25;
-			no_rb.width = stageScaleX*210;
-			#else
-			no_rb.height = stageScaleY*50;
-			no_rb.width = stageScaleX*420;
-			#end
+			no_rb.width = 420;
 			
-			box_container.addEventListener(MouseEvent.CLICK, activateButtonClick);
+			box_container.addEventListener(MouseEvent.CLICK, activateButtonClick,false,0,true);
 			
 			box_container.addComponent(yes_rb);
 			box_container.addComponent(no_rb);
 			
-			Screen.instance.addComponent(box_container);
+			questionnaire_screen.addChild(box_container);
 			
 			// Forward button
 			button_quest = Button.drawButton("OK", NOMINAL_WIDTH / 2, 950, "info");
 			button_quest.visible = false;
 			
-			button_quest.addEventListener(MouseEvent.CLICK, QuestPagefinished);
+			button_quest.addEventListener(MouseEvent.CLICK, QuestPagefinished,false,0,true);
 			
 			questionnaire_screen.addChild(button_quest);
 			
@@ -1305,12 +1345,14 @@ class Main extends Sprite
 			item_text.defaultTextFormat = itemFormat;
 			item_text.text = questionnaire_items[item_counter];
 			item_text.multiline = true;
+			item_text.selectable = false;
+			item_text.mouseEnabled = false;
 			questionnaire_screen.addChild(item_text);
 			
 			// UI elements
 			box_container = new HBox();
-			box_container.x = stageScaleX*190;
-			box_container.y = stageScaleY*570;
+			box_container.x = 220;
+			box_container.y = 570;
 			
 			var rbFormat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 50, 0xFFFFFF, true);
 			rbFormat.align = TextFormatAlign.LEFT;
@@ -1319,8 +1361,10 @@ class Main extends Sprite
 			rb_text_yes.width = 200;
 			rb_text_yes.height = 200;
 			rb_text_yes.y = 570;
-			rb_text_yes.x = 280;
+			rb_text_yes.x = 330;
 			rb_text_yes.defaultTextFormat = rbFormat;
+			rb_text_yes.selectable = false;
+			rb_text_yes.mouseEnabled = false;
 			rb_text_yes.text = "Ja";
 			questionnaire_screen.addChild(rb_text_yes);
 			
@@ -1328,8 +1372,10 @@ class Main extends Sprite
 			rb_text_no.width = 200;
 			rb_text_no.height = 200;
 			rb_text_no.y = 570;
-			rb_text_no.x = 700;
+			rb_text_no.x = 750;
 			rb_text_no.defaultTextFormat = rbFormat;
+			rb_text_no.selectable = false;
+			rb_text_no.mouseEnabled = false;
 			rb_text_no.text = "Nein";
 			questionnaire_screen.addChild(rb_text_no);
 			
@@ -1337,55 +1383,39 @@ class Main extends Sprite
 			rb_text_notyet.width = 800;
 			rb_text_notyet.height = 200;
 			rb_text_notyet.y = 550;
-			rb_text_notyet.x = 1140;
+			rb_text_notyet.x = 1190;
 			rb_text_notyet.defaultTextFormat = rbFormat;
+			rb_text_notyet.selectable = false;
+			rb_text_notyet.mouseEnabled = false;
 			rb_text_notyet.multiline = true;
 			rb_text_notyet.text = "Noch nicht,\naber ich werde es tun";
 			questionnaire_screen.addChild(rb_text_notyet);
 			
 			yes_rb = new OptionBox();
 			yes_rb.groupName = "questRBs";
-			#if mobile
-			yes_rb.height = stageScaleY*25;
-			yes_rb.width = stageScaleX*210;
-			#else
-			yes_rb.height = stageScaleY*50;
-			yes_rb.width = stageScaleX*420;
-			#end
+			yes_rb.width = 420;
 			
 			no_rb = new OptionBox();
 			no_rb.groupName = "questRBs";
-			#if mobile
-			no_rb.height = stageScaleY*25;
-			no_rb.width = stageScaleX*210;
-			#else
-			no_rb.height = stageScaleY*50;
-			no_rb.width = stageScaleX*420;
-			#end
+			no_rb.width = 420;
 			
 			notyet_rb = new OptionBox();
 			notyet_rb.groupName = "questRBs";
-			#if mobile
-			notyet_rb.height = stageScaleY*25;
-			notyet_rb.width = stageScaleX*210;
-			#else
-			notyet_rb.height = stageScaleY*50;
-			notyet_rb.width = stageScaleX*420;
-			#end
+			notyet_rb.width = 420;
 			
-			box_container.addEventListener(MouseEvent.CLICK, activateButtonClick);
+			box_container.addEventListener(MouseEvent.CLICK, activateButtonClick,false,0,true);
 			
 			box_container.addComponent(yes_rb);
 			box_container.addComponent(no_rb);
 			box_container.addComponent(notyet_rb);
 			
-			Screen.instance.addComponent(box_container);
+			questionnaire_screen.addChild(box_container);
 			
 			// Forward button
 			button_quest = Button.drawButton("OK", NOMINAL_WIDTH / 2, 950, "info");
 			button_quest.visible = false;
 			
-			button_quest.addEventListener(MouseEvent.CLICK, QuestPagefinished);
+			button_quest.addEventListener(MouseEvent.CLICK, QuestPagefinished,false,0,true);
 			
 			questionnaire_screen.addChild(button_quest);
 			
@@ -1403,8 +1433,29 @@ class Main extends Sprite
 	}
 	
 	public function activateButton(event: UIEvent):Void {
+		
+		// Check if item contains a slider
+		var slider_item = box_container.contains(quest_slider);
+		if(slider_item == true){
+			// Restore slider button
+			Toolkit.styleSheet.addRules(".hslider .slider-button { height: 132px !important; width: 60px !important; background-color: #FF0000; }");
+			var value_save = quest_slider.pos;
+			box_container.removeComponent(quest_slider);
+			quest_slider = new HSlider();
+			quest_slider.max = 100;
+			quest_slider.min = 0;
+			quest_slider.width = 840;
+			quest_slider.marginTop = 595;
+			quest_slider.marginLeft = 550;
+			quest_slider.pos = value_save;
+			quest_slider.animatable = false;
+			box_container.addComponent(quest_slider);
+		}
+		
 		button_quest.visible = true;
+		
 	}
+	
 	
 	// refresh the screen with the next questionnaire item or go on to main game
 	public function QuestPagefinished(event: MouseEvent):Void {
@@ -1561,7 +1612,6 @@ class Main extends Sprite
 		}
 		
 		// remove old content
-		Screen.instance.removeComponent(box_container);
 		this.removeChildren();
 		
 		
@@ -1623,11 +1673,11 @@ class Main extends Sprite
 			// add button to instruction screens
 			var ww = NOMINAL_WIDTH / 3;
 			var textfield_button:SimpleButton = Button.drawButton("Zurück", (NOMINAL_WIDTH / 2) - 300, ((1080 - ww) / 2) + ww + 150, "info");
-			textfield_button.addEventListener(MouseEvent.CLICK, InstructionBack);
+			textfield_button.addEventListener(MouseEvent.CLICK, InstructionBack,false,0,true);
 			instruction_screen.addChild(textfield_button);
 			
 			var continue_button:SimpleButton = Button.drawButton("Spielen", (NOMINAL_WIDTH / 2) + 300, ((1080 - ww) / 2) + ww + 150, "info");
-			continue_button.addEventListener(MouseEvent.CLICK, InstructionForward);
+			continue_button.addEventListener(MouseEvent.CLICK, InstructionForward,false,0,true);
 			instruction_screen.addChild(continue_button);
 			
 		} else {
@@ -1635,11 +1685,11 @@ class Main extends Sprite
 			// add button to instruction screens
 			var ww = NOMINAL_WIDTH / 3;
 			var textfield_button:SimpleButton = Button.drawButton("Zurück", (NOMINAL_WIDTH / 2) - 300, ((1080 - ww) / 2) + ww + 150, "info");
-			textfield_button.addEventListener(MouseEvent.CLICK, InstructionBack);
+			textfield_button.addEventListener(MouseEvent.CLICK, InstructionBack,false,0,true);
 			instruction_screen.addChild(textfield_button);
 				
 			var continue_button:SimpleButton = Button.drawButton("Weiter", (NOMINAL_WIDTH / 2) + 300, ((1080 - ww) / 2) + ww + 150, "info");
-			continue_button.addEventListener(MouseEvent.CLICK, InstructionForward);
+			continue_button.addEventListener(MouseEvent.CLICK, InstructionForward,false,0,true);
 			instruction_screen.addChild(continue_button);
 		
 		}
@@ -1792,6 +1842,8 @@ class Main extends Sprite
 		globalscore_display.height = 200;
 		globalscore_display.x = 0;
 		globalscore_display.y = 50;
+		globalscore_display.selectable = false;
+		globalscore_display.mouseEnabled = false;
 		globalscore_display.text = 'Gesamtscore: $_global_score';
 
 		var globalscore_text:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 60, 0xFFFFFF, true);
@@ -1803,11 +1855,11 @@ class Main extends Sprite
 		
 		// Add button to get back to main menu
 		button_end = Button.drawButton("Zurück", Std.int(NOMINAL_WIDTH -150),100, "back");
-		button_end.addEventListener(MouseEvent.CLICK, onClick_end);
+		button_end.addEventListener(MouseEvent.CLICK, onClick_end,false,0,true);
 		gallery_screen.addChild(button_end);
 
 		var button_continue = Button.drawButton("Spielen", Std.int(NOMINAL_WIDTH/2), 1000, "info");
-		button_continue.addEventListener(MouseEvent.CLICK, onClick_MainGame);
+		button_continue.addEventListener(MouseEvent.CLICK, onClick_MainGame,false,0,true);
 		gallery_screen.addChild(button_continue);
 		
 		
@@ -1900,6 +1952,7 @@ class Main extends Sprite
 		level_display.x = (NOMINAL_WIDTH/2)-500;
 		level_display.y = (NOMINAL_HEIGHT/2)-100;
 		level_display.selectable = false;
+		level_display.mouseEnabled = false;
 		level_display.multiline = true;
 
 		var level_text:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 70, 0x000000, true);
@@ -1981,9 +2034,11 @@ class Main extends Sprite
 		// Initialize HaxeUI toolkit
 		Toolkit.init();
 		// Add css style rules to increase size of UI components
-		Toolkit.styleSheet.addRules(".hslider .slider-value-background { height: 20px !important; }");
-		Toolkit.styleSheet.addRules(".hslider .slider-button { height: 26px !important; width: 26px !important; }");
-		Toolkit.styleSheet.addRules(".optionbox-value { height: 28px !important; width: 28px !important; }");
+		Toolkit.styleSheet.addRules(".hslider .slider-value-background { height: 120px !important; }");
+		Toolkit.styleSheet.addRules(".hslider .slider-value { background: #F1F1F1 #FFFFFF vertical; }");
+		//Toolkit.styleSheet.addRules(".hslider .slider-button { height: 132px !important; width: 60px !important; }");
+		Toolkit.styleSheet.addRules(".optionbox-value { height: 80px !important; width: 80px !important; }");
+		Toolkit.styleSheet.addRules(".checkbox-value { height: 80px !important; width: 80px !important; }");
 		
 		// Set initial values
 		// Set round index to 0 as it will be increased to 1 in the newRound function
@@ -2070,12 +2125,17 @@ class Main extends Sprite
     	Lib.current.scaleX = stageScale;
     	Lib.current.scaleY = stageScale;
 		
-		trace(Lib.current.stage.stageWidth);
-		trace(Lib.current.stage.stageHeight);
+		Toolkit.scaleX = stageScale;
+		Toolkit.scaleY = stageScale;
+		trace(Toolkit.scaleX);
+		trace(Toolkit.scaleY);
+			
+		//trace(Lib.current.stage.stageWidth);
+		//trace(Lib.current.stage.stageHeight);
 		
         Lib.current.x = (Lib.current.stage.window.width - NOMINAL_WIDTH * stageScale) / 2;
         Lib.current.y = (Lib.current.stage.window.height - NOMINAL_HEIGHT * stageScale) / 2;
-		
+				
 	}
 
 
@@ -2096,7 +2156,7 @@ class Main extends Sprite
 		//button_end = Button.drawButton("Zurück",Std.int(NOMINAL_WIDTH),540, Std.int(NOMINAL_WIDTH / 5),Std.int(NOMINAL_HEIGHT / 9));
 		//button_end = Button.drawButton("Zurück", Std.int(NOMINAL_WIDTH -100),Std.int(NOMINAL_HEIGHT / 13), "back");
 		button_end = Button.drawButton("Zurück", Std.int(NOMINAL_WIDTH -150),50, "back");
-		button_end.addEventListener(MouseEvent.CLICK, onClick_end);
+		button_end.addEventListener(MouseEvent.CLICK, onClick_end,false,0,true);
 		game_screen.addChild(button_end);
 		
 		// add notepads to game screen
@@ -2125,7 +2185,8 @@ class Main extends Sprite
 		scoreField.x = 40; 
 		scoreField.y = 50;
 		scoreField.defaultTextFormat = scoreFormat;
-		scoreField.selectable = false;		
+		scoreField.selectable = false;
+		scoreField.mouseEnabled = false;
 		scoreField.text = 'Score: $_score';
 		game_screen.addChild(scoreField);		
 		
@@ -2138,7 +2199,8 @@ class Main extends Sprite
 		runField.x = 40;
 		runField.y = 150;
 		runField.defaultTextFormat = scoreFormat;
-		runField.selectable = false;		
+		runField.selectable = false;
+		runField.mouseEnabled = false;
 		runField.text = 'Level: $_run_ind';
 		game_screen.addChild(runField);
 	
@@ -2152,6 +2214,7 @@ class Main extends Sprite
 		levelField.y = 100;
 		levelField.defaultTextFormat = levelFormat;
 		levelField.selectable = false;
+		levelField.mouseEnabled = false;
 		levelField.text = 'Runde: $_trial_ind von $trials';	
 		game_screen.addChild(levelField);
 
@@ -2182,6 +2245,7 @@ class Main extends Sprite
 		scoreField_A.multiline = true;
 		scoreField_A.defaultTextFormat = scoreFormat_notepads;
 		scoreField_A.selectable = false;
+		scoreField_A.mouseEnabled = false;
 
 		// B
 		scoreField_B = new TextField();
@@ -2205,6 +2269,7 @@ class Main extends Sprite
 		scoreField_B.multiline = true;
 		scoreField_B.defaultTextFormat = scoreFormat_notepads;
 		scoreField_B.selectable = false;
+		scoreField_B.mouseEnabled = false;
 		
 		// add syringes (full) to game screen
 		SyringeA = new Syringe("full", "A");
@@ -2215,7 +2280,7 @@ class Main extends Sprite
 		} else {
 			SyringeA.y = 650;
 		}
-		SyringeA.addEventListener(MouseEvent.CLICK, PostChoiceA);
+		SyringeA.addEventListener(MouseEvent.CLICK, PostChoiceA,false,0,true);
 		game_screen.addChild(SyringeA);
 		
 		SyringeB = new Syringe("full", "B");
@@ -2226,7 +2291,7 @@ class Main extends Sprite
 		} else {
 			SyringeB.y = 650;
 		}
-		SyringeB.addEventListener(MouseEvent.CLICK, PostChoiceB);
+		SyringeB.addEventListener(MouseEvent.CLICK, PostChoiceB,false,0,true);
 		game_screen.addChild(SyringeB);
 		
 		// draw color circle indicating winning color of last round

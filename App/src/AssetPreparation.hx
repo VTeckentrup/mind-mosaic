@@ -36,10 +36,10 @@ class AssetPreparation {
 		questionnaire_items[16] = "Haben Sie viel schneller gegessen als normal?";
 		questionnaire_items[17] = "Haben Sie gegessen, bis Sie sich \n unangenehm voll gefühlt haben?";
 		questionnaire_items[18] = "Haben Sie große Mengen Nahrung zu sich genommen, \n obwohl Sie sich nicht physisch hungrig gefühlt haben?";
-		questionnaire_items[19] = "Haben Sie alleine gegessen, \n weil Sie sich dafür geschämt haben, wie viel Sie gegessen haben?";
+		questionnaire_items[19] = "Haben Sie alleine gegessen, \n weil Sie sich dafür geschämt haben wie viel Sie gegessen haben?";
 		questionnaire_items[20] = "Haben Sie sich nach dem Essanfall vor sich selbst geekelt, \n sich schuldig oder niedergeschlagen gefühlt?";
 		questionnaire_items[21] = "Haben Sie versucht etwas zu tun, um die Folgen \n des Essanfalls zu verhindern? (z.B.  selbstverursachtes Erbrechen, \n Einnahme von Abführmitteln, exzessiver Sport...)";
-		questionnaire_items[22] = "Wie stark war Ihr Drang, etwas zu essen, vor dem Essanfall?";
+		questionnaire_items[22] = "Wie stark war Ihr Drang etwas zu essen vor dem Essanfall?";
 		questionnaire_items[23] = "Wie stark war Ihr Appetit vor dem Essanfall?";
 		questionnaire_items[24] = "Wie intensiv war Ihr Essanfall?";
 		questionnaire_items[25] = "Wann hatten Sie den letzten Essanfall?";
@@ -54,17 +54,17 @@ class AssetPreparation {
 		anchors_likert[6] = "> 3h";
 		
 		anchors_likert[7] = "< 30 min";
-		anchors_likert[8] = "30-60 min";
+		anchors_likert[8] = "0,5-1h";
 		anchors_likert[9] = "1-2h";
 		anchors_likert[10] = "2-4h";
 		anchors_likert[11] = "4-8h";
 		anchors_likert[12] = "> 8h";
 		
 		anchors_likert[13] = "< 20 min";
-		anchors_likert[14] = "20-45 min";
-		anchors_likert[15] = "45-70 min";
-		anchors_likert[16] = "70-95 min";
-		anchors_likert[17] = "95-120 min";
+		anchors_likert[14] = "20 -\n45 min";
+		anchors_likert[15] = "45 -\n70 min";
+		anchors_likert[16] = "70 -\n95 min";
+		anchors_likert[17] = "95 -\n120 min";
 		anchors_likert[18] = "> 2h";
 		
 	}

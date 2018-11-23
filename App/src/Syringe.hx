@@ -19,32 +19,6 @@ class Syringe extends Sprite
 				
 			}
 			
-			/*if (_run_ind >= 1 && _run_ind <= 6) {
-			
-				this.addChild( syringe_1_full_array[syringe_counter] );
-				
-			} else if (_run_ind >= 7 && _run_ind <= 12) {
-				
-				this.addChild( syringe_2_full_array[syringe_counter] );
-				
-			} else if (_run_ind >= 13 && _run_ind <= 18) {
-				
-				this.addChild( syringe_3_full_array[syringe_counter] );
-				
-			} else if (_run_ind >= 19 && _run_ind <= 24) {
-				
-				this.addChild( syringe_4_full_array[syringe_counter] );
-				
-			} else if (_run_ind >= 25 && _run_ind <= 30) {
-				
-				this.addChild( syringe_5_full_array[syringe_counter] );
-				
-			} else if (_run_ind == 31) {
-				
-				this.addChild( syringe_bonus_full_array[syringe_counter] );
-				
-			}*/
-			
 		}
 			
 		else if (syringe_type == "empty") {
@@ -58,32 +32,6 @@ class Syringe extends Sprite
 				this.addChild( syringe_empty_B_array[_run_ind-1] );
 				
 			}
-			
-			/*if (_run_ind >= 1 && _run_ind <= 6) {
-			
-				this.addChild( syringe_1_empty_array[syringe_counter] );
-				
-			} else if (_run_ind >= 7 && _run_ind <= 12) {
-				
-				this.addChild( syringe_2_empty_array[syringe_counter] );
-				
-			} else if (_run_ind >= 13 && _run_ind <= 18) {
-				
-				this.addChild( syringe_3_empty_array[syringe_counter] );
-				
-			} else if (_run_ind >= 19 && _run_ind <= 24) {
-				
-				this.addChild( syringe_4_empty_array[syringe_counter] );
-				
-			} else if (_run_ind >= 25 && _run_ind <= 30) {
-				
-				this.addChild( syringe_5_empty_array[syringe_counter] );
-				
-			} else if (_run_ind == 31) {
-				
-				this.addChild( syringe_bonus_empty_array[syringe_counter] );
-				
-			}*/
 									
 		}
 		
