@@ -10,18 +10,20 @@ class DatabaseSync
 	
 	static public function DBSync():Bool
 	{
+		
 		// Generate MariaDB connection
 		var cnx : sys.db.Connection;
+			
 		// Setup connection to MariaDB
 		cnx = sys.db.Mysql.connect({
-					
+				
 			host : host_address,
 			port : db_port,
 			database : host_database,
 			user : host_user,
 			pass : host_PW,
 			socket : null
-				
+			
 		});
 		
 		var database_name_trial = "./" + _id + "_app_data_trial.db";
@@ -274,6 +276,116 @@ class DatabaseSync
 	}
 	
 	
+	static public function CheckPasswordReset (mail_entry:String)
+	{
+		
+		// Generate MariaDB connection
+		var cnx : sys.db.Connection;
+			
+		// Setup connection to MariaDB
+		cnx = sys.db.Mysql.connect({
+				
+			host : host_address,
+			port : db_port,
+			database : host_database,
+			user : host_user,
+			pass : host_PW,
+			socket : null
+			
+		});
+		
+		// Connect and initialize manager
+		sys.db.Manager.cnx = cnx;
+		sys.db.Manager.initialize();
+			
+		// Check if entered mail address is already registered
+		var subj_mail = AppUserInfo.manager.select($mail_address == mail_entry);
+		
+		// If query returns empty, do nothing, else generate code for password reset
+		if (subj_mail != null) {
+			
+			var mail_queue_entry = new AppMailQueue();
+			mail_queue_entry.mail_address = mail_entry;
+			mail_queue_entry.mail_type_id = 1;
+			mail_queue_entry.code = Random.string(6);
+			
+			// Write mail request to queue table
+			mail_queue_entry.insert();
+			
+		}
+			
+		// Clean-up and close connection
+		sys.db.Manager.cleanup();
+		cnx.close();
+		
+	}
+	
+	
+	static public function ResetPassword (mail_entry:String, reset_password: String, resest_code:String):Int
+	{
+		
+		// Generate MariaDB connection
+		var cnx : sys.db.Connection;
+			
+		// Setup connection to MariaDB
+		cnx = sys.db.Mysql.connect({
+				
+			host : host_address,
+			port : db_port,
+			database : host_database,
+			user : host_user,
+			pass : host_PW,
+			socket : null
+			
+		});
+		
+		// Connect and initialize manager
+		sys.db.Manager.cnx = cnx;
+		sys.db.Manager.initialize();
+			
+		// Check if entered mail address and code correspond -> grab latest queue entry corresponding to mail address
+		var last_mail_entry = AppMailQueue.manager.select($mail_address == mail_entry,{ orderBy : -ID, limit : 1 });
+		
+		// If query returns empty, register new user
+		var reset_status:Int;
+		
+		if (last_mail_entry == null) {
+			
+			// no entry found in mail queue
+			reset_status = 0;
+			
+		} else {
+			
+			if (last_mail_entry.code == resest_code){
+			
+				// grab user related information, update salt and password
+				var user_entry = AppUserInfo.manager.select($mail_address == mail_entry);
+				user_entry.pw_salt = Random.string(20);
+				user_entry.password = Sha256.encode(user_entry.pw_salt + reset_password);
+				// write new information to database
+				user_entry.update();
+				
+				// password successfully changed
+				reset_status = 1;
+			
+			} else {
+				
+				// Code does not match 
+				reset_status = 2;
+				
+			}
+			
+		}
+		
+		return reset_status;
+			
+		// Clean-up and close connection
+		sys.db.Manager.cleanup();
+		cnx.close();
+		
+	}
+	
+	
 	static public function UserRegistration () {
 		
 		// Generate MariaDB connection
@@ -289,7 +401,7 @@ class DatabaseSync
 			pass : host_PW,
 			socket : null
 			
-		});		
+		});
 		
 		// Connect and initialize manager
 		sys.db.Manager.cnx = cnx;
@@ -310,6 +422,14 @@ class DatabaseSync
 		
 		// Write registration info to participants table
 		userinfo.insert();
+		
+		// Generate database object for mail queue to send questionnaire link
+		var questlink = new AppMailQueue();
+		questlink.mail_address = _mail_address;
+		questlink.mail_type_id = 2;
+			
+		// Write mail request to queue table
+		questlink.insert();
 		
 		// Clean-up and close connection
 		sys.db.Manager.cleanup();

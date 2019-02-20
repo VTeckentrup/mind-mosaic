@@ -12,6 +12,7 @@ class GlobalVars
 {
     // maintenance
 	public static var debug_mode:String = "off";
+	public static var url_terms_of_service:String = "";
 	
 	// general settings
 	public static var trials:Int = 150;
@@ -198,6 +199,7 @@ class GlobalVars
 	public static var menu_screen:Sprite;
 	public static var start_screen:Sprite;
 	public static var login_screen:Sprite;
+	public static var pw_reset_screen:Sprite;
 	public static var registration_screen:Sprite;
 	public static var questionnaire_screen:Sprite;
 	public static var box_container:HBox;

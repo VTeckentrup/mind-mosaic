@@ -117,6 +117,9 @@ class Main extends Sprite
 	
 	public var data_sync_info:InfoText;
 	
+	public var pw_reset_code_info_text:InfoText;
+	public var pw_reset_pw_info_text:InfoText;
+	
 	// questionnaire item text field
 	private var item_text:TextField;
 	private var item_counter:Int;
@@ -128,6 +131,7 @@ class Main extends Sprite
 	//public var button4:SimpleButton;
 	public var button5:SimpleButton;
 	public var button6:SimpleButton;
+	public var button_pw_reset:SimpleButton;
 	public var button_reg:SimpleButton;
 	public var button_reg_back:SimpleButton;
 	public var button_end:SimpleButton;
@@ -135,6 +139,9 @@ class Main extends Sprite
 	public var button_log:SimpleButton;
 	public var button_login_back:SimpleButton;
 	public var button_reg1:SimpleButton;
+	public var button_pw_reset_code:SimpleButton;
+	public var button_pw_reset_submit:SimpleButton;
+	public var button_pw_reset_back:SimpleButton;
 	private var button_back:SimpleButton;
 	private var button_quest:SimpleButton;
 	private var button_keycode_OK:SimpleButton;
@@ -154,6 +161,12 @@ class Main extends Sprite
 
 	private var mailaddress:TextField;
 	private var selectedpw:TextField;
+	
+	private var pw_rest_mail_input:TextField;
+	private var pw_rest_code_input:TextField;
+	private var pw_reset_passw:TextField;
+	public var info_text_str:String;
+	
 
 	//Gallery - variable for pathogen image spacing
 	private var add:Int;
@@ -284,6 +297,86 @@ class Main extends Sprite
 		menu_screen.addChild(button_back);
 		//menu_screen.removeChildren();	
 	}*/
+	
+	public function onClick_pw_reset (event: MouseEvent):Void {
+		this.removeChild(pw_reset_screen);
+		pw_reset_screen = null;
+		drawPWReset();
+	}
+	
+	public function onClick_pw_reset_back (event: MouseEvent):Void {
+		this.removeChild(login_screen);
+		login_screen = null;
+		log_and_reg();
+	}
+	
+	public function onClick_pw_reset_code (event: MouseEvent):Void {
+		
+		// Check if internet connection is available
+		var database_availability = InternetConnection.isAvailable();
+		
+		if (database_availability == true && pw_rest_mail_input.length > 0) {
+			
+			DatabaseSync.CheckPasswordReset(pw_rest_mail_input.text);
+			
+		}
+		
+		// Display info text field: code sent
+		pw_reset_code_info_text = new InfoText ("Falls die Mailadresse registriert ist, wurde der Code gesendet.\n Bitte schauen Sie in Ihrem Posteingang nach.");
+		var pw_reset_code_info_text_button = pw_reset_code_info_text.getChildAt(1);
+		pw_reset_code_info_text_button.addEventListener(MouseEvent.CLICK, toggleMessagePWResetCode,false,0,true);
+		pw_reset_screen.addChild(pw_reset_code_info_text);
+		
+	}
+	
+	public function toggleMessagePWResetCode(event: MouseEvent):Void {
+		pw_reset_screen.removeChild(pw_reset_code_info_text);
+		pw_reset_code_info_text = null;
+	}
+	
+	
+	public function onClick_pw_reset_submit (event: MouseEvent):Void {
+				
+		// Check if internet connection is available
+		var database_availability = InternetConnection.isAvailable();
+		
+		if (database_availability == true && pw_rest_mail_input.length > 0 && pw_rest_code_input.length > 0 && pw_reset_passw.length > 0) {
+			
+			var transaction_finished = DatabaseSync.ResetPassword(pw_rest_mail_input.text, pw_reset_passw.text, pw_rest_code_input.text);
+			
+			if (transaction_finished == 0){
+				
+				info_text_str = "Es ist noch kein Code versandt worden.\n Bitte fordern Sie zunächst einen Code mittels Eingabe Ihrer Mailadresse an.";
+				
+			} else if (transaction_finished == 1) {
+				
+				info_text_str = "Ihr Passwort wurde erfolgreich geändert!\n Bitte kehren Sie zum Login zurück, um sich mit dem neuen Passwort anzumelden.";
+				
+			} else if (transaction_finished == 2) {
+				
+				info_text_str = "Der eingegeben Code stimmt nicht überein.\n Bitte überprüfen Sie den Code, der Ihnen per Email\n auf die registrierte Mailadresse zugesendet wurde.";
+				
+			}
+			
+		} else {
+			
+			info_text_str = "Stellen Sie bitte sicher, dass ein aktiver Internetzugriff besteht\n und sowohl das Code-Feld als auch das neue Passwort eingegeben wurden.";
+			
+		}
+		
+		// Display info text field: password reset
+		pw_reset_pw_info_text = new InfoText (info_text_str);
+		var pw_reset_pw_info_text_button = pw_reset_pw_info_text.getChildAt(1);
+		pw_reset_pw_info_text_button.addEventListener(MouseEvent.CLICK, toggleMessagePWResetPW,false,0,true);
+		pw_reset_screen.addChild(pw_reset_pw_info_text);
+		
+	}
+	
+	public function toggleMessagePWResetPW(event: MouseEvent):Void {
+		pw_reset_screen.removeChild(pw_reset_pw_info_text);
+		pw_reset_pw_info_text = null;
+	}
+	
 	
 	//Button Logout - button5
 	public function onClick5 (event: MouseEvent):Void {
@@ -437,7 +530,7 @@ class Main extends Sprite
 								
 								Screen.instance.removeComponent(vbox_container);
 								// Info field: mail address already registered
-								reg_mail_info = new InfoText ("Diese E-Mail Adresse wurde bereits für ein Konto registriert.\nBitte wählen Sie eine andere E-Mail Adresse.");
+								reg_mail_info = new InfoText ("Diese E-Mail Adresse wurde bereits für ein Konto registriert.\nBitte wählen Sie eine andere E-Mail Adresse \noder loggen Sie sich in Ihr bestehendes Konto ein.");
 								var reg_mail_info_button = reg_mail_info.getChildAt(1);
 								reg_mail_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegMail,false,0,true);
 								registration_screen.addChild(reg_mail_info);
@@ -459,7 +552,7 @@ class Main extends Sprite
 						
 						Screen.instance.removeComponent(vbox_container);
 						// Display info text field: consent needs to be given
-						reg_consent_info = new InfoText ("Sie haben im Auswahlkästchen kein Einverständnis\n für Ihre Teilnahme an der Studie gegeben.\n\n Ohne Ihr Einverständnis ist eine Nutzung\n der App leider nicht möglich.");
+						reg_consent_info = new InfoText ("Sie haben im Auswahlkasten kein Einverständnis\n für Ihre Teilnahme an der Studie gegeben.\n\n Ohne Ihr Einverständnis ist eine Nutzung\n der App leider nicht möglich.");
 						var reg_consent_info_button = reg_consent_info.getChildAt(1);
 						reg_consent_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegConsent,false,0,true);
 						registration_screen.addChild(reg_consent_info);
@@ -626,7 +719,7 @@ class Main extends Sprite
 		} else if (_run_ind == runs + 1) {
 			
 			this.removeChildren();
-			end_game_info = new InfoText ("Sie haben bereits alle Level erfolgreich beendet.\n In der Galerie können Sie sich ihre Erfolge ansehen.");
+			end_game_info = new InfoText ("Sie haben bereits alle Level erfolgreich beendet.\n In der Galerie können Sie sich Ihre Erfolge ansehen.");
 			var end_game_info_button = end_game_info.getChildAt(1);
 			end_game_info_button.addEventListener(MouseEvent.CLICK, toggleMessageEndGame,false,0,true);
 			this.addChild(end_game_info);
@@ -671,22 +764,48 @@ class Main extends Sprite
 
 	//%%%%%%%% REGISTRATION & LOGINS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
+	/*function ShiftScreenSoftKeyboardIn(event: FocusEvent):Void {
+		
+		var screenkeyboardrect = stage.softKeyboardRect;
+		var screenkeyboardheight = screenkeyboardrect.height;
+		var inputobject:DisplayObject = event.currentTarget;
+		var inputheight = inputobject.y;
+		
+		if (screenkeyboardheight != 0 && inputheight > (NOMINAL_HEIGHT-screenkeyboardheight)) 
+		{
+			var heightdifference = (inputheight - (NOMINAL_HEIGHT - screenkeyboardheight));
+			//Lib.current.y = ((Lib.current.stage.window.height - NOMINAL_HEIGHT * stageScale) / 2) - heightdifference;
+			Lib.current.y = Lib.current.y - heightdifference;
+		}
+	}
+	
+	function ShiftScreenSoftKeyboardOut(event: FocusEvent):Void {
+		
+		Lib.current.y = (Lib.current.stage.window.height - NOMINAL_HEIGHT * stageScale) / 2;
+		//Lib.current.stage.y = (Lib.current.stage.window.height - NOMINAL_HEIGHT * stageScale) / 2;
+		
+	}*/
+		
+	
 	//first page that lets you choose between Login and Registration
 	public function log_and_reg(){
 		//global var
 		login_screen = new Sprite();
 		login_screen.addChild(img_menu_background);
 		
-		button_log = Button.drawButton("Login",NOMINAL_WIDTH / 2, 400, "menu");
-		button_reg1 = Button.drawButton("Registrierung", NOMINAL_WIDTH / 2, 600, "menu");
+		button_log = Button.drawButton("Login",NOMINAL_WIDTH / 2, 200, "menu");
+		button_reg1 = Button.drawButton("Registrierung", NOMINAL_WIDTH / 2, 350, "menu");
+		button_pw_reset = Button.drawButton("Passwort ändern", NOMINAL_WIDTH / 2, 500, "menu");
 		button6 = Button.drawButton("Beenden", NOMINAL_WIDTH / 2, 900, "menu");
 		
 		button_log.addEventListener(MouseEvent.CLICK, onClick_log,false,0,true);
 		button_reg1.addEventListener(MouseEvent.CLICK, onClick_reg1, false, 0, true);
+		button_pw_reset.addEventListener(MouseEvent.CLICK, onClick_pw_reset, false, 0, true);
 		button6.addEventListener(MouseEvent.CLICK, onClick6,false,0,true);
 		
 		login_screen.addChild(button_log);
 		login_screen.addChild(button_reg1);
+		login_screen.addChild(button_pw_reset);
 		login_screen.addChild(button6);
 		
 		this.addChild(login_screen);
@@ -744,6 +863,8 @@ class Main extends Sprite
 		// Request software keyboard on devices without hardware keyboard
 		username.needsSoftKeyboard = true;
 		username.requestSoftKeyboard();
+		//username.addEventListener(FocusEvent.FOCUS_IN, ShiftScreenSoftKeyboardIn);
+		//username.addEventListener(FocusEvent.FOCUS_OUT, ShiftScreenSoftKeyboardOut);
 		login_screen.addChild(username);
 
 
@@ -762,6 +883,8 @@ class Main extends Sprite
 		passw.defaultTextFormat = inputformat;
 		passw.needsSoftKeyboard = true;
 		passw.requestSoftKeyboard();
+		//passw.addEventListener(FocusEvent.FOCUS_IN, ShiftScreenSoftKeyboardIn);
+		//passw.addEventListener(FocusEvent.FOCUS_OUT, ShiftScreenSoftKeyboardOut);
 		login_screen.addChild(passw);
 
 		//login button
@@ -852,15 +975,28 @@ class Main extends Sprite
 		reg_checkbox_consent.id = "consent_cb";
 		reg_checkbox_consent.selected = false;
 		reg_checkbox_consent.height = 100;
-		reg_checkbox_consent.text = "Ich bin damit einverstanden, \nan der Studie teilzunehmen.";
+		reg_checkbox_consent.text = "Ich habe die Teilnahmebedingungen gelesen \nund stimme ihnen zu:";
 		reg_checkbox_consent.styleNames = "CheckboxFont";
 		Toolkit.styleSheet.addRules(".CheckboxFont { font-size: 40; }");
+		
+		var urlformat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 40, 0x0000FF, false, false, true,url_terms_of_service);
+		var tos_info = new TextField();
+		tos_info.background = false;
+		tos_info.width = 500;
+		tos_info.height = 100;
+		tos_info.x = 980;
+		tos_info.y = 543;
+		tos_info.text = "Teilnahmebedingungen";
+		tos_info.defaultTextFormat = urlformat;
+		//tos_info.selectable = false;
+		//tos_info.mouseEnabled = false;
+		registration_screen.addChild(tos_info);		
 		
 		reg_checkbox_contact = new CheckBox();
 		reg_checkbox_contact.id = "contact_cb";
 		reg_checkbox_contact.selected = false;
 		reg_checkbox_contact.height = 100;
-		reg_checkbox_contact.text = "Ich bin damit einverstanden, für weitere Studien\n über meine Emailadresse kontaktiert zu werden.";
+		reg_checkbox_contact.text = "Ich bin damit einverstanden, für weitere Studien \nüber meine Emailadresse kontaktiert zu werden.";
 		reg_checkbox_contact.styleNames = "CheckboxFont";
 		Toolkit.styleSheet.addRules(".CheckboxFont { font-size: 40; }");
 		
@@ -886,6 +1022,133 @@ class Main extends Sprite
 	
 	
 	
+	public function drawPWReset(){
+		
+		pw_reset_screen = new Sprite();
+		pw_reset_screen.addChild(input_background);
+		
+		// set up formats
+		var logformat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 35, 0x000000, true);
+		logformat.align = TextFormatAlign.LEFT;
+		
+		var inputformat:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 40, 0x000000, true);
+		inputformat.align = TextFormatAlign.LEFT;
+		
+		// set up info text fields
+		var pw_reset_info = new TextField();
+		pw_reset_info.background = false;
+		pw_reset_info.width = 1200;
+		pw_reset_info.height = 300;
+		pw_reset_info.x = (NOMINAL_WIDTH - pw_reset_info.width) / 2;
+		pw_reset_info.y = 20;
+		pw_reset_info.text = "Geben Sie bitte Ihre für Influenca registrierte Mailadresse ein, um einen Code per Mail zugeschickt zu bekommen. Sobald Sie die E-Mail erhalten haben, geben Sie weiter unten bitte zur Überprüfung den erhaltenen Code ein sowie Ihr neues Passwort und bestätigen Sie die Eingabe.";
+		pw_reset_info.defaultTextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 35, 0x000000, true);
+		pw_reset_info.selectable = false;
+		pw_reset_info.mouseEnabled = false;
+		pw_reset_info.multiline = true;
+		pw_reset_info.wordWrap = true;
+		pw_reset_screen.addChild(pw_reset_info);
+		
+		var pw_reset_mail_info = new TextField();
+		pw_reset_mail_info.background = false;
+		pw_reset_mail_info.width = 900;
+		pw_reset_mail_info.height = 80;
+		pw_reset_mail_info.x = (NOMINAL_WIDTH - pw_reset_mail_info.width) / 2;
+		pw_reset_mail_info.y = 220;
+		pw_reset_mail_info.text = "E-Mail:";
+		pw_reset_mail_info.defaultTextFormat = logformat;
+		pw_reset_mail_info.selectable = false;
+		pw_reset_mail_info.mouseEnabled = false;
+		pw_reset_screen.addChild(pw_reset_mail_info);
+		
+		var pw_reset_code = new TextField();
+		pw_reset_code.background = false;
+		pw_reset_code.width = 900;
+		pw_reset_code.height = 80;
+		pw_reset_code.x = (NOMINAL_WIDTH - pw_reset_code.width) / 2;
+		pw_reset_code.y = 500;
+		pw_reset_code.text = "Reset-Code:";
+		pw_reset_code.defaultTextFormat = logformat;
+		pw_reset_code.selectable = false;
+		pw_reset_code.mouseEnabled = false;
+		pw_reset_screen.addChild(pw_reset_code);
+		
+		var passw_info = new TextField();
+		passw_info.background = false;
+		passw_info.width = 900;
+		passw_info.height = 80;
+		passw_info.x = (NOMINAL_WIDTH - passw_info.width) / 2;
+		passw_info.y = 640;
+		passw_info.text = "Neues Passwort:";
+		passw_info.defaultTextFormat = logformat;
+		passw_info.selectable = false;
+		passw_info.mouseEnabled = false;
+		pw_reset_screen.addChild(passw_info);
+
+		// set up input fields
+		pw_rest_mail_input = new TextField();
+		pw_rest_mail_input.background = true;
+		pw_rest_mail_input.width = 900;
+		pw_rest_mail_input.height = 60;
+		pw_rest_mail_input.x = (NOMINAL_WIDTH - pw_rest_mail_input.width) / 2;
+		pw_rest_mail_input.y = 280;
+		pw_rest_mail_input.defaultTextFormat = inputformat;
+		pw_rest_mail_input.restrict = "0-9A-Za-z@._/-";
+		pw_rest_mail_input.type = TextFieldType.INPUT;
+		pw_rest_mail_input.needsSoftKeyboard = true;
+		pw_rest_mail_input.requestSoftKeyboard();
+		pw_reset_screen.addChild(pw_rest_mail_input);
+		
+		
+		pw_rest_code_input = new TextField();
+		pw_rest_code_input.background = true;
+		pw_rest_code_input.width = 900;
+		pw_rest_code_input.height = 60;
+		pw_rest_code_input.x = (NOMINAL_WIDTH - pw_rest_code_input.width) / 2;
+		pw_rest_code_input.y = 560;
+		pw_rest_code_input.defaultTextFormat = inputformat;
+		pw_rest_code_input.type = TextFieldType.INPUT;
+		pw_rest_code_input.needsSoftKeyboard = true;
+		pw_rest_code_input.requestSoftKeyboard();
+		pw_reset_screen.addChild(pw_rest_code_input);
+
+
+		//new Textfield for password insertion
+		pw_reset_passw = new TextField();
+		//edited text is displayed as a password
+		pw_reset_passw.displayAsPassword = true;
+		pw_reset_passw.background = true;
+		pw_reset_passw.width = 900;
+		pw_reset_passw.height = 60;
+		pw_reset_passw.x = (NOMINAL_WIDTH - pw_reset_passw.width) / 2;
+		pw_reset_passw.y = 700;
+		pw_reset_passw.restrict = null;
+		pw_reset_passw.type = TextFieldType.INPUT;
+		pw_reset_passw.defaultTextFormat = inputformat;
+		pw_reset_passw.needsSoftKeyboard = true;
+		pw_reset_passw.requestSoftKeyboard();
+		pw_reset_screen.addChild(pw_reset_passw);
+
+		//Send code button
+		button_pw_reset_code = Button.drawButton("Code anfordern", NOMINAL_WIDTH / 2, 420, "menu");		
+		button_pw_reset_code.addEventListener(MouseEvent.CLICK, onClick_pw_reset_code,false,0,true);
+		pw_reset_screen.addChild(button_pw_reset_code);
+		
+		//Reset password button
+		button_pw_reset_submit = Button.drawButton("Passwort ändern", NOMINAL_WIDTH / 2, 850, "menu");		
+		button_pw_reset_submit.addEventListener(MouseEvent.CLICK, onClick_pw_reset_submit,false,0,true);
+		pw_reset_screen.addChild(button_pw_reset_submit);
+		
+		//Reset password button
+		button_pw_reset_back = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, 1000, "menu");		
+		button_pw_reset_back.addEventListener(MouseEvent.CLICK, onClick_pw_reset_back,false,0,true);
+		pw_reset_screen.addChild(button_pw_reset_back);
+
+		this.addChild(pw_reset_screen);	
+	}
+	
+	
+	
 	// create screen for keycode information
 	public function drawKeycodeScreen(){
 		
@@ -906,7 +1169,7 @@ class Main extends Sprite
 		keycode_text.align = TextFormatAlign.CENTER;
 
 		keycode_textfield.defaultTextFormat = keycode_text;
-		keycode_textfield.text = "\nUm Level 11 sowie die nachfolgenden Level spielen zu können, möchten wir Sie bitten, \n Fragebögen auszufüllen, die wir Ihnen per E-Mail zuschicken. \n\n Die Fragebögen erfassen Eigenschaften Ihrer Persönlichkeit, \n die wir mit dem im Spiel gemessenen Lernverhalten in Verbindung bringen können.\n\n Nach erfolgtem Ausfüllen und Zurücksenden der Fragebögen, erhalten Sie einen Code per Mail, \n den Sie hier eingeben können, um die folgenden Level freizuschalten.";
+		keycode_textfield.text = "\nUm Level 11 sowie die nachfolgenden Level spielen zu können, möchten wir Sie bitten, \ndie Fragebögen unter dem Link auszufüllen, den wir Ihnen per E-Mail zugeschickt haben. \n\n Die Fragebögen erfassen Eigenschaften Ihrer Persönlichkeit, \n die wir mit dem im Spiel gemessenen Lernverhalten in Verbindung bringen können.\n\n Nach erfolgtem Beantworten der Fragebögen, erhalten Sie einen Code per Mail, \n den Sie hier eingeben können, um die folgenden Level freizuschalten.";
 		
 		keycode_textfield.height = keycode_textfield.textHeight + 150;
 		keycode_textfield.width = 1800;
@@ -1028,7 +1291,7 @@ class Main extends Sprite
 		loggedinuser_text.y = 980;
 		loggedinuser_text.x = 0;
 		loggedinuser_text.defaultTextFormat = LoggedInUserFormat;
-		loggedinuser_text.text = 'Eingeloggt als: $_mail_address';
+		loggedinuser_text.text = 'Angemeldet als: $_mail_address';
 		loggedinuser_text.selectable = false;
 		loggedinuser_text.mouseEnabled = false;
 		menu_screen.addChild(loggedinuser_text);
@@ -2277,7 +2540,7 @@ class Main extends Sprite
     	stageScaleY = Lib.current.stage.window.height / NOMINAL_HEIGHT;
 
     	stageScale = Math.min(stageScaleX, stageScaleY);
-		trace(stageScale);
+		//trace(stageScale);
     
     	Lib.current.scaleX = stageScale;
     	Lib.current.scaleY = stageScale;
@@ -2729,8 +2992,8 @@ class Main extends Sprite
 			// remove circle from stage
 			Lib.current.stage.removeChild(circle_selection);
 			
-			// Inform about end of the run and data storage
-			data_sync_info = new InfoText ("Ende des Levels!\n\nDaten werden gespeichert.");
+			// Inform about end of the run
+			data_sync_info = new InfoText ("Ende des Levels!\n\nBitte warten Sie\nwährend Ihr Labor ausgebaut wird!");
 			data_sync_info.removeChildAt(1); // remove button from InfoText that is added by default
 			game_screen.addChild(data_sync_info);
 			
