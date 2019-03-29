@@ -1,0 +1,2 @@
+0.0.6
+Changed time limitation from 3 runs a day to 2 hours between runs (entries regarding runs per day and datetime are preserved)

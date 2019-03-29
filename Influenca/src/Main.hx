@@ -3,6 +3,7 @@ package ;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
+import haxe.Timer;
 import haxe.ui.core.UIEvent;
 import openfl.display.DisplayObject;
 import openfl.text.TextField;
@@ -512,8 +513,9 @@ class Main extends Sprite
 								_keycode_set = 0;
 								// Set initial value for indicator coding how many runs have been played on a given day
 								_num_runs_played = 0;
-								// Set initial value for date coding when the last run has been played
-								_timestamp_last_run = DateTools.format(Date.now(), "%Y-%m-%d");
+								// Set initial value for timestamp & date coding when the last run has been played
+								_timestamp_last_run = (Sys.time() * 1000.0) - (run_delay * 3600000);
+								_date_last_run = DateTools.format(Date.now(), "%Y-%m-%d");
 								// Set flag signaling that instruction needs to be visited
 								intro_screens_visited = false;
 								// Save local JSON userdata
@@ -704,12 +706,10 @@ class Main extends Sprite
 		drawMenuScreen();
 	}
 
+	
+	//%%%%%%%% Main function starting the game %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 	public function onClick_MainGame(event: MouseEvent):Void {
-		/*When you want to continue your game, you first see the gallerie of obtained rewards,
-		then the level you're in, then the current reward with short introduction, then the questionaires &
-		then the Main Game starts
-		*/
 		
 		if (_run_ind == 1 && intro_screens_visited == false) {
 			
@@ -724,13 +724,19 @@ class Main extends Sprite
 			end_game_info_button.addEventListener(MouseEvent.CLICK, toggleMessageEndGame,false,0,true);
 			this.addChild(end_game_info);
 			
-		} else if (_num_runs_played == 3 && _timestamp_last_run == DateTools.format(Date.now(), "%Y-%m-%d")) {
+		} else if (((Sys.time() * 1000.0) - _timestamp_last_run) < (run_delay * 3600000)) { // check if delay between runs was shorter than run_delay * 1 hour (= 3600000 milliseconds)
 			
+			var calculate_delta_minutes = (run_delay * 3600000) - ((Sys.time() * 1000.0) - _timestamp_last_run);
+			var delta_components = DateTools.parse(calculate_delta_minutes);
+			_minutes_to_wait = (delta_components.hours * 60) + delta_components.minutes;
 			this.removeChildren();
-			run_limit_info = new InfoText ("Sie haben heute bereits 3 Level gespielt.\n Weitere Level können erst am nächsten Tag gestartet werden.");
+			run_limit_info = new InfoText ('Ein neues Pathogen wurde identifiziert:				\n\n Medikamente werden zurzeit entwickelt und stehen in $_minutes_to_wait Minuten\n für einen Test zur Verfügung.');
 			var run_limit_info_button = run_limit_info.getChildAt(1);
 			run_limit_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRunLimit,false,0,true);
 			this.addChild(run_limit_info);
+			pathogen_array[_run_ind-1].x = 1350;
+			pathogen_array[_run_ind-1].y = 350;
+			this.addChild(pathogen_array[_run_ind-1]);
 			
 		} else if (_run_ind >= 11 && _keycode_set == 1) {
 			
@@ -753,6 +759,7 @@ class Main extends Sprite
 	
 	function toggleMessageRunLimit(event: MouseEvent):Void {
 		this.removeChildren();
+		//Lib.current.stage.removeChildren();
 		drawMenuScreen();
 	}
 	
@@ -2964,22 +2971,10 @@ class Main extends Sprite
 		
 		// Write timestamp to array to later modify run_finished marker
 		trial_timestamps[_trial_ind] = _timestamp;
-		
-		/*// Save timestamp value of first trial to later modify the run_finished column
-		if (_trial_ind == 1){
-			modification_start = _timestamp;
-		}*/
 
 		// Write to database
 		AppdataEntryLite.writeLiteTrialEntry();
 		
-		/**
-		 *  needs to delete the data base entries from before
-		 *  sets trials back to 1 so level needs to be played again
-		 */
-		/*if(currentGameState==Paused){
-			_trial_ind=1;
-		}*/
 		
 		// Set timer to give player time to evaluate the outcome
 		if (_trial_ind < trials)
@@ -3092,15 +3087,15 @@ class Main extends Sprite
 				// modify run_finished entry as run is now finalized
 				AppdataEntryLite.modifyLiteTrialEntry(trial_timestamps);
 				
-				// Modify number of runs played and according timestamps
-				if (_num_runs_played < 3 && _timestamp_last_run == DateTools.format(Date.now(), "%Y-%m-%d")) {
+				// Modify number of runs played and according date identifier
+				if (_date_last_run == DateTools.format(Date.now(), "%Y-%m-%d")) {
 					_num_runs_played = _num_runs_played + 1;
-				}
-				
-				if (_timestamp_last_run != DateTools.format(Date.now(), "%Y-%m-%d")) {
-					_timestamp_last_run = DateTools.format(Date.now(), "%Y-%m-%d");
+				} else {
+					_date_last_run = DateTools.format(Date.now(), "%Y-%m-%d");
 					_num_runs_played = 1;
 				}
+				// Modify time of last run played according to current timestamp
+				_timestamp_last_run = Sys.time() * 1000.0;
 				
 				// update global score
 				_global_score = _global_score + _score;
