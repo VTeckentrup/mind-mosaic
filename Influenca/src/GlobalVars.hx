@@ -17,6 +17,7 @@ class GlobalVars
 	// general settings
 	public static var trials:Int = 150;
 	public static var runs:Int = 31;
+	public static var run_delay:Int = 2;
 	
 	// stage scaling
 	public static var NOMINAL_WIDTH:Int = 1920;
@@ -24,6 +25,7 @@ class GlobalVars
 	
 	// setup variables database
 	public static var host_address:String = "";
+	//public static var host_address:String = "";
 	public static var host_database:String = "";
 	public static var host_user:String = "";
 	public static var host_PW:String = "";
@@ -84,9 +86,11 @@ class GlobalVars
 	public static var _item_28:Null<Int>;
 	public static var _item_29:Null<Int>;
 	public static var _item_30:Null<Int>;
-	public static var _app_version:String = "0.0.5";
+	public static var _app_version:String = "0.0.6";
 	public static var _num_runs_played:Int;
-	public static var _timestamp_last_run:String;
+	public static var _date_last_run:String;
+	public static var _timestamp_last_run:Float;
+	public static var _minutes_to_wait:Int;
 		// user info
 	public static var _mail_address:String;
 	public static var _password:String;

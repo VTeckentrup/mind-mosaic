@@ -475,7 +475,8 @@ class DatabaseSync
 			// Set initial value for indicator coding how many runs have been played on a given day
 			_num_runs_played = 0;
 			// Set initial value for date coding when the last run has been played
-			_timestamp_last_run = DateTools.format(Date.now(), "%Y-%m-%d");
+			_timestamp_last_run = (Sys.time() * 1000.0) - (run_delay * 3600000);
+			_date_last_run = DateTools.format(Date.now(), "%Y-%m-%d");
 			
 		} else {
 			
@@ -483,7 +484,8 @@ class DatabaseSync
 			_run_ind = subj_data.run_ind + 1;
 			_global_score = subj_data.global_score;
 			_num_runs_played = subj_data.runs_played_limit;
-			_timestamp_last_run = subj_data.date_run;
+			_date_last_run = subj_data.date_run;
+			_timestamp_last_run = subj_data.timestamp_run;
 			
 		}
 					
