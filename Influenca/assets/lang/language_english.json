@@ -1,0 +1,118 @@
+{
+	"questionnaire_screen": {
+	
+		"questionnaire_items_1": "Wie hungrig sind Sie im Moment?",
+		"questionnaire_items_2": "Wie satt sind Sie im Moment?",
+		"questionnaire_items_3": "Wie durstig sind Sie im Moment?",
+		"questionnaire_items_4": "Wann haben Sie die letzte Mahlzeit gegessen?",
+		"questionnaire_items_5": "Haben Sie seit der letzten Mahlzeit noch genascht?",
+		"questionnaire_items_6": "Haben Sie in den letzten 2h koffeinhaltige Getränke \n wie Kaffee getrunken?",
+		"questionnaire_items_7": "Wie wach fühlen Sie sich im Moment?",
+		"questionnaire_items_8": "Wie zufrieden fühlen Sie sich im Moment?",
+		"questionnaire_items_9": "Wie niedergeschlagen fühlen Sie sich im Moment?",
+		"questionnaire_items_10": "Wie gestresst fühlen Sie sich im Moment?",
+		"questionnaire_items_11": "Wie stark fühlen Sie sich momentan durch Ihre \n Umgebung abgelenkt?",
+		"questionnaire_items_12": "Wie stark fühlen Sie sich momentan durch Ihre \n Gedanken abgelenkt?",
+		"questionnaire_items_13": "Hatten Sie seit der letzten Spielrunde einen Essanfall?",
+		"questionnaire_items_14": "Hatten Sie das Gefühl von Kontrollverlust über \n die Art und Menge von Essen, oder das Gefühl \n nicht mit dem Essen aufhören zu können?",
+		"questionnaire_items_15": "Haben Sie in einem abgrenzbaren Zeitraum \n (z.B. innerhalb von 2 Stunden) eine Menge an Essen gegessen, \n die andere als außerordentlich groß bezeichnen würden?",
+		"questionnaire_items_16": "Haben Sie viel schneller gegessen als normal?",
+		"questionnaire_items_17": "Haben Sie gegessen, bis Sie sich \n unangenehm voll gefühlt haben?",
+		"questionnaire_items_18": "Haben Sie große Mengen Nahrung zu sich genommen, \n obwohl Sie sich nicht physisch hungrig gefühlt haben?",
+		"questionnaire_items_19": "Haben Sie alleine gegessen, \n weil Sie sich dafür geschämt haben wie viel Sie gegessen haben?",
+		"questionnaire_items_20": "Haben Sie sich nach dem Essanfall vor sich selbst geekelt, \n sich schuldig oder niedergeschlagen gefühlt?",
+		"questionnaire_items_21": "Haben Sie versucht etwas zu tun, um die Folgen \n des Essanfalls zu verhindern? (z.B.  selbstverursachtes Erbrechen, \n Einnahme von Abführmitteln, exzessiver Sport...)",
+		"questionnaire_items_22": "Wie stark war Ihr Drang etwas zu essen vor dem Essanfall?",
+		"questionnaire_items_23": "Wie stark war Ihr Appetit vor dem Essanfall?",
+		"questionnaire_items_24": "Wie intensiv war Ihr Essanfall?",
+		"questionnaire_items_25": "Wann hatten Sie den letzten Essanfall?",
+		"questionnaire_items_26": "Wie lange dauerte der letzte Essanfall?",
+		"notatall": "Gar nicht",
+		"alot": "sehr",
+		"yep": "Ja",
+		"nope": "Nein",
+		"notyet": "Noch nicht,\naber ich werde es tun"
+		
+	},
+	
+	"button_texts": {
+		
+		"back_button_text": "Zurück",
+		"forward_button_text": "weiter",
+		"menu_button_text": "Menü",
+		"play_button_text": "Spielen",
+		"ok_button_text": "OK",
+		"login_button_text": "Login"
+	
+		},
+		
+	"menu_texts": {
+		"instr": "Anleitung",
+		"gal": "Spielstand/Galerie",
+		"logout": "Logout",
+		"close": "Beenden",
+		"loggedIn": "Angemeldet als: ",
+		"change_lang": "Spracheinstellungen"
+	},
+	
+	"variety_texts": {
+		"compl_score": "Gesamtscore: ",
+		"level": "Level: ",
+		"bonlevel": " (Bonuslevel!)",
+		"score": "Score: ",
+		"round": "Runde ",
+		"of": " von ",
+		"inftext": "Ende des Levels!\n\nBitte warten Sie\nwährend Ihr Labor ausgebaut wird!"
+		
+	
+	},
+	
+	"registration_text": {
+		"registration_button": "Registrieren",
+		"reset": "Falls die Mailadresse registriert ist, wurde der Code gesendet.\n Bitte schauen Sie in Ihrem Posteingang nach.",
+		"inf_text1": "Es ist noch kein Code versandt worden.\n Bitte fordern Sie zunächst einen Code mittels Eingabe Ihrer Mailadresse an.",
+		"inf_text2": "Ihr Passwort wurde erfolgreich geändert!\n Bitte kehren Sie zum Login zurück, um sich mit dem neuen Passwort anzumelden.",
+		"inf_text3": "Der eingegeben Code stimmt nicht überein.\n Bitte überprüfen Sie den Code, der Ihnen per Email\n auf die registrierte Mailadresse zugesendet wurde.",
+		"inf_text4": "Stellen Sie bitte sicher, dass ein aktiver Internetzugriff besteht\n und sowohl das Code-Feld als auch das neue Passwort eingegeben wurden.",
+		"noInternet": "Es wurde keine Internetverbindung erkannt!\nUm die Nutzerdaten konsistent zu halten, ist ein Logout nur bei bestehender Internetverbindung möglich.",
+		"syncInf": "Bitte schließen Sie eventuell noch geöffnete Hintergrundfenster nicht. \n Sie werden geschlossen, sobald die Datenübertragung beendet ist!",
+		"reg_mailused": "Diese E-Mail Adresse wurde bereits für ein Konto registriert.\nBitte wählen Sie eine andere E-Mail Adresse \noder loggen Sie sich in Ihr bestehendes Konto ein.",
+		"reg_empty": "Die Eingaben zu E-Mailadresse und Passwort dürfen nicht leer sein.",
+		"consent_info": "Sie haben im Auswahlkasten kein Einverständnis\n für Ihre Teilnahme an der Studie gegeben.\n\n Ohne Ihr Einverständnis ist eine Nutzung\n der App leider nicht möglich.",	
+		"inet_info": "Eine Internetverbindung ist zur Registrierung notwendig,\n wurde aber nicht erkannt.\n\n Bitte stellen Sie eine Internetverbindung her.",
+		"mail_info": "Ein Nutzerkonto mit dieser E-Mail Adresse wurde noch nicht registriert.\nBitte registrieren Sie sich zunächst für ein Konto.",
+		"pw_info": "Das eingegebene Passwort passt nicht zur registrierten E-Mail Adresse.\n",
+		"entry_info": "Die Eingaben zu E-Mailadresse und Passwort dürfen nicht leer sein"
+		},
+		
+	"gameinfo_texts": {
+		"end_game": "Sie haben bereits alle Level erfolgreich beendet.\n In der Galerie können Sie sich Ihre Erfolge ansehen.",
+		"limit_info": "Sie haben heute bereits 3 Level gespielt.\n Weitere Level können erst am nächsten Tag gestartet werden."
+		
+	},
+	
+	"logreg_texts": {
+		"log": "Login",
+		"reg_empty": "Registrieren",
+		"pw_reset": "Passwort ändern",
+		"mail": "E-Mail:",
+		"passwt": "Passwort:",
+		"consent": "Ich habe die Teilnahmebedingungen gelesen \nund stimme ihnen zu:",
+		"conditions": "Teilnahmebedingungen",
+		"check_info": "Ich bin damit einverstanden, für weitere Studien \nüber meine Emailadresse kontaktiert zu werden."
+	},
+	
+	"PWreset_texts": {
+		"pwreset_info": "Geben Sie bitte Ihre für Influenca registrierte Mailadresse ein, um einen Code per Mail zugeschickt zu bekommen. Sobald Sie die E-Mail erhalten haben, geben Sie weiter unten bitte zur Überprüfung den erhaltenen Code ein sowie Ihr neues Passwort und bestätigen Sie die Eingabe.",
+		"code":  "Reset-Code:",
+		"newPW": "Neues Passwort:",
+		"requestCode": "Code anfordern"
+	},
+	
+	"keycode_texts": {
+		"keycodeinfo": "\nUm Level 11 sowie die nachfolgenden Level spielen zu können, möchten wir Sie bitten, \ndie Fragebögen unter dem Link auszufüllen, den wir Ihnen per E-Mail zugeschickt haben. \n\n Die Fragebögen erfassen Eigenschaften Ihrer Persönlichkeit, \n die wir mit dem im Spiel gemessenen Lernverhalten in Verbindung bringen können.\n\n Nach erfolgtem Beantworten der Fragebögen, erhalten Sie einen Code per Mail, \n den Sie hier eingeben können, um die folgenden Level freizuschalten.",
+		"keycode_code": "Code:",
+		"keycode_accepted": "Der eingegebene Code ist korrekt.\n Das nächste Level kann nun gestartet werden.",
+		"keycode_rejected":"Der eingegebene Code stimmt nicht überein.\n Bitte überprüfen Sie den eingegebenen Code, \n um das nächste Level starten zu können."
+	}
+}
