@@ -1,3 +1,5 @@
+C:\Users\canlab\Documents\Influenca\src\Main.hx
+
 package ;
 
 import flash.display.Sprite;
@@ -27,10 +29,6 @@ import haxe.ui.components.CheckBox;
 import haxe.ui.components.HSlider;
 import motion.Actuate;
 
-
-
-//import haxe.Json;
-
 enum GameState {
 	
 	Playing;
@@ -38,17 +36,13 @@ enum GameState {
 	Paused;
 }
 
-
-
 class Main extends Sprite 
 {
 //%%%%%%%%%%%%% VARIABLEN %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	
-
-  
-	
-	
-	
+		  var s = '{
+      "name": "Haxe",
+      "tags": ["awesome"]
+    }';
 	var inited:Bool;
 	
 	//set up Log in 
@@ -139,7 +133,6 @@ class Main extends Sprite
 	public var button1:SimpleButton;
 	public var button2:SimpleButton;
 	public var button3:SimpleButton;
-	public var button4:SimpleButton;
 	//public var button4:SimpleButton;
 	public var button5:SimpleButton;
 	public var button6:SimpleButton;
@@ -215,9 +208,6 @@ class Main extends Sprite
 	// keycode
 	private var keycode_input:TextField;
 	
-
-
-	
 	
 	//%%%%%%%%%%%% DISPOSAL FUNCTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	public function disposeMenuScreen():Void {
@@ -226,7 +216,6 @@ class Main extends Sprite
 		button1.removeEventListener(MouseEvent.CLICK, onClick_MainGame, false);
 		button2.removeEventListener(MouseEvent.CLICK, onInstruction, false);
 		button3.removeEventListener(MouseEvent.CLICK, onClick3, false);
-		button4.removeEventListener(MouseEvent.CLICK, onClick4, false);
 		button5.removeEventListener(MouseEvent.CLICK, onClick5, false);
 		button6.removeEventListener(MouseEvent.CLICK, onClick6, false);
 		
@@ -292,48 +281,11 @@ class Main extends Sprite
 	}
 
 
-//%%%%%%%%%% BUTTONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//%%%%%%%%%%BUTTONS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
 	//onClick functions for the multiple buttons
 	
-	//onClick Function for language selection
-	// language is directly determined here by choosing the savepath of the chosen json
-	public function onClick_German(event: MouseEvent):Void{
-		//Variable needs to be set to a value & then transfered to database for later query
-		// screen
-		_language = "German";
-		language = AssetPreparation.initializeLanguage("lang/language_german.json");
-		AssetPreparation.getQuestionnaireItems(language);
-		
-		// case first time use
-		if (!FileSystem.exists(login_savepath)){
-			log_and_reg();
-		}else{
-		// case changing language
-			// save new language in json and call menu
-			AppdataJSON.saveLogin();
-			drawMenuScreen();	
-		}
-	}
-	//same for other languages
-	public function onClick_English(event: MouseEvent):Void{
-		_language = "English";
-		language = AssetPreparation.initializeLanguage("lang/language_english.json");
-		AssetPreparation.getQuestionnaireItems(language);
-		
-		// case first time use
-		if (!FileSystem.exists(login_savepath)){
-			log_and_reg();
-		}else{
-		// case changing language
-			// save new language in json and call menu
-			AppdataJSON.saveLogin();
-			drawMenuScreen();	
-		}
-	}
-	
-	
-	
+	//DATENBANKABRUF
 	//Button Game Status - Button3
 	public function onClick3 (event: MouseEvent):Void {
 		disposeMenuScreen();
@@ -342,16 +294,15 @@ class Main extends Sprite
 		drawGallery();
 	}
 	
-	public function onClick4 (event: MouseEvent):Void {
-		disposeMenuScreen();
-		this.removeChild(menu_screen);
-		menu_screen = null;
-		askLanguage();
-	}
+	//Button Über das Spiel - Button4
+	/*public function onClick4 (event: MouseEvent):Void {
+		menu_screen.removeChildren();
+		button_back = Button.drawButton("Zurück",Std.int(NOMINAL_WIDTH -150),50,"back");
+		button_back.addEventListener(MouseEvent.CLICK, onClick_back,false,0,true);
+		menu_screen.addChild(button_back);
+		//menu_screen.removeChildren();	
+	}*/
 	
-
-	
-
 	public function onClick_pw_reset (event: MouseEvent):Void {
 		this.removeChild(pw_reset_screen);
 		pw_reset_screen = null;
@@ -376,7 +327,7 @@ class Main extends Sprite
 		}
 		
 		// Display info text field: code sent
-		pw_reset_code_info_text = new InfoText (language.registration_text.reset);
+		pw_reset_code_info_text = new InfoText ("Falls die Mailadresse registriert ist, wurde der Code gesendet.\n Bitte schauen Sie in Ihrem Posteingang nach.");
 		var pw_reset_code_info_text_button = pw_reset_code_info_text.getChildAt(1);
 		pw_reset_code_info_text_button.addEventListener(MouseEvent.CLICK, toggleMessagePWResetCode,false,0,true);
 		pw_reset_screen.addChild(pw_reset_code_info_text);
@@ -400,21 +351,21 @@ class Main extends Sprite
 			
 			if (transaction_finished == 0){
 				
-				info_text_str = language.registration_text.inf_text1;
+				info_text_str = "Es ist noch kein Code versandt worden.\n Bitte fordern Sie zunächst einen Code mittels Eingabe Ihrer Mailadresse an.";
 				
 			} else if (transaction_finished == 1) {
 				
-				info_text_str = language.registration_text.inf_text2;
+				info_text_str = "Ihr Passwort wurde erfolgreich geändert!\n Bitte kehren Sie zum Login zurück, um sich mit dem neuen Passwort anzumelden.";
 				
 			} else if (transaction_finished == 2) {
 				
-				info_text_str = language.registration_text.inf_text3;
+				info_text_str = "Der eingegeben Code stimmt nicht überein.\n Bitte überprüfen Sie den Code, der Ihnen per Email\n auf die registrierte Mailadresse zugesendet wurde.";
 				
 			}
 			
 		} else {
 			
-			info_text_str = language.registration_text.inf_text4;
+			info_text_str = "Stellen Sie bitte sicher, dass ein aktiver Internetzugriff besteht\n und sowohl das Code-Feld als auch das neue Passwort eingegeben wurden.";
 			
 		}
 		
@@ -468,7 +419,7 @@ class Main extends Sprite
 		} else {
 			
 			// Display info text field: consent needs to be given
-			logout_inet_info = new InfoText (language.registration_text.noInternet);
+			logout_inet_info = new InfoText ("Es wurde keine Internetverbindung erkannt!\nUm die Nutzerdaten konsistent zu halten, ist ein Logout nur bei bestehender Internetverbindung möglich.");
 			var logout_inet_info_button = logout_inet_info.getChildAt(1);
 			logout_inet_info_button.addEventListener(MouseEvent.CLICK, toggleMessageLogoutInet,false,0,true);
 			menu_screen.addChild(logout_inet_info);
@@ -489,8 +440,7 @@ class Main extends Sprite
 		this.removeChildren();
 		
 		// Input fields need to be filled
-		sync_info = new InfoText(language.registration_text.syncInf);
-		
+		sync_info = new InfoText ("Bitte schließen Sie eventuell noch geöffnete Hintergrundfenster nicht. \n Sie werden geschlossen, sobald die Datenübertragung beendet ist!");
 		var sync_info_button = sync_info.getChildAt(1);
 		sync_info_button.visible = false;
 		
@@ -585,7 +535,7 @@ class Main extends Sprite
 								
 								Screen.instance.removeComponent(vbox_container);
 								// Info field: mail address already registered
-								reg_mail_info = new InfoText (language.registration_text.reg_mailused);
+								reg_mail_info = new InfoText ("Diese E-Mail Adresse wurde bereits für ein Konto registriert.\nBitte wählen Sie eine andere E-Mail Adresse \noder loggen Sie sich in Ihr bestehendes Konto ein.");
 								var reg_mail_info_button = reg_mail_info.getChildAt(1);
 								reg_mail_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegMail,false,0,true);
 								registration_screen.addChild(reg_mail_info);
@@ -596,7 +546,7 @@ class Main extends Sprite
 							
 							Screen.instance.removeComponent(vbox_container);
 							// Input fields need to be filled
-							reg_entry_info = new InfoText (language.registration_text.reg_empty);
+							reg_entry_info = new InfoText ("Die Eingaben zu E-Mailadresse und Passwort dürfen nicht leer sein.");
 							var reg_entry_info_button = reg_entry_info.getChildAt(1);
 							reg_entry_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegEntry,false,0,true);
 							registration_screen.addChild(reg_entry_info);
@@ -607,7 +557,7 @@ class Main extends Sprite
 						
 						Screen.instance.removeComponent(vbox_container);
 						// Display info text field: consent needs to be given
-						reg_consent_info = new InfoText (language.registration_text.consent_info);
+						reg_consent_info = new InfoText ("Sie haben im Auswahlkasten kein Einverständnis\n für Ihre Teilnahme an der Studie gegeben.\n\n Ohne Ihr Einverständnis ist eine Nutzung\n der App leider nicht möglich.");
 						var reg_consent_info_button = reg_consent_info.getChildAt(1);
 						reg_consent_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegConsent,false,0,true);
 						registration_screen.addChild(reg_consent_info);
@@ -618,7 +568,7 @@ class Main extends Sprite
 			
 			Screen.instance.removeComponent(vbox_container);
 			// Display info text field: Internet Connection is necessary
-			reg_inet_info = new InfoText (language.registration_text.inet_info);
+			reg_inet_info = new InfoText ("Eine Internetverbindung ist zur Registrierung notwendig,\n wurde aber nicht erkannt.\n\n Bitte stellen Sie eine Internetverbindung her.");
 			var reg_inet_info_button = reg_inet_info.getChildAt(1);
 			reg_inet_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRegInet,false,0,true);
 			registration_screen.addChild(reg_inet_info);
@@ -687,7 +637,7 @@ class Main extends Sprite
 					} else  if (mail_availability == 0){
 						
 						// Info field: mail address not yet registered -> send to registration page
-						log_mail_info = new InfoText (language.registration_text.mail_info);
+						log_mail_info = new InfoText ("Ein Nutzerkonto mit dieser E-Mail Adresse wurde noch nicht registriert.\nBitte registrieren Sie sich zunächst für ein Konto.");
 						var log_mail_info_button = log_mail_info.getChildAt(1);
 						log_mail_info_button.addEventListener(MouseEvent.CLICK, onClick_reg1,false,0,true);
 						login_screen.addChild(log_mail_info);
@@ -695,7 +645,7 @@ class Main extends Sprite
 					} else if (mail_availability == 1) {
 						
 						// Info field: mail address registered, but password incorrect
-						log_password_info = new InfoText (language.registration_text.pw_info);
+						log_password_info = new InfoText ("Das eingegebene Passwort passt nicht zur registrierten E-Mail Adresse.\n");
 						var log_password_info_button = log_password_info.getChildAt(1);
 						log_password_info_button.addEventListener(MouseEvent.CLICK, toggleMessageLogPassw,false,0,true);
 						login_screen.addChild(log_password_info);
@@ -705,7 +655,7 @@ class Main extends Sprite
 				} else {
 					
 					// Input fields need to be filled
-					log_entry_info = new InfoText (language.registration_text.entry_info);
+					log_entry_info = new InfoText ("Die Eingaben zu E-Mailadresse und Passwort dürfen nicht leer sein");
 					var log_entry_info_button = log_entry_info.getChildAt(1);
 					log_entry_info_button.addEventListener(MouseEvent.CLICK, toggleMessageLogEntry,false,0,true);
 					login_screen.addChild(log_entry_info);
@@ -715,7 +665,7 @@ class Main extends Sprite
 			} else {
 				
 				// Display info text field: Internet Connection is necessary
-				log_inet_info = new InfoText (language.registration_text.inet_info);
+				log_inet_info = new InfoText ("Eine Internetverbindung ist für den Login notwendig, wurde aber nicht erkannt.\n Bitte stellen Sie eine Internetverbindung her.");
 				var log_inet_info_button = log_inet_info.getChildAt(1);
 				log_inet_info_button.addEventListener(MouseEvent.CLICK, toggleMessageLogInet,false,0,true);
 				login_screen.addChild(log_inet_info);
@@ -774,7 +724,7 @@ class Main extends Sprite
 		} else if (_run_ind == runs + 1) {
 			//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 			this.removeChildren();
-			end_game_info = new InfoText (language.gameinfo_texts.end_game);
+			end_game_info = new InfoText ("Sie haben bereits alle Level erfolgreich beendet.\n In der Galerie können Sie sich Ihre Erfolge ansehen.");
 			var end_game_info_button = end_game_info.getChildAt(1);
 			end_game_info_button.addEventListener(MouseEvent.CLICK, toggleMessageEndGame,false,0,true);
 			this.addChild(end_game_info);
@@ -782,7 +732,7 @@ class Main extends Sprite
 		} else if (_num_runs_played == 3 && _timestamp_last_run == DateTools.format(Date.now(), "%Y-%m-%d")) {
 			
 			this.removeChildren();
-			run_limit_info = new InfoText (language.gameinfo_texts.limit_info);
+			run_limit_info = new InfoText ("Sie haben heute bereits 3 Level gespielt.\n Weitere Level können erst am nächsten Tag gestartet werden.");
 			var run_limit_info_button = run_limit_info.getChildAt(1);
 			run_limit_info_button.addEventListener(MouseEvent.CLICK, toggleMessageRunLimit,false,0,true);
 			this.addChild(run_limit_info);
@@ -841,42 +791,20 @@ class Main extends Sprite
 		//Lib.current.stage.y = (Lib.current.stage.window.height - NOMINAL_HEIGHT * stageScale) / 2;
 		
 	}*/
-	
-	// First page that asks you for language
-	public function askLanguage(){
 		
-		
-		language_screen = new Sprite();
-		language_screen.addChild(img_menu_background);
-		
-		// y-axis height should be dependent on how many buttons there are
-		var button_german = Button.drawButton("Deutsch", NOMINAL_WIDTH / 2, 350, "menu");
-		var button_english = Button.drawButton("English", NOMINAL_WIDTH / 2, 500, "menu");
-		
-		// event listeners
-		button_german.addEventListener(MouseEvent.CLICK, onClick_German, false, 0, true);
-		button_english.addEventListener(MouseEvent.CLICK, onClick_English, false, 0, true);
-
-		// putting buttons on screen
-		language_screen.addChild(button_german);
-		language_screen.addChild(button_english);
-		
-		this.addChild(language_screen);
-	}
 	
 	//first page that lets you choose between Login and Registration
 	public function log_and_reg(){
 		//global var
 		login_screen = new Sprite();
 		login_screen.addChild(img_menu_background);
-		//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+			//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 		//button gets name -> change to json
-		button_log = Button.drawButton(language.logreg_texts.log,NOMINAL_WIDTH / 2, 200, "menu");
-		button_reg1 = Button.drawButton(language.logreg_texts.reg, NOMINAL_WIDTH / 2, 350, "menu");
-		button_pw_reset = Button.drawButton(language.logreg_texts.pw_reset, NOMINAL_WIDTH / 2, 500, "menu");
-		
-		button6 = Button.drawButton(language.menu_texts.close, NOMINAL_WIDTH / 2, 900, "menu");
-		//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		button_log = Button.drawButton("Login",NOMINAL_WIDTH / 2, 200, "menu");
+		button_reg1 = Button.drawButton("Registrierung", NOMINAL_WIDTH / 2, 350, "menu");
+		button_pw_reset = Button.drawButton("Passwort ändern", NOMINAL_WIDTH / 2, 500, "menu");
+		button6 = Button.drawButton("Beenden", NOMINAL_WIDTH / 2, 900, "menu");
+			//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 		button_log.addEventListener(MouseEvent.CLICK, onClick_log,false,0,true);
 		button_reg1.addEventListener(MouseEvent.CLICK, onClick_reg1, false, 0, true);
 		button_pw_reset.addEventListener(MouseEvent.CLICK, onClick_pw_reset, false, 0, true);
@@ -911,7 +839,7 @@ class Main extends Sprite
 		username_info.height = 80;
 		username_info.x = (NOMINAL_WIDTH - username_info.width) / 2;
 		username_info.y = 120;
-		username_info.text = language.logreg_texts.mail;
+		username_info.text = "E-Mail:";
 		username_info.defaultTextFormat = logformat;
 		username_info.selectable = false;
 		username_info.mouseEnabled = false;
@@ -923,7 +851,7 @@ class Main extends Sprite
 		passw_info.height = 80;
 		passw_info.x = (NOMINAL_WIDTH - passw_info.width) / 2;
 		passw_info.y = 420;
-		passw_info.text = language.logreg_texts.passwt;
+		passw_info.text = "Passwort:";
 		passw_info.defaultTextFormat = logformat;
 		passw_info.selectable = false;
 		passw_info.mouseEnabled = false;
@@ -967,12 +895,12 @@ class Main extends Sprite
 		login_screen.addChild(passw);
 	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 		//login button
-		button_login = Button.drawButton(language.button_texts.login_button_text, NOMINAL_WIDTH / 2, 800, "menu");		
+		button_login = Button.drawButton("Login", NOMINAL_WIDTH / 2, 800, "menu");		
 		button_login.addEventListener(MouseEvent.CLICK, onClick_login,false,0,true);
 		login_screen.addChild(button_login);
 		
 		//back button
-		button_login_back = Button.drawButton(language.button_texts.back_button_text, NOMINAL_WIDTH / 2, 950, "menu");		
+		button_login_back = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, 950, "menu");		
 		button_login_back.addEventListener(MouseEvent.CLICK, onClick_Log_Back,false,0,true);
 		login_screen.addChild(button_login_back);
 
@@ -1000,7 +928,7 @@ class Main extends Sprite
 		mailaddress_info.height = 80;
 		mailaddress_info.x = (NOMINAL_WIDTH - mailaddress_info.width) / 2;
 		mailaddress_info.y = 120;
-		mailaddress_info.text = language.logreg_texts.mail;
+		mailaddress_info.text = "E-Mail:";
 		mailaddress_info.defaultTextFormat = infoformat;
 		mailaddress_info.selectable = false;
 		mailaddress_info.mouseEnabled = false;
@@ -1012,7 +940,7 @@ class Main extends Sprite
 		selectedpw_info.height = 80;
 		selectedpw_info.x = (NOMINAL_WIDTH - selectedpw_info.width) / 2;
 		selectedpw_info.y = 320;
-		selectedpw_info.text = language.logreg_texts.passwt;
+		selectedpw_info.text = "Passwort:";
 		selectedpw_info.defaultTextFormat = infoformat;
 		selectedpw_info.selectable = false;
 		selectedpw_info.mouseEnabled = false;
@@ -1054,7 +982,7 @@ class Main extends Sprite
 		reg_checkbox_consent.id = "consent_cb";
 		reg_checkbox_consent.selected = false;
 		reg_checkbox_consent.height = 100;
-		reg_checkbox_consent.text = language.logreg_texts.consent;
+		reg_checkbox_consent.text = "Ich habe die Teilnahmebedingungen gelesen \nund stimme ihnen zu:";
 		reg_checkbox_consent.styleNames = "CheckboxFont";
 		Toolkit.styleSheet.addRules(".CheckboxFont { font-size: 40; }");
 		
@@ -1065,7 +993,7 @@ class Main extends Sprite
 		tos_info.height = 100;
 		tos_info.x = 980;
 		tos_info.y = 543;
-		tos_info.text = language.logreg_texts.conditions;
+		tos_info.text = "Teilnahmebedingungen";
 		tos_info.defaultTextFormat = urlformat;
 		//tos_info.selectable = false;
 		//tos_info.mouseEnabled = false;
@@ -1075,7 +1003,7 @@ class Main extends Sprite
 		reg_checkbox_contact.id = "contact_cb";
 		reg_checkbox_contact.selected = false;
 		reg_checkbox_contact.height = 100;
-		reg_checkbox_contact.text = language.logreg_texts.check_info;
+		reg_checkbox_contact.text = "Ich bin damit einverstanden, für weitere Studien \nüber meine Emailadresse kontaktiert zu werden.";
 		reg_checkbox_contact.styleNames = "CheckboxFont";
 		Toolkit.styleSheet.addRules(".CheckboxFont { font-size: 40; }");
 		
@@ -1087,10 +1015,10 @@ class Main extends Sprite
 
 		//Enabled only if text is inserted, internet connection available and mail address is not already in the database
 		//Button for Registration
-		button_reg = Button.drawButton(language.logreg_texts.reg,NOMINAL_WIDTH / 2,850,"menu");
+		button_reg = Button.drawButton("Registrieren",NOMINAL_WIDTH / 2,850,"menu");
 		button_reg.addEventListener(MouseEvent.CLICK, onClick_Reg,false,0,true);
 		
-		button_reg_back = Button.drawButton(language.button_texts.back_button_text,NOMINAL_WIDTH / 2,1000,"menu");
+		button_reg_back = Button.drawButton("Zurück",NOMINAL_WIDTH / 2,1000,"menu");
 		button_reg_back.addEventListener(MouseEvent.CLICK, onClick_Reg_Back,false,0,true);
 		
 		registration_screen.addChild(button_reg);
@@ -1120,7 +1048,7 @@ class Main extends Sprite
 		pw_reset_info.height = 300;
 		pw_reset_info.x = (NOMINAL_WIDTH - pw_reset_info.width) / 2;
 		pw_reset_info.y = 20;
-		pw_reset_info.text = language.PWreset_texts.pwreset_info;
+		pw_reset_info.text = "Geben Sie bitte Ihre für Influenca registrierte Mailadresse ein, um einen Code per Mail zugeschickt zu bekommen. Sobald Sie die E-Mail erhalten haben, geben Sie weiter unten bitte zur Überprüfung den erhaltenen Code ein sowie Ihr neues Passwort und bestätigen Sie die Eingabe.";
 		pw_reset_info.defaultTextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 35, 0x000000, true);
 		pw_reset_info.selectable = false;
 		pw_reset_info.mouseEnabled = false;
@@ -1134,7 +1062,7 @@ class Main extends Sprite
 		pw_reset_mail_info.height = 80;
 		pw_reset_mail_info.x = (NOMINAL_WIDTH - pw_reset_mail_info.width) / 2;
 		pw_reset_mail_info.y = 220;
-		pw_reset_mail_info.text = language.logreg_texts.mail;
+		pw_reset_mail_info.text = "E-Mail:";
 		pw_reset_mail_info.defaultTextFormat = logformat;
 		pw_reset_mail_info.selectable = false;
 		pw_reset_mail_info.mouseEnabled = false;
@@ -1146,7 +1074,7 @@ class Main extends Sprite
 		pw_reset_code.height = 80;
 		pw_reset_code.x = (NOMINAL_WIDTH - pw_reset_code.width) / 2;
 		pw_reset_code.y = 500;
-		pw_reset_code.text = language.PWreset_texts.code;
+		pw_reset_code.text = "Reset-Code:";
 		pw_reset_code.defaultTextFormat = logformat;
 		pw_reset_code.selectable = false;
 		pw_reset_code.mouseEnabled = false;
@@ -1158,7 +1086,7 @@ class Main extends Sprite
 		passw_info.height = 80;
 		passw_info.x = (NOMINAL_WIDTH - passw_info.width) / 2;
 		passw_info.y = 640;
-		passw_info.text = language.PWreset_texts.newPW;
+		passw_info.text = "Neues Passwort:";
 		passw_info.defaultTextFormat = logformat;
 		passw_info.selectable = false;
 		passw_info.mouseEnabled = false;
@@ -1209,17 +1137,17 @@ class Main extends Sprite
 		pw_reset_screen.addChild(pw_reset_passw);
 
 		//Send code button
-		button_pw_reset_code = Button.drawButton(language.PWreset_texts.requestCode, NOMINAL_WIDTH / 2, 420, "menu");		
+		button_pw_reset_code = Button.drawButton("Code anfordern", NOMINAL_WIDTH / 2, 420, "menu");		
 		button_pw_reset_code.addEventListener(MouseEvent.CLICK, onClick_pw_reset_code,false,0,true);
 		pw_reset_screen.addChild(button_pw_reset_code);
 		
 		//Reset password button
-		button_pw_reset_submit = Button.drawButton(language.logreg_texts.pw_reset, NOMINAL_WIDTH / 2, 850, "menu");		
+		button_pw_reset_submit = Button.drawButton("Passwort ändern", NOMINAL_WIDTH / 2, 850, "menu");		
 		button_pw_reset_submit.addEventListener(MouseEvent.CLICK, onClick_pw_reset_submit,false,0,true);
 		pw_reset_screen.addChild(button_pw_reset_submit);
 		
 		//Reset password button
-		button_pw_reset_back = Button.drawButton(language.button_texts.back_button_text, NOMINAL_WIDTH / 2, 1000, "menu");		
+		button_pw_reset_back = Button.drawButton("Zurück", NOMINAL_WIDTH / 2, 1000, "menu");		
 		button_pw_reset_back.addEventListener(MouseEvent.CLICK, onClick_pw_reset_back,false,0,true);
 		pw_reset_screen.addChild(button_pw_reset_back);
 
@@ -1248,7 +1176,7 @@ class Main extends Sprite
 		keycode_text.align = TextFormatAlign.CENTER;
 
 		keycode_textfield.defaultTextFormat = keycode_text;
-		keycode_textfield.text = language.keycode_texts.keycodeinfo;
+		keycode_textfield.text = "\nUm Level 11 sowie die nachfolgenden Level spielen zu können, möchten wir Sie bitten, \ndie Fragebögen unter dem Link auszufüllen, den wir Ihnen per E-Mail zugeschickt haben. \n\n Die Fragebögen erfassen Eigenschaften Ihrer Persönlichkeit, \n die wir mit dem im Spiel gemessenen Lernverhalten in Verbindung bringen können.\n\n Nach erfolgtem Beantworten der Fragebögen, erhalten Sie einen Code per Mail, \n den Sie hier eingeben können, um die folgenden Level freizuschalten.";
 		
 		keycode_textfield.height = keycode_textfield.textHeight + 150;
 		keycode_textfield.width = 1800;
@@ -1267,7 +1195,7 @@ class Main extends Sprite
 		keycode_info.height = 80;
 		keycode_info.x = (NOMINAL_WIDTH - keycode_info.width) / 2;
 		keycode_info.y = keycode_textfield.height;
-		keycode_info.text = language.keycode_texts.keycode_code;
+		keycode_info.text = "Code:";
 		keycode_info.defaultTextFormat = keycodeinfoformat;
 		keycode_info.selectable = false;
 		keycode_info.mouseEnabled = false;
@@ -1289,7 +1217,7 @@ class Main extends Sprite
 		keycode_screen.addChild(keycode_input);
 		
 		//OK button
-		button_keycode_back = Button.drawButton(language.button_texts.ok_button_text, NOMINAL_WIDTH / 2, 950, "menu");
+		button_keycode_back = Button.drawButton("OK", NOMINAL_WIDTH / 2, 950, "menu");
 		button_keycode_back.addEventListener(MouseEvent.CLICK, onClick_keycode,false,0,true);
 		keycode_screen.addChild(button_keycode_back);
 
@@ -1310,7 +1238,7 @@ class Main extends Sprite
 				// save variable to JSON file
 				AppdataJSON.AppdataSave();
 				// Display info text field: Key was accepted
-				key_accepted_info = new InfoText (language.keycode_texts.keycode_accepted);
+				key_accepted_info = new InfoText ("Der eingegebene Code ist korrekt.\n Das nächste Level kann nun gestartet werden.");
 				key_accepted_info_button = key_accepted_info.getChildAt(1);
 				key_accepted_info_button.addEventListener(MouseEvent.CLICK, toggleMessageKeyAccepted,false,0,true);
 				keycode_screen.addChild(key_accepted_info);
@@ -1318,7 +1246,7 @@ class Main extends Sprite
 			} else if (keycode_input.text != keycode_str) {
 				
 				// Display info text field: Key was wrong
-				key_rejected_info = new InfoText (language.keycode_texts.keycode_rejected);
+				key_rejected_info = new InfoText ("Der eingegebene Code stimmt nicht überein.\n Bitte überprüfen Sie den eingegebenen Code, \n um das nächste Level starten zu können.");
 				key_rejected_info_button = key_rejected_info.getChildAt(1);
 				key_rejected_info_button.addEventListener(MouseEvent.CLICK, toggleMessageKeyRejected,false,0,true);
 				keycode_screen.addChild(key_rejected_info);
@@ -1370,39 +1298,32 @@ class Main extends Sprite
 		loggedinuser_text.y = 980;
 		loggedinuser_text.x = 0;
 		loggedinuser_text.defaultTextFormat = LoggedInUserFormat;
-		//loggedinuser_text.text = 'Angemeldet als: $_mail_address';
-		loggedinuser_text.text = language.menu_texts.loggedIn + '$_mail_address';
+		loggedinuser_text.text = 'Angemeldet als: $_mail_address';
 		loggedinuser_text.selectable = false;
 		loggedinuser_text.mouseEnabled = false;
 		menu_screen.addChild(loggedinuser_text);
 		
 		//New game button
-		button1 = Button.drawButton(language.button_texts.play_button_text, NOMINAL_WIDTH / 2, 150, "menu");
-        //button1 = Button.drawButton("Spielen",NOMINAL_WIDTH / 2, 150, "menu");
+        button1 = Button.drawButton("Spielen",NOMINAL_WIDTH / 2, 150, "menu");
 		//Anleitung
-		//button2 = Button.drawButton("Anleitung",Std.int(NOMINAL_WIDTH / 2), 300, "menu");
-		button2 = Button.drawButton(language.menu_texts.instr,Std.int(NOMINAL_WIDTH / 2), 300, "menu");
+		button2 = Button.drawButton("Anleitung",Std.int(NOMINAL_WIDTH / 2), 300, "menu");
 		//Spielstand
-		button3 = Button.drawButton(language.menu_texts.gal, Std.int(NOMINAL_WIDTH / 2), 450, "menu");
-		// change language
-		button4 = Button.drawButton(language.menu_texts.change_lang, Std.int(NOMINAL_WIDTH / 2), 600, "menu");
+		button3 = Button.drawButton("Spielstand/Galerie",Std.int(NOMINAL_WIDTH / 2), 450, "menu");
 		//Logout
-		button5 = Button.drawButton(language.menu_texts.logout, Std.int(NOMINAL_WIDTH / 2), 750, "menu");
+		button5 = Button.drawButton("Logout", Std.int(NOMINAL_WIDTH / 2), 700, "menu");
 		// Beenden
-		button6 = Button.drawButton(language.menu_texts.close, Std.int(NOMINAL_WIDTH / 2), 900, "menu");
+		button6 = Button.drawButton("Beenden", Std.int(NOMINAL_WIDTH / 2), 850, "menu");
 
 	
 		button1.addEventListener(MouseEvent.CLICK, onClick_MainGame,false,0,true);
 		button2.addEventListener(MouseEvent.CLICK, onInstruction,false,0,true);
-		button3.addEventListener(MouseEvent.CLICK, onClick3, false, 0, true);
-		button4.addEventListener(MouseEvent.CLICK, onClick4,false,0,true);
+		button3.addEventListener(MouseEvent.CLICK, onClick3,false,0,true);
 		button5.addEventListener(MouseEvent.CLICK, onClick5,false,0,true);
 		button6.addEventListener(MouseEvent.CLICK, onClick6,false,0,true);
 		
 		menu_screen.addChild(button1);
 		menu_screen.addChild(button2);
 		menu_screen.addChild(button3);
-		menu_screen.addChild(button4);
 		menu_screen.addChild(button5);
 		menu_screen.addChild(button6);
 		
@@ -1424,7 +1345,7 @@ class Main extends Sprite
 		questionnaire_screen = new Sprite();
 		
 		// Add back button
-		button_end = Button.drawButton(language.button_texts.menu_button_text, Std.int(NOMINAL_WIDTH -150),50, "back");
+		button_end = Button.drawButton("Menü", Std.int(NOMINAL_WIDTH -150),50, "back");
 		button_end.addEventListener(MouseEvent.CLICK, onClick_mainmenu,false,0,true);
 		questionnaire_screen.addChild(button_end);
 		
@@ -1463,7 +1384,7 @@ class Main extends Sprite
 			anchor_left.defaultTextFormat = rbFormat;
 			anchor_left.selectable = false;
 			anchor_left.mouseEnabled = false;
-			anchor_left.text = language.questionnaire_screen.notatall;
+			anchor_left.text = "gar nicht";
 			questionnaire_screen.addChild(anchor_left);
 			
 			var anchor_right = new TextField();
@@ -1474,7 +1395,7 @@ class Main extends Sprite
 			anchor_right.defaultTextFormat = rbFormat;
 			anchor_right.selectable = false;
 			anchor_right.mouseEnabled = false;
-			anchor_right.text =  language.questionnaire_screen.alot;
+			anchor_right.text = "sehr";
 			questionnaire_screen.addChild(anchor_right);
 			
 			// Set slider button initially to 0 size
@@ -1508,7 +1429,7 @@ class Main extends Sprite
 			
 				
 			// Forward button
-			button_quest = Button.drawButton(language.button_texts.ok_button_text, NOMINAL_WIDTH / 2, 950, "info");
+			button_quest = Button.drawButton("OK", NOMINAL_WIDTH / 2, 950, "info");
 			button_quest.visible = false;
 			
 			button_quest.addEventListener(MouseEvent.CLICK, QuestPagefinished,false,0,true);
@@ -1701,7 +1622,7 @@ class Main extends Sprite
 			questionnaire_screen.addChild(box_container);
 			
 			// Forward button
-			button_quest = Button.drawButton(language.button_texts.ok_button_text, NOMINAL_WIDTH / 2, 950, "info");
+			button_quest = Button.drawButton("OK", NOMINAL_WIDTH / 2, 950, "info");
 			button_quest.visible = false;
 			
 			button_quest.addEventListener(MouseEvent.CLICK, QuestPagefinished,false,0,true);
@@ -1746,7 +1667,7 @@ class Main extends Sprite
 			rb_text_yes.defaultTextFormat = rbFormat;
 			rb_text_yes.selectable = false;
 			rb_text_yes.mouseEnabled = false;
-			rb_text_yes.text = language.questionnaire_screen.yep;
+			rb_text_yes.text = "Ja";
 			questionnaire_screen.addChild(rb_text_yes);
 			
 			var rb_text_no = new TextField();
@@ -1757,7 +1678,7 @@ class Main extends Sprite
 			rb_text_no.defaultTextFormat = rbFormat;
 			rb_text_no.selectable = false;
 			rb_text_no.mouseEnabled = false;
-			rb_text_no.text = language.questionnaire_screen.nope;
+			rb_text_no.text = "Nein";
 			questionnaire_screen.addChild(rb_text_no);
 			
 			yes_rb = new OptionBox();
@@ -1776,7 +1697,7 @@ class Main extends Sprite
 			questionnaire_screen.addChild(box_container);
 			
 			// Forward button
-			button_quest = Button.drawButton(language.button_texts.ok_button_text, NOMINAL_WIDTH / 2, 950, "info");
+			button_quest = Button.drawButton("OK", NOMINAL_WIDTH / 2, 950, "info");
 			button_quest.visible = false;
 			
 			button_quest.addEventListener(MouseEvent.CLICK, QuestPagefinished,false,0,true);
@@ -1821,7 +1742,7 @@ class Main extends Sprite
 			rb_text_yes.defaultTextFormat = rbFormat;
 			rb_text_yes.selectable = false;
 			rb_text_yes.mouseEnabled = false;
-			rb_text_yes.text = language.questionnaire_screen.yep;
+			rb_text_yes.text = "Ja";
 			questionnaire_screen.addChild(rb_text_yes);
 			
 			var rb_text_no = new TextField();
@@ -1832,7 +1753,7 @@ class Main extends Sprite
 			rb_text_no.defaultTextFormat = rbFormat;
 			rb_text_no.selectable = false;
 			rb_text_no.mouseEnabled = false;
-			rb_text_no.text = language.questionnaire_screen.nope;
+			rb_text_no.text = "Nein";
 			questionnaire_screen.addChild(rb_text_no);
 			
 			var rb_text_notyet = new TextField();
@@ -1844,7 +1765,7 @@ class Main extends Sprite
 			rb_text_notyet.selectable = false;
 			rb_text_notyet.mouseEnabled = false;
 			rb_text_notyet.multiline = true;
-			rb_text_notyet.text = language.questionnaire_screen.notyet;
+			rb_text_notyet.text = "Noch nicht,\naber ich werde es tun";
 			questionnaire_screen.addChild(rb_text_notyet);
 			
 			yes_rb = new OptionBox();
@@ -1868,7 +1789,7 @@ class Main extends Sprite
 			questionnaire_screen.addChild(box_container);
 			
 			// Forward button
-			button_quest = Button.drawButton(language.button_texts.ok_button_text, NOMINAL_WIDTH / 2, 950, "info");
+			button_quest = Button.drawButton("OK", NOMINAL_WIDTH / 2, 950, "info");
 			button_quest.visible = false;
 			
 			button_quest.addEventListener(MouseEvent.CLICK, QuestPagefinished,false,0,true);
@@ -2115,22 +2036,13 @@ class Main extends Sprite
 	
 	
 	//%%%%%%%%% Instruction screens %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	
 	public function drawInstructionScreen(){
 		
 		// remove old content
 		this.removeChildren();
 		instruction_screen = new Sprite();
-		var imgpath_str:String;
 		
-		if (_language == "German"){
-			imgpath_str = "img/Intro_" + Std.string(intro_screen_num) + ".jpg";
-		}else if (_language == "English"){
-			imgpath_str = "img/Intro_" + Std.string(intro_screen_num) + "_english.jpg";
-		}else{
-			imgpath_str = "img/Intro_" + Std.string(intro_screen_num) + ".jpg";
-		}
-		
+		var imgpath_str = "img/Intro_" + Std.string(intro_screen_num) + ".jpg";
 		instruction_background = AssetPreparation.loadImage(imgpath_str);
 		
 		instruction_screen.addChild(instruction_background);
@@ -2139,11 +2051,11 @@ class Main extends Sprite
 			
 			// add button to instruction screens
 			var ww = NOMINAL_WIDTH / 3;
-			textfield_button = Button.drawButton(language.button_texts.back_button_text, (NOMINAL_WIDTH / 2) - 300, ((1080 - ww) / 2) + ww + 150, "info");
+			textfield_button = Button.drawButton("Zurück", (NOMINAL_WIDTH / 2) - 300, ((1080 - ww) / 2) + ww + 150, "info");
 			textfield_button.addEventListener(MouseEvent.CLICK, InstructionBack,false,0,true);
 			instruction_screen.addChild(textfield_button);
 			
-			continue_button = Button.drawButton(language.button_texts.play_button_text, (NOMINAL_WIDTH / 2) + 300, ((1080 - ww) / 2) + ww + 150, "info");
+			continue_button = Button.drawButton("Spielen", (NOMINAL_WIDTH / 2) + 300, ((1080 - ww) / 2) + ww + 150, "info");
 			continue_button.addEventListener(MouseEvent.CLICK, InstructionForward,false,0,true);
 			instruction_screen.addChild(continue_button);
 			
@@ -2151,11 +2063,11 @@ class Main extends Sprite
 	
 			// add button to instruction screens
 			var ww = NOMINAL_WIDTH / 3;
-			textfield_button = Button.drawButton(language.button_texts.back_button_text, (NOMINAL_WIDTH / 2) - 300, ((1080 - ww) / 2) + ww + 150, "info");
+			textfield_button = Button.drawButton("Zurück", (NOMINAL_WIDTH / 2) - 300, ((1080 - ww) / 2) + ww + 150, "info");
 			textfield_button.addEventListener(MouseEvent.CLICK, InstructionBack,false,0,true);
 			instruction_screen.addChild(textfield_button);
 				
-			continue_button = Button.drawButton(language.button_texts.forward_button_text, (NOMINAL_WIDTH / 2) + 300, ((1080 - ww) / 2) + ww + 150, "info");
+			continue_button = Button.drawButton("Weiter", (NOMINAL_WIDTH / 2) + 300, ((1080 - ww) / 2) + ww + 150, "info");
 			continue_button.addEventListener(MouseEvent.CLICK, InstructionForward,false,0,true);
 			instruction_screen.addChild(continue_button);
 		
@@ -2230,7 +2142,7 @@ class Main extends Sprite
 	
 	//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-	//%%%%%%%%% OUT OF FOCUS FUNCTIONS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	//%%%%%%%%%OUT OF FOCUS FUNCTIONS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
 	//what to do if app is out of focus
     private function pause(e:Event):Void{
@@ -2354,7 +2266,7 @@ class Main extends Sprite
 		globalscore_display.y = 50;
 		globalscore_display.selectable = false;
 		globalscore_display.mouseEnabled = false;
-		globalscore_display.text = language.variety_texts.compl_score + '$_global_score';
+		globalscore_display.text = 'Gesamtscore: $_global_score';
 
 		var globalscore_text:TextFormat = new TextFormat(Assets.getFont("fonts/OpenSans-Regular.ttf").fontName, 60, 0xFFFFFF, true);
 		globalscore_text.align = TextFormatAlign.CENTER;
@@ -2364,11 +2276,11 @@ class Main extends Sprite
 		gallery_screen.addChild(globalscore_display);		
 		
 		// Add button to get back to main menu
-		button_end = Button.drawButton(language.button_texts.back_button_text, Std.int(NOMINAL_WIDTH -150),100, "back");
+		button_end = Button.drawButton("Zurück", Std.int(NOMINAL_WIDTH -150),100, "back");
 		button_end.addEventListener(MouseEvent.CLICK, onClick_mainmenu,false,0,true);
 		gallery_screen.addChild(button_end);
 
-		button_continue = Button.drawButton(language.button_texts.play_button_text, Std.int(NOMINAL_WIDTH/2), 1000, "info");
+		button_continue = Button.drawButton("Spielen", Std.int(NOMINAL_WIDTH/2), 1000, "info");
 		button_continue.addEventListener(MouseEvent.CLICK, onClick_MainGame,false,0,true);
 		gallery_screen.addChild(button_continue);
 		
@@ -2470,11 +2382,11 @@ class Main extends Sprite
 		
 		if (_run_ind != runs) {
 			
-			level_display.text = language.variety_texts.level + '$_run_ind';
+			level_display.text = 'Level $_run_ind';
 			
 		} else {
 			
-			level_display.text = language.variety_texts.level + '$_run_ind' + language.variety_texts.bonlevel;
+			level_display.text = 'Level $_run_ind (Bonuslevel!)';
 			
 		}
 		
@@ -2502,7 +2414,7 @@ class Main extends Sprite
 	
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-//%%%%%%%%%% INIT FUNCTION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//%%%%%%%%%%INIT FUNCTION%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	function init() 
 	{
 
@@ -2534,10 +2446,8 @@ class Main extends Sprite
 			
 		});
 		
-		// Initialization of Language as part of asset preparation - right now both leading to german - maybe error query
-		
 		// Prepare assets
-
+		AssetPreparation.getQuestionnaireItems();
 		AssetPreparation.getPathogens();
 		AssetPreparation.getBackgrounds();
 		AssetPreparation.getNotepads();
@@ -2596,27 +2506,13 @@ class Main extends Sprite
 			if (_run_ind == 1) {
 				intro_screens_visited = false;
 			}
-			
-			// initialize everything with the language
-			if (_language == "German"){
-				// language is typedef
-				language = AssetPreparation.initializeLanguage("lang/language_german.json");
-			}else{
-				//other language 
-				language = AssetPreparation.initializeLanguage("lang/language_english.json");
-			}
-			
-			// initialize the questionnaire items with the respective language
-			AssetPreparation.getQuestionnaireItems(language);
 			// Send to main menu
 			drawMenuScreen();
 			
 		} else {
 			
 			// Send to login & registration page 
-			//log_and_reg();
-			// if people are not registered - go to the first page: askLanguage
-			askLanguage();
+			log_and_reg();
 			
 		}
 				
@@ -2689,7 +2585,7 @@ class Main extends Sprite
 		game_screen = new MainGameScreen();
 		
 		// Add back button
-		button_end = Button.drawButton(language.button_texts.menu_button_text, Std.int(NOMINAL_WIDTH -150),50, "back");
+		button_end = Button.drawButton("Menü", Std.int(NOMINAL_WIDTH -150),50, "back");
 		button_end.addEventListener(MouseEvent.CLICK, onClick_end,false,0,true);
 		game_screen.addChild(button_end);
 		
@@ -2721,7 +2617,7 @@ class Main extends Sprite
 		scoreField.defaultTextFormat = scoreFormat;
 		scoreField.selectable = false;
 		scoreField.mouseEnabled = false;
-		scoreField.text = language.variety_texts.score + '$_score';
+		scoreField.text = 'Score: $_score';
 		game_screen.addChild(scoreField);		
 		
 
@@ -2735,7 +2631,7 @@ class Main extends Sprite
 		runField.defaultTextFormat = scoreFormat;
 		runField.selectable = false;
 		runField.mouseEnabled = false;
-		runField.text = language.variety_texts.level + '$_run_ind';
+		runField.text = 'Level: $_run_ind';
 		game_screen.addChild(runField);
 	
 
@@ -2749,7 +2645,7 @@ class Main extends Sprite
 		levelField.defaultTextFormat = levelFormat;
 		levelField.selectable = false;
 		levelField.mouseEnabled = false;
-		levelField.text = language.variety_texts.round+ '$_trial_ind' + language.variety_texts.of + '$trials';	
+		levelField.text = 'Runde: $_trial_ind von $trials';	
 		game_screen.addChild(levelField);
 
 
@@ -2961,7 +2857,7 @@ class Main extends Sprite
 			if (drug_choice == 'A') {
 				
 				_score = Std.int(_score + A_reward);
-				scoreField.text = language.variety_texts.score + '$_score';
+				scoreField.text = 'Score: $_score';
 
 				// set up x coordinate depending on lab background (due to differences in notepad design)
 				if (_run_ind == 1 || _run_ind == 2 || _run_ind == 3 || _run_ind == 4 || _run_ind == 5 || _run_ind == 6 || _run_ind == 25 || _run_ind == 26 || _run_ind == 27 || _run_ind == 28 || _run_ind == 29 || _run_ind == 30) {
@@ -2985,7 +2881,7 @@ class Main extends Sprite
 			else if (drug_choice == 'B') {
 				
 				_score = Std.int(_score - B_reward);
-				scoreField.text = language.variety_texts.score + '$_score';
+				scoreField.text = 'Score: $_score';
 				
 				// set up x coordinate depending on lab background (due to differences in notepad design)
 				if (_run_ind == 1 || _run_ind == 2 || _run_ind == 3 || _run_ind == 4 || _run_ind == 5 || _run_ind == 6 || _run_ind == 25 || _run_ind == 26 || _run_ind == 27 || _run_ind == 28 || _run_ind == 29 || _run_ind == 30) {
@@ -3013,7 +2909,7 @@ class Main extends Sprite
 			if (drug_choice == 'B') {
 				
 				_score = _score + B_reward;
-				scoreField.text = language.variety_texts.score + '$_score';
+				scoreField.text = 'Score: $_score';
 				
 				// set up x coordinate depending on lab background (due to differences in notepad design)
 				if (_run_ind == 1 || _run_ind == 2 || _run_ind == 3 || _run_ind == 4 || _run_ind == 5 || _run_ind == 6 || _run_ind == 25 || _run_ind == 26 || _run_ind == 27 || _run_ind == 28 || _run_ind == 29 || _run_ind == 30) {
@@ -3037,7 +2933,7 @@ class Main extends Sprite
 			else if (drug_choice == 'A') {
 				
 				_score = _score - A_reward;
-				scoreField.text = language.variety_texts.score + '$_score';
+				scoreField.text = 'Score: $_score';
 				
 				// set up x coordinate depending on lab background (due to differences in notepad design)
 				if (_run_ind == 1 || _run_ind == 2 || _run_ind == 3 || _run_ind == 4 || _run_ind == 5 || _run_ind == 6 || _run_ind == 25 || _run_ind == 26 || _run_ind == 27 || _run_ind == 28 || _run_ind == 29 || _run_ind == 30) {
@@ -3104,7 +3000,7 @@ class Main extends Sprite
 			Lib.current.stage.removeChild(circle_selection);
 			
 			// Inform about end of the run
-			data_sync_info = new InfoText (language.variety_texts.inftext);
+			data_sync_info = new InfoText ("Ende des Levels!\n\nBitte warten Sie\nwährend Ihr Labor ausgebaut wird!");
 			data_sync_info.removeChildAt(1); // remove button from InfoText that is added by default
 			game_screen.addChild(data_sync_info);
 			
@@ -3126,7 +3022,7 @@ class Main extends Sprite
 			
 		}
 		
-		levelField.text = language.variety_texts.round + '$_trial_ind' + language.variety_texts.of +  '$trials';
+		levelField.text = 'Runde: $_trial_ind von $trials';
 		
 		//Initialise probabilities using a gaussian random walk if a new round has been started
 		if (_trial_ind == 1) {

@@ -44,6 +44,5 @@ class AppDataRun extends Object {
 	public var timestamp : SFloat;
 	public var runs_played_limit : SUInt;
 	public var date_run : SString<10>;
-	public var timestamp_run : SFloat;
 	
 }

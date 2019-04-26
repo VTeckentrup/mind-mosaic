@@ -7,17 +7,18 @@ import haxe.ui.containers.VBox;
 import lime.system.System;
 import openfl.display.Bitmap;
 import openfl.display.Sprite;
+import AssetPreparation.Language;
+
 
 class GlobalVars
 {
     // maintenance
 	public static var debug_mode:String = "off";
-	public static var url_terms_of_service:String = "";
+	public static var url_terms_of_service:String = "https://neuromadlab.com/?smd_process_download=1&download_id=1473";
 	
 	// general settings
 	public static var trials:Int = 150;
 	public static var runs:Int = 31;
-	public static var run_delay:Int = 2;
 	
 	// stage scaling
 	public static var NOMINAL_WIDTH:Int = 1920;
@@ -26,10 +27,10 @@ class GlobalVars
 	// setup variables database
 	public static var host_address:String = "";
 	//public static var host_address:String = "";
-	public static var host_database:String = "";
-	public static var host_user:String = "";
+	public static var host_database:String = "Canlab";
+	public static var host_user:String = "APP";
 	public static var host_PW:String = "";
-	public static var db_port:Int = ;
+	public static var db_port:Int =;
 	// save variables database
 	public static var db_address:String = "http://www.google.com";
 	public static var trial_entry_list;
@@ -54,6 +55,7 @@ class GlobalVars
     public static var _timestamp:Dynamic;
 	public static var _device_type:String;
 	public static var _device_os:String;
+	public static var _language:String;
 		// run level
 	public static var _global_score:Int;
 	public static var _item_1:Null<Int>;
@@ -86,11 +88,9 @@ class GlobalVars
 	public static var _item_28:Null<Int>;
 	public static var _item_29:Null<Int>;
 	public static var _item_30:Null<Int>;
-	public static var _app_version:String = "0.0.6";
+	public static var _app_version:String = "0.0.5";
 	public static var _num_runs_played:Int;
-	public static var _date_last_run:String;
-	public static var _timestamp_last_run:Float;
-	public static var _minutes_to_wait:Int;
+	public static var _timestamp_last_run:String;
 		// user info
 	public static var _mail_address:String;
 	public static var _password:String;
@@ -203,6 +203,7 @@ class GlobalVars
 	public static var menu_screen:Sprite;
 	public static var start_screen:Sprite;
 	public static var login_screen:Sprite;
+	public static var language_screen:Sprite;
 	public static var pw_reset_screen:Sprite;
 	public static var registration_screen:Sprite;
 	public static var questionnaire_screen:Sprite;
@@ -213,5 +214,7 @@ class GlobalVars
 	public static var instruction_screen:Sprite;
 	public static var keycode_screen:Sprite;
 
-
+	// language var that will be initialized in AssetPreparation.initializeLanguage and for now gets called in init()
+	// this object language can now be used to call 
+	public static var language:Language;
 }

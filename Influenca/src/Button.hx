@@ -65,7 +65,7 @@ class Button extends Sprite
 				this.addChild( asset_b );		
 			}
 			
-		} else if (type == "back"){	//Zurück Button
+		} else if (type == "back"){	//back Button
 			
 				if (image == "normal") {
 				
@@ -132,6 +132,7 @@ class Button extends Sprite
 		
 		button_text.align = TextFormatAlign.CENTER;
 		button_textfield.defaultTextFormat = button_text;
+		//Button gets its text
 		button_textfield.text = s;
 		button_textfield.embedFonts = true;
 		button_textfield.antiAliasType = "ADVANCED";

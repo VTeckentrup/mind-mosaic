@@ -5,6 +5,7 @@ import openfl.text.*;
 import openfl.display.SimpleButton;
 import openfl.Assets;
 
+
 class InfoText extends Sprite {
 	
 	public function new (infotext:String) {
@@ -23,6 +24,7 @@ class InfoText extends Sprite {
 
 		info_textfield.defaultTextFormat = info_text;
 		info_textfield.text = "\n\n" + infotext;
+		//info_textfield.text = infotext;
 		info_textfield.height = info_textfield.textHeight + 200;
 		info_textfield.width = info_textfield.textWidth + 100;
 		info_textfield.textColor = 0x000000;
@@ -39,7 +41,7 @@ class InfoText extends Sprite {
 		this.addChild(info_textfield);
 		
 		// add button to info textfield
-		var textfield_button:SimpleButton = Button.drawButton("OK", NOMINAL_WIDTH / 2, ((1080 - info_textfield.height) / 2) + info_textfield.height - 75, "info");
+		var textfield_button:SimpleButton = Button.drawButton(language.button_texts.ok_button_text, NOMINAL_WIDTH / 2, ((1080 - info_textfield.height) / 2) + info_textfield.height - 75, "info");
 		
         addChild(textfield_button);
 				
