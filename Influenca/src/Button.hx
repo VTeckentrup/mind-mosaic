@@ -65,7 +65,7 @@ class Button extends Sprite
 				this.addChild( asset_b );		
 			}
 			
-		} else if (type == "back"){	//Zurück Button
+		} else if (type == "back"){	//back Button
 			
 				if (image == "normal") {
 				

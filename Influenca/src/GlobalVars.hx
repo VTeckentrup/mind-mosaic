@@ -7,6 +7,8 @@ import haxe.ui.containers.VBox;
 import lime.system.System;
 import openfl.display.Bitmap;
 import openfl.display.Sprite;
+import AssetPreparation.Language;
+
 
 class GlobalVars
 {
@@ -24,12 +26,12 @@ class GlobalVars
 	public static var NOMINAL_HEIGHT:Int = 1080;
 	
 	// setup variables database
-	public static var host_address:String = "";
-	//public static var host_address:String = "";
+	public static var host_address_url:String = "";
+	public static var host_address:String;
 	public static var host_database:String = "";
 	public static var host_user:String = "";
 	public static var host_PW:String = "";
-	public static var db_port:Int = ;
+	public static var db_port = 3306;
 	// save variables database
 	public static var db_address:String = "http://www.google.com";
 	public static var trial_entry_list;
@@ -54,6 +56,7 @@ class GlobalVars
     public static var _timestamp:Dynamic;
 	public static var _device_type:String;
 	public static var _device_os:String;
+	public static var _language:String;
 		// run level
 	public static var _global_score:Int;
 	public static var _item_1:Null<Int>;
@@ -86,7 +89,7 @@ class GlobalVars
 	public static var _item_28:Null<Int>;
 	public static var _item_29:Null<Int>;
 	public static var _item_30:Null<Int>;
-	public static var _app_version:String = "0.0.6";
+	public static var _app_version:String = "0.0.7";
 	public static var _num_runs_played:Int;
 	public static var _date_last_run:String;
 	public static var _timestamp_last_run:Float;
@@ -203,6 +206,7 @@ class GlobalVars
 	public static var menu_screen:Sprite;
 	public static var start_screen:Sprite;
 	public static var login_screen:Sprite;
+	public static var language_screen:Sprite;
 	public static var pw_reset_screen:Sprite;
 	public static var registration_screen:Sprite;
 	public static var questionnaire_screen:Sprite;
@@ -212,6 +216,8 @@ class GlobalVars
 	public static var level_screen:Sprite;
 	public static var instruction_screen:Sprite;
 	public static var keycode_screen:Sprite;
+	public static var preferences_screen:Sprite;
 
-
+	// language setup
+	public static var language:Language;
 }

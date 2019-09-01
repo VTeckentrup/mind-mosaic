@@ -464,6 +464,8 @@ class DatabaseSync
 			
 		// Search for user id and completed level with highest level id
 		var subj_data = AppDataRun.manager.select($subject_id_app == identifier, {orderBy: -run_ind, limit:1});
+		// Pull user data to update keycode state
+		var subj_user_data = AppUserInfo.manager.get(identifier);
 		
 		// If result returns empty, no round was completed yet, so run infos need to be initialized
 		if (subj_data == null) {
@@ -486,6 +488,7 @@ class DatabaseSync
 			_num_runs_played = subj_data.runs_played_limit;
 			_date_last_run = subj_data.date_run;
 			_timestamp_last_run = subj_data.timestamp_run;
+			_keycode_set = subj_user_data.keycode_entered;
 			
 		}
 					

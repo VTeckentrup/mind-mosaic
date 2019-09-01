@@ -1,9 +1,185 @@
 package;
 
 import openfl.Assets;
+import haxe.Json;
 import openfl.display.Bitmap;
+import sys.io.File;
+
+
+//nested structure of typedef
+// in here there are only the screens
+typedef Language = {
+	
+	var questionnaire_screen:Questionnaire;
+	var button_texts:Buttons;
+	var menu_texts:Menu; 
+	var variety_texts:Variety;
+	var registration_text:Registration;
+	var gameinfo_texts:GameInfo;
+	var logreg_texts:LogReg;
+	var PWreset_texts:PwReset;
+	var keycode_texts:KeyCode;
+	//var registration_screen:Registration;
+	//var login_screen:Login;
+	
+
+			}
+
+// typedef for the questionaire items
+typedef Questionnaire = {
+	//define typedef questionaire and define the strings in there
+	var questionnaire_items_1:String;
+	var questionnaire_items_2:String;
+	var questionnaire_items_3:String;
+	var questionnaire_items_4:String;
+	var questionnaire_items_5:String;
+	var questionnaire_items_6:String;
+	var questionnaire_items_7:String;
+	var questionnaire_items_8:String;
+	var questionnaire_items_9:String;
+	var questionnaire_items_10:String;
+	var questionnaire_items_11:String;
+	var questionnaire_items_12:String;
+	var questionnaire_items_13:String;
+	var questionnaire_items_14:String;
+	var questionnaire_items_15:String;
+	var questionnaire_items_16:String;
+	var questionnaire_items_17:String;
+	var questionnaire_items_18:String;
+	var questionnaire_items_19:String;
+	var questionnaire_items_20:String;
+	var questionnaire_items_21:String;
+	var questionnaire_items_22:String;
+	var questionnaire_items_23:String;
+	var questionnaire_items_24:String;
+	var questionnaire_items_25:String;
+	var questionnaire_items_26:String;
+	
+	var likert_options_1:String;
+	var likert_options_2:String;
+	var likert_options_3:String;
+	var likert_options_4:String;
+	var likert_options_5:String;
+	var likert_options_6:String;
+	var likert_options_7:String;
+	var likert_options_8:String;
+	var likert_options_9:String;
+	var likert_options_10:String;
+	var likert_options_11:String;
+	var likert_options_12:String;
+	var likert_options_13:String;
+	var likert_options_14:String;
+	var likert_options_15:String;
+	var likert_options_16:String;
+	var likert_options_17:String;
+	var likert_options_18:String;
+	
+	var notatall:String;
+	var alot:String;
+	var yep:String;
+	var nope:String;
+	var notyet:String;
+}
+
+// assignment to general buttons
+typedef Buttons = {
+	var back_button_text:String;
+	var forward_button_text:String;
+	var menu_button_text:String;
+	var play_button_text:String;
+	var ok_button_text:String;
+	var login_button_text:String;
+	var preferences_button_text:String;
+	var language_button_text:String;
+	var reset_button_text:String;
+}
+
+
+
+typedef Registration = {
+	var registration_button:String;
+	var reset:String;
+	var inf_text1:String;
+	var inf_text2:String;
+	var inf_text3:String;
+	var inf_text4:String;
+	var noInternet:String;
+	var reg_mailused:String;
+	var reg_empty:String;
+	var consent_info:String;
+	var inet_info:String;
+	var mail_info:String;
+	var pw_info:String;
+	var entry_info:String;
+}
+
+
+typedef Menu = {
+	var instr:String;
+	var gal:String;
+	var logout:String;
+	var close:String;
+	var loggedIn:String;
+	var change_lang:String;
+}
+
+typedef Variety = {
+	var compl_score:String;
+	var level:String;
+	var bonlevel:String;
+	var score:String;
+	var round:String;
+	var of:String;
+	var inftext:String;
+}
+
+typedef GameInfo = {
+	var end_game:String;
+	var limit_info1:String;
+	var limit_info2:String;
+	var reset_userdata:String;
+}
+
+typedef LogReg = {
+	var log:String;
+	var reg:String;
+	var pw_reset:String;
+	var mail:String;
+	var passwt:String;
+	var consent:String;
+	var conditions:String;
+	var check_info:String;
+}
+
+typedef PwReset = {
+	var pwreset_info:String;
+	var code:String;
+	var newPW:String;
+	var requestCode:String;
+}
+
+typedef KeyCode = {
+	var keycodeinfo:String;
+	var keycode_code:String;
+	var keycode_accepted:String;
+	var keycode_rejected:String;
+	
+}
 
 class AssetPreparation {
+	
+	// Creates an object that has the structure of the typedef Language and is populated with the values of the language.json file
+	// Method that initializes the chosen language
+	static public function initializeLanguage(language_json_savepath:String):Language {
+			
+			var language_json = sys.io.File.getContent(language_json_savepath);
+			// one object that takes a different json according to the chosen language
+			var language_object:Language = Json.parse(language_json);
+		
+			return language_object;
+	}
+		
+		
 	
 	static public function loadImage(imagepath:String):Bitmap {
 		
@@ -15,57 +191,69 @@ class AssetPreparation {
 		
 	}
 	
-	static public function getQuestionnaireItems() {
+	/*static public function getButtonsText(){
 		
-		questionnaire_items[1] = "Wie hungrig sind Sie im Moment?";
-		questionnaire_items[2] = "Wie satt sind Sie im Moment?";
-		questionnaire_items[3] = "Wie durstig sind Sie im Moment?";
-		questionnaire_items[4] = "Wann haben Sie die letzte Mahlzeit gegessen?";
-		questionnaire_items[5] = "Haben Sie seit der letzten Mahlzeit noch genascht?";
-		questionnaire_items[6] = "Haben Sie in den letzten 2h koffeinhaltige Getränke \n wie Kaffee getrunken?";
-		questionnaire_items[7] = "Wie wach fühlen Sie sich im Moment?";
-		questionnaire_items[8] = "Wie zufrieden fühlen Sie sich im Moment?";
-		questionnaire_items[9] = "Wie niedergeschlagen fühlen Sie sich im Moment?";
-		questionnaire_items[10] = "Wie gestresst fühlen Sie sich im Moment?";
-		questionnaire_items[11] = "Wie stark fühlen Sie sich momentan durch Ihre \n Umgebung abgelenkt?";
-		questionnaire_items[12] = "Wie stark fühlen Sie sich momentan durch Ihre \n Gedanken abgelenkt?";
-		questionnaire_items[13] = "Hatten Sie seit der letzten Spielrunde einen Essanfall?";
+	}
+	
+	static public function getRegistration(language: Language){
+	
+		
+		
+	}*/
+
+	static public function getQuestionnaireItems(language_object: Language) {
+		
+		// assignment of the different elements of the json file to specific variables
+		// nested structure requires this kind of call: _____.first_level.second_level
+		questionnaire_items[1] = language_object.questionnaire_screen.questionnaire_items_1;
+		questionnaire_items[2] = language_object.questionnaire_screen.questionnaire_items_2;
+		questionnaire_items[3] = language_object.questionnaire_screen.questionnaire_items_3;
+		questionnaire_items[4] = language_object.questionnaire_screen.questionnaire_items_4;
+		questionnaire_items[5] = language_object.questionnaire_screen.questionnaire_items_5;
+		questionnaire_items[6] = language_object.questionnaire_screen.questionnaire_items_6;
+		questionnaire_items[7] = language_object.questionnaire_screen.questionnaire_items_7;
+		questionnaire_items[8] = language_object.questionnaire_screen.questionnaire_items_8;
+		questionnaire_items[9] = language_object.questionnaire_screen.questionnaire_items_9;
+		questionnaire_items[10] = language_object.questionnaire_screen.questionnaire_items_10;
+		questionnaire_items[11] = language_object.questionnaire_screen.questionnaire_items_11;
+		questionnaire_items[12] = language_object.questionnaire_screen.questionnaire_items_12;
+		questionnaire_items[13] = language_object.questionnaire_screen.questionnaire_items_13;
 		// EMA questions
-		questionnaire_items[14] = "Hatten Sie das Gefühl von Kontrollverlust über \n die Art und Menge von Essen, oder das Gefühl \n nicht mit dem Essen aufhören zu können?";
-		questionnaire_items[15] = "Haben Sie in einem abgrenzbaren Zeitraum \n (z.B. innerhalb von 2 Stunden) eine Menge an Essen gegessen, \n die andere als außerordentlich groß bezeichnen würden?";
-		questionnaire_items[16] = "Haben Sie viel schneller gegessen als normal?";
-		questionnaire_items[17] = "Haben Sie gegessen, bis Sie sich \n unangenehm voll gefühlt haben?";
-		questionnaire_items[18] = "Haben Sie große Mengen Nahrung zu sich genommen, \n obwohl Sie sich nicht physisch hungrig gefühlt haben?";
-		questionnaire_items[19] = "Haben Sie alleine gegessen, \n weil Sie sich dafür geschämt haben wie viel Sie gegessen haben?";
-		questionnaire_items[20] = "Haben Sie sich nach dem Essanfall vor sich selbst geekelt, \n sich schuldig oder niedergeschlagen gefühlt?";
-		questionnaire_items[21] = "Haben Sie versucht etwas zu tun, um die Folgen \n des Essanfalls zu verhindern? (z.B.  selbstverursachtes Erbrechen, \n Einnahme von Abführmitteln, exzessiver Sport...)";
-		questionnaire_items[22] = "Wie stark war Ihr Drang etwas zu essen vor dem Essanfall?";
-		questionnaire_items[23] = "Wie stark war Ihr Appetit vor dem Essanfall?";
-		questionnaire_items[24] = "Wie intensiv war Ihr Essanfall?";
-		questionnaire_items[25] = "Wann hatten Sie den letzten Essanfall?";
-		questionnaire_items[26] = "Wie lange dauerte der letzte Essanfall?";
+		questionnaire_items[14] = language_object.questionnaire_screen.questionnaire_items_14;
+		questionnaire_items[15] = language_object.questionnaire_screen.questionnaire_items_15;
+		questionnaire_items[16] = language_object.questionnaire_screen.questionnaire_items_16;
+		questionnaire_items[17] = language_object.questionnaire_screen.questionnaire_items_17;
+		questionnaire_items[18] = language_object.questionnaire_screen.questionnaire_items_18;
+		questionnaire_items[19] = language_object.questionnaire_screen.questionnaire_items_19;
+		questionnaire_items[20] = language_object.questionnaire_screen.questionnaire_items_20;
+		questionnaire_items[21] = language_object.questionnaire_screen.questionnaire_items_21;
+		questionnaire_items[22] = language_object.questionnaire_screen.questionnaire_items_22;
+		questionnaire_items[23] = language_object.questionnaire_screen.questionnaire_items_23;
+		questionnaire_items[24] = language_object.questionnaire_screen.questionnaire_items_24;
+		questionnaire_items[25] = language_object.questionnaire_screen.questionnaire_items_25;
+		questionnaire_items[26] = language_object.questionnaire_screen.questionnaire_items_26;
 	
 		// Likert answer options
-		anchors_likert[1] = "< 0,5h";
-		anchors_likert[2] = "1h";
-		anchors_likert[3] = "1,5h";
-		anchors_likert[4] = "2h";
-		anchors_likert[5] = "2,5h";
-		anchors_likert[6] = "> 3h";
+		anchors_likert[1] = language_object.questionnaire_screen.likert_options_1;
+		anchors_likert[2] = language_object.questionnaire_screen.likert_options_2;
+		anchors_likert[3] = language_object.questionnaire_screen.likert_options_3;
+		anchors_likert[4] = language_object.questionnaire_screen.likert_options_4;
+		anchors_likert[5] = language_object.questionnaire_screen.likert_options_5;
+		anchors_likert[6] = language_object.questionnaire_screen.likert_options_6;
 		
-		anchors_likert[7] = "< 30 min";
-		anchors_likert[8] = "0,5-1h";
-		anchors_likert[9] = "1-2h";
-		anchors_likert[10] = "2-4h";
-		anchors_likert[11] = "4-8h";
-		anchors_likert[12] = "> 8h";
+		anchors_likert[7] = language_object.questionnaire_screen.likert_options_7;
+		anchors_likert[8] = language_object.questionnaire_screen.likert_options_8;
+		anchors_likert[9] = language_object.questionnaire_screen.likert_options_9;
+		anchors_likert[10] = language_object.questionnaire_screen.likert_options_10;
+		anchors_likert[11] = language_object.questionnaire_screen.likert_options_11;
+		anchors_likert[12] = language_object.questionnaire_screen.likert_options_12;
 		
-		anchors_likert[13] = "< 20 min";
-		anchors_likert[14] = "20 - 45\nmin";
-		anchors_likert[15] = "45 - 70\nmin";
-		anchors_likert[16] = "70 - 95\nmin";
-		anchors_likert[17] = "95 - 120\nmin";
-		anchors_likert[18] = "> 2h";
+		anchors_likert[13] = language_object.questionnaire_screen.likert_options_13;
+		anchors_likert[14] = language_object.questionnaire_screen.likert_options_14;
+		anchors_likert[15] = language_object.questionnaire_screen.likert_options_15;
+		anchors_likert[16] = language_object.questionnaire_screen.likert_options_16;
+		anchors_likert[17] = language_object.questionnaire_screen.likert_options_17;
+		anchors_likert[18] = language_object.questionnaire_screen.likert_options_18;
 		
 	}
 	

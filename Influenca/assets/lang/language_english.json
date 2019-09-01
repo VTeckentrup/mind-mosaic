@@ -1,0 +1,139 @@
+{
+	"questionnaire_screen": {
+	
+		"questionnaire_items_1": "How hungry are you at the moment?",
+		"questionnaire_items_2": "How full are you at the moment?",
+		"questionnaire_items_3": "How thirsty are you at the moment?",
+		"questionnaire_items_4": "When did you eat your last meal?",
+		"questionnaire_items_5": "Have you snacked since the last meal?",
+		"questionnaire_items_6": "Have you had any drinks containing caffeine, \n  such as coffee, in the last two hours?",
+		"questionnaire_items_7": "How awake do you feel at the moment?",
+		"questionnaire_items_8": "How satisfied do you feel at the moment?",
+		"questionnaire_items_9": "How down do you feel at the moment?",
+		"questionnaire_items_10": "How stressed to you feel at the moment?",
+		"questionnaire_items_11": "How strongly do you feel distracted \n by your current environment?",
+		"questionnaire_items_12": "How strongly do you feel distracted \n by your current thoughts?",
+		"questionnaire_items_13": "Have you had a food binging episode \n since the last round of the game?",
+		"questionnaire_items_14": "Did you have a feeling of loss of control \n over the type and amount of food you ate or the feeling \n that you couldn’t stop eating?",
+		"questionnaire_items_15": "Did you eat an amount of food, which others \n would refer to as exceedingly large, during a limited \n amount of time (e.g. within 2 hours)?",
+		"questionnaire_items_16": "Did you eat much faster than normally?",
+		"questionnaire_items_17": "Did you eat until you felt uncomfortably full?",
+		"questionnaire_items_18": "Did you eat large amounts of food although \n you did not feel physically hungry?",
+		"questionnaire_items_19": "Did you eat alone because you were ashamed of how much you ate?",
+		"questionnaire_items_20": "After the binging episode, did you feel \n disgusted by yourself, guilty, depressed or down?",
+		"questionnaire_items_21": "Did you try to do anything to prevent the \n consequences of the binging episode? (e.g. self-induced vomiting, \n taking laxatives, excessive exercise…)",
+		"questionnaire_items_22": "How strong was your urge to eat something before the binging episode?",
+		"questionnaire_items_23": "How strong was your appetite \n before the binging episode?",
+		"questionnaire_items_24": "How intense was your binging episode?",
+		"questionnaire_items_25": "When did you last have a binging episode?",
+		"questionnaire_items_26": "How long did your last binging episode last?",
+		"likert_options_1": "< 0,5h",
+		"likert_options_2": "1h",
+		"likert_options_3": "1,5h",
+		"likert_options_4": "2h",
+		"likert_options_5": "2,5h",
+		"likert_options_6": "> 3h",
+		"likert_options_7": "< 30 min",
+		"likert_options_8": "0,5-1h",
+		"likert_options_9": "1-2h",
+		"likert_options_10": "2-4h",
+		"likert_options_11": "4-8h",
+		"likert_options_12": "> 8h",
+		"likert_options_13": "< 20 min",
+		"likert_options_14": "20 - 45\nmin",
+		"likert_options_15": "45 - 70\nmin",
+		"likert_options_16": "70 - 95\nmin",
+		"likert_options_17": "95 - 120\nmin",
+		"likert_options_18": "> 2h",
+		"notatall": "Not at all",
+		"alot": "Very",
+		"yep": "Yes",
+		"nope": "No",
+		"notyet": "Not yet,\n but I will do it"
+		
+	},
+	
+	"button_texts": {
+		
+		"back_button_text": "Back",
+		"forward_button_text": "Forward",
+		"menu_button_text": "Menu",
+		"play_button_text": "Play",
+		"ok_button_text": "OK",
+		"login_button_text": "Login",
+		"preferences_button_text": "Settings",
+		"language_button_text": "Language",
+		"reset_button_text": "Reset User Data"
+		
+		},
+		
+	"menu_texts": {
+		"instr": "Instructions",
+		"gal": "Progress/Gallery",
+		"logout": "Logout",
+		"close": "Quit",
+		"loggedIn": "Logged in as: ",
+		"change_lang": "Language Settings"
+	},
+	
+	"variety_texts": {
+		"compl_score": "Total Score:",
+		"level": "Level: ",
+		"bonlevel": " (Bonus Level!)",
+		"score": "Score: ",
+		"round": "Round ",
+		"of": " of ",
+		"inftext": "End of level!\n\n Please wait \n while your lab is updated!"
+		
+	
+	},
+	
+	"registration_text": {
+		"registration_button": "Register",
+		"reset": "If the email is registered, the code has been sent.\n Please look in your mailbox.",
+		"inf_text1": "No code hs been sent yet.\n Please request a code now by entering your email address.",
+		"inf_text2": "Your password has been changed successfully!\n Please return to the login screen, \n to login with the new password.",
+		"inf_text3": "The code you entered does not match.\n Please check the code, which was sent to \n you by email to the registered email address.",
+		"inf_text4": "Please make sure that there is an active internet connection \n and that both the code field and the new password have been entered.",
+		"noInternet": "No internet connection has been recognized!\n To keep user data consistant, it is only possible to logout when there is an internet connection.",
+		"reg_mailused": "This email address has already been registered for an account.\n Please chose another email address\n or log in to your existing account.",
+		"reg_empty": "The entries for email address and password may not be left empty.",
+		"consent_info": "You have not marked the selection box \n to consent to participate in the study.\n\n Without your consent, using the app\n is unfortunately not possible.",	
+		"inet_info": "An internet connection is neccessary for registration, \n but none has been recognized. \n\n Please connect to the internet.",
+		"mail_info": "This email address has not yet been registered for an account.\n Please first register for an account.",
+		"pw_info": "The password entered does not matche with the registered email address.\n",
+		"entry_info": "The entries for email address and password may not be left empty."
+		},
+		
+	"gameinfo_texts": {
+		"end_game": "You have already successfully completed all levels. \n In the gallery, you can view your successes.",
+		"limit_info1": "A new pathogen has been identified:\n\n medications are being developed and will be available in ",
+		"limit_info2": " minutes \n to be tested.",
+		"reset_userdata": "Confirm with OK, to reset the user data \n back to the previous version saved."
+	},
+	
+	"logreg_texts": {
+		"log": "Login",
+		"reg": "Register",
+		"pw_reset": "Change password",
+		"mail": "Email:",
+		"passwt": "Password:",
+		"consent": "I have read the participation conditions \n and I consent to them:",
+		"conditions": "Conditions",
+		"check_info": "I consent to be contacted via my email address for further studies."
+	},
+	
+	"PWreset_texts": {
+		"pwreset_info": "Please enter the email address you registered for Influenca with \n to get a code emailed to you. As soon as you get the email, please enter \n the code below as well as your new password and confirm the entry.",
+		"code":  "Reset-Code:",
+		"newPW": "New Password:",
+		"requestCode": "Request Code"
+	},
+	
+	"keycode_texts": {
+		"keycodeinfo": "\n To play level 11 and the following levels, we would like to ask you to, \nd fill out the questionnaires via the link which we sent you by email. \n\n The questionnaires cover characteristics of your personality, \n which we can relate to the learning behavior measured in the game.\n\n After answering the questionnaires, you will get a code via email, \n which you can enter here to unlock the following levels.",
+		"keycode_code": "Code:",
+		"keycode_accepted": "The code entered is correct.\n The next level can now be started.",
+		"keycode_rejected":"The code does not match.\n Please re-check the entered code \n in order to start the next level."
+	}
+}

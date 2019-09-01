@@ -3,10 +3,10 @@
 	<!-- NMML reference: https://gist.github.com/1763850 -->
 	
 	<!-- metadata, make sure 'package' is at least 3 segments (ie. com.mycompany.myproject) -->
-	<meta title="Influenca" company="neuroMADLAB" file="Influenca" package="com.neuroMADLAB.Influenca" version="0.0.6" />
+	<meta title="Influenca" company="neuroMADLAB" file="Influenca" package="com.neuroMADLAB.Influenca" version="0.0.7" />
 	
 	<!-- output -->
-	<app main="Main" title="Influenca" company="neuroMADLAB" file="Influenca" path="bin" package="com.neuroMADLAB.Influenca" version="0.0.6" />
+	<app main="Main" title="Influenca" company="neuroMADLAB" file="Influenca" path="bin" package="com.neuroMADLAB.Influenca" version="0.0.7" />
 	
 	<window background="#000000" />
 	<!-- <window width="1600" height="900" unless="mobile" /> -->
@@ -43,7 +43,8 @@
 	
 	<!-- load and embed assets from img folder -->
 	<assets if="mobile" path="assets/img" rename="img" embed="false" />
-	<assets path="assets/img" rename="img" embed="true" />
+	<assets path="assets/img" rename="img" embed="false" />
 	<assets path="assets/fonts" rename="fonts" embed="true" />
+	<assets path="assets/lang" rename="lang" embed="false" />
 	
 </project>

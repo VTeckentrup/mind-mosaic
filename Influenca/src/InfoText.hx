@@ -7,7 +7,7 @@ import openfl.Assets;
 
 class InfoText extends Sprite {
 	
-	public function new (infotext:String) {
+	public function new (infotext:String, version:Int) {
 		
 		super ();
 		
@@ -38,10 +38,24 @@ class InfoText extends Sprite {
 		//info_textfield.y = pos2;
 		this.addChild(info_textfield);
 		
-		// add button to info textfield
-		var textfield_button:SimpleButton = Button.drawButton("OK", NOMINAL_WIDTH / 2, ((1080 - info_textfield.height) / 2) + info_textfield.height - 75, "info");
 		
-        addChild(textfield_button);
+		if (version == 1) {
+		
+			// add button to info textfield
+			var textfield_button:SimpleButton = Button.drawButton(language.button_texts.ok_button_text, NOMINAL_WIDTH / 2, ((1080 - info_textfield.height) / 2) + info_textfield.height - 75, "info");
+		
+			addChild(textfield_button);
+			
+		} else if (version == 2) {
+			
+			// add two buttons to info textfield
+			var textfield_button_OK:SimpleButton = Button.drawButton(language.button_texts.ok_button_text, (NOMINAL_WIDTH / 2) - 300, ((1080 - info_textfield.height) / 2) + info_textfield.height - 75, "info");
+			var textfield_button_Back:SimpleButton = Button.drawButton(language.button_texts.back_button_text, (NOMINAL_WIDTH / 2) + 300, ((1080 - info_textfield.height) / 2) + info_textfield.height - 75, "info");
+			
+			addChild(textfield_button_OK);
+			addChild(textfield_button_Back);
+			
+		}
 				
 		
 	}

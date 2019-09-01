@@ -2,6 +2,7 @@ package;
 
 import haxe.Http;
 
+
 class InternetConnection
 {
 
@@ -10,6 +11,8 @@ class InternetConnection
 	* by polling Google for a response code
 	* 
 	* Catch error to deal with potential firewalls
+	* 
+	* If internet connection is available retrieve latest database IP
 	* 
 	* @param callback
 	* @return
@@ -42,6 +45,23 @@ class InternetConnection
 			};
 
 			http.request(false);
+			
+			// Retrieve current database IP
+			if (isAvailable == true) 
+			{
+				var database_current_json = new haxe.Http(host_address_url);
+
+				database_current_json.onData = function (data:String) {
+					var result = haxe.Json.parse(data);
+					host_address = result.ip;
+				}
+
+				database_current_json.onError = function (error) {
+					trace("Error: Current database address not received due to" + error);
+				}
+
+				database_current_json.request();
+			}
 
 			return isAvailable;
 

@@ -19,8 +19,8 @@ class AppdataJSON
 		json_savepath = Path.join([save_path, savepath_id]);
 		
 			
-		appdata = {id:_id, mail_address:_mail_address, run:_run_ind, score:_global_score, key:_keycode, key_entered:_keycode_set, runs_played:_num_runs_played, date_last_run: _date_last_run, time_last_run: _timestamp_last_run};
-		
+		appdata = {id:_id, mail_address:_mail_address, run:_run_ind, score:_global_score, key:_keycode, key_entered:_keycode_set, runs_played:_num_runs_played, date_last_run: _date_last_run, time_last_run: _timestamp_last_run, chosen_language: _language, db_url: host_address};
+
 		appdata_json = haxe.Json.stringify(appdata);
 		
 		sys.io.File.saveContent(json_savepath, appdata_json);
@@ -51,6 +51,13 @@ class AppdataJSON
 		_num_runs_played = appdata.runs_played;
 		_date_last_run = appdata.date_last_run;
 		_timestamp_last_run = appdata.time_last_run;
+		// Set default language in case it is missing in userdata
+		if (appdata.chosen_language != null){
+			_language = appdata.chosen_language;
+		} else {
+			_language = "german";
+		}
+		host_address = appdata.db_url;
 	
 		}
 	
